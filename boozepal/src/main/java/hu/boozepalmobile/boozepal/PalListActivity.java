@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import hu.boozepalmobile.boozepal.User.User;
@@ -39,6 +40,15 @@ public class PalListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "This button will refresh", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        ImageButton settingsButton = (ImageButton) toolbar.findViewById(R.id.settingButton);
+        settingsButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SettingsMainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -140,4 +150,5 @@ public class PalListActivity extends AppCompatActivity {
             }
         }
     }
+
 }
