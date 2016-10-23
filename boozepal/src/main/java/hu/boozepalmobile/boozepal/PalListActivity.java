@@ -24,6 +24,9 @@ import java.util.List;
 public class PalListActivity extends AppCompatActivity {
 
     private boolean mTwoPane;
+    private User user;
+
+    private TextView userNameLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,16 @@ public class PalListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
+
+        //Login arguments
+        Bundle b = getIntent().getExtras();
+        if(b != null)
+            user = b.getParcelable("USER_DATA");
+
+        if(user != null){
+            setupView();
+        }
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -68,8 +81,8 @@ public class PalListActivity extends AppCompatActivity {
         List<String> l2 = Arrays.asList("vodka", "rum", "konyak", "heineken");
         List<String> l3 = Arrays.asList("Ibolya", "Pikolo", "Valhalla");
         List<String> l4 = Arrays.asList("Ibolya", "Valhalla");
-        User us1 = new User("1","Jonas", "Male", l1, l3);
-        User us2 = new User("2","Bodza", "Female", l2, l4);
+        User us1 = new User("1","Jonas", l1, l3, 2, 2);
+        User us2 = new User("2","Bodza", l2, l4, 10, 4);
 
         List<User> users = new ArrayList<>();
         users.add(us1);
@@ -149,6 +162,13 @@ public class PalListActivity extends AppCompatActivity {
                 return super.toString() + " '" + mNameView.getText() + "'";
             }
         }
+    }
+
+    private void setupView(){
+        //userNameLabel = (TextView) findViewById(R.id.list_user_name_label);
+        //userNameLabel.setText(user.getName());
+
+        this.setTitle(user.getName());
     }
 
 }

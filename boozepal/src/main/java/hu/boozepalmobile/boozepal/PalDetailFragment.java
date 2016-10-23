@@ -57,7 +57,7 @@ public class PalDetailFragment extends Fragment {
 
         if (UserData != null) {
             NameView.setText(UserData.getName());
-            GenderView.setText(UserData.getGender());
+            //GenderView.setText(UserData.getGender());
 
             final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
                     android.R.layout.simple_list_item_1, UserData.getBoozes());

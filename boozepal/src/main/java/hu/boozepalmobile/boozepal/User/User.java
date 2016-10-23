@@ -13,33 +13,33 @@ import java.util.List;
 public class User implements Parcelable{
     private String id;
     private String name;
-    private String gender;
+    //private String gender;
     private List<String> boozes;
     private List<String> pubs;
+    private int searchRadius;
+    private int priceCategory;
 
-    public User(String id, String name, String gender){
+    public User(String id, String name/*, String gender*/, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory) {
         this.id = id;
         this.name = name;
-        this.gender = gender;
-    }
-
-    public User(String id, String name, String gender, List<String> boozes, List<String> pubs) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
+        //this.gender = gender;
         this.boozes = boozes;
         this.pubs = pubs;
+        this.searchRadius = searchRadius;
+        this.priceCategory = priceCategory;
     }
 
     // Parcelling part
     public User(Parcel in){
         this.id = in.readString();
         this.name = in.readString();
-        this.gender = in.readString();
+        //this.gender = in.readString();
         this.boozes = new ArrayList<String>();
         in.readList(boozes,null);
         this.pubs = new ArrayList<String>();
         in.readList(pubs,null);
+        this.searchRadius = in.readInt();
+        this.priceCategory = in.readInt();
     }
 
 
@@ -52,9 +52,11 @@ public class User implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
         dest.writeString(this.name);
-        dest.writeString(this.gender);
+        //dest.writeString(this.gender);
         dest.writeList(this.boozes);
         dest.writeList(this.pubs);
+        dest.writeInt(this.searchRadius);
+        dest.writeInt(this.priceCategory);
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public User createFromParcel(Parcel in) {
@@ -74,9 +76,9 @@ public class User implements Parcelable{
         return name;
     }
 
-    public String getGender() {
+    /*public String getGender() {
         return gender;
-    }
+    }*/
 
     public List<String> getBoozes() {
         return boozes;
@@ -94,9 +96,9 @@ public class User implements Parcelable{
         this.name = name;
     }
 
-    public void setGender(String gender) {
+    /*public void setGender(String gender) {
         this.gender = gender;
-    }
+    }*/
 
     public void setBoozes(List<String> boozes) {
         this.boozes = boozes;
@@ -104,6 +106,22 @@ public class User implements Parcelable{
 
     public void setPubs(List<String> pubs) {
         this.pubs = pubs;
+    }
+
+    public int getSearchRadius() {
+        return searchRadius;
+    }
+
+    public void setSearchRadius(int searchRadius) {
+        this.searchRadius = searchRadius;
+    }
+
+    public int getPriceCategory() {
+        return priceCategory;
+    }
+
+    public void setPriceCategory(int priceCategory) {
+        this.priceCategory = priceCategory;
     }
 
 }

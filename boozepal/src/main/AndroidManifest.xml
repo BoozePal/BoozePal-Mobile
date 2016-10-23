@@ -3,6 +3,7 @@
     package="hu.boozepalmobile.boozepal">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +20,6 @@
         </activity>
         <activity
             android:name=".PalListActivity"
-            android:label="@string/title_pal_list"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".PalDetailActivity"
