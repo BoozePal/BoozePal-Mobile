@@ -50,7 +50,9 @@ public class PalListActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SettingsMainActivity.class);
+
+                Intent intent = new Intent(v.getContext(), SettingsActivity.class);
+                intent.putExtra("USER_DATA", user);
                 startActivity(intent);
             }
         });
@@ -81,8 +83,8 @@ public class PalListActivity extends AppCompatActivity {
         List<String> l2 = Arrays.asList("vodka", "rum", "konyak", "heineken");
         List<String> l3 = Arrays.asList("Ibolya", "Pikolo", "Valhalla");
         List<String> l4 = Arrays.asList("Ibolya", "Valhalla");
-        User us1 = new User("1","Jonas", l1, l3, 2, 2);
-        User us2 = new User("2","Bodza", l2, l4, 10, 4);
+        User us1 = new User("1","Jonas", "Karcag", l1, l3, 2, 2);
+        User us2 = new User("2","Bodza", "Debrecen", l2, l4, 10, 4);
 
         List<User> users = new ArrayList<>();
         users.add(us1);

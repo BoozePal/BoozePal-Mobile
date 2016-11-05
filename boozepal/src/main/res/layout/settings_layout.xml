@@ -8,13 +8,9 @@
         android:text="Name:"
         android:layout_width="90dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="43dp"
-        android:layout_marginStart="43dp"
         android:layout_marginTop="36dp"
         android:id="@+id/settings_label_name"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textAlignment="textEnd"
         android:layout_height="40dp" />
 
@@ -26,7 +22,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/settings_edit_name"
-        android:layout_height="40dp" />
+        android:textSize="16sp"
+        android:layout_height="35dp" />
 
     <TextView
         android:text="Gender:"
@@ -37,7 +34,7 @@
         android:layout_alignRight="@+id/settings_label_name"
         android:layout_alignEnd="@+id/settings_label_name"
         android:layout_marginTop="22dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textAlignment="textEnd" />
 
     <RadioGroup
@@ -68,7 +65,7 @@
         android:layout_width="90dp"
         android:layout_marginTop="45dp"
         android:id="@+id/settings_label_booze"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textAlignment="textEnd"
         android:layout_below="@+id/settings_edit_gender_radiogroup"
         android:layout_alignParentLeft="true"
@@ -97,7 +94,7 @@
         android:text="Favourite pub:"
         android:layout_width="90dp"
         android:id="@+id/settings_label_pub"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textAlignment="textEnd"
         android:layout_height="50dp"
         android:layout_below="@+id/settings_boozelist"
@@ -112,7 +109,7 @@
         android:layout_width="90dp"
         android:layout_marginTop="16dp"
         android:id="@+id/settings_label_city"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textAlignment="textEnd"
         android:layout_below="@+id/settings_publist"
         android:layout_alignParentLeft="true"
@@ -130,14 +127,15 @@
         android:layout_alignTop="@+id/settings_label_city"
         android:layout_alignLeft="@+id/settings_publist"
         android:layout_alignStart="@+id/settings_publist"
-        android:id="@+id/settings_edit_city" />
+        android:id="@+id/settings_edit_city"
+        android:textSize="16sp" />
 
     <TextView
         android:text="Price:"
         android:layout_width="90dp"
         android:layout_marginTop="19dp"
         android:id="@+id/settings_label_price"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textAlignment="textEnd"
         android:layout_height="40dp"
         android:layout_below="@+id/settings_edit_city"
@@ -146,14 +144,6 @@
         android:layout_toStartOf="@+id/settings_edit_city"
         android:layout_alignRight="@+id/settings_label_city"
         android:layout_alignEnd="@+id/settings_label_city" />
-
-    <RatingBar
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/settings_label_price"
-        android:layout_alignLeft="@+id/settings_edit_city"
-        android:layout_alignStart="@+id/settings_edit_city"
-        android:id="@+id/settings_edit_price"
-        android:layout_width="200dp" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -175,5 +165,58 @@
         android:background="@android:color/transparent"
         android:src="@mipmap/ic_add_circle_outline_black_48dp"
         android:id="@+id/settings_add_pub" />
+
+    <TextView
+        android:text="Search Radius:"
+        android:layout_width="90dp"
+        android:layout_marginTop="13dp"
+        android:id="@+id/textView"
+        android:textSize="16sp"
+        android:textAlignment="textEnd"
+        android:layout_below="@+id/settings_edit_price"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/settings_label_price"
+        android:layout_alignEnd="@+id/settings_label_price"
+        android:layout_height="50dp" />
+
+    <SeekBar
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_marginBottom="11dp"
+        android:id="@+id/settings_edit_radius"
+        android:layout_alignLeft="@+id/settings_edit_price"
+        android:layout_alignStart="@+id/settings_edit_price"
+        android:layout_width="140dp"
+        android:max="120"/>
+
+    <TextView
+        android:text="km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/settings_edit_radius"
+        android:layout_alignRight="@+id/settings_edit_price"
+        android:layout_alignEnd="@+id/settings_edit_price"
+        android:id="@+id/settings_label_km" />
+
+    <Button
+        android:text="Save changes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_edit_radius"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_marginTop="69dp"
+        android:id="@+id/edit_settings_button" />
+
+    <RatingBar
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_edit_price"
+        android:stepSize="1"
+        android:max="5"
+        android:layout_alignTop="@+id/settings_label_price"
+        android:layout_alignLeft="@+id/settings_edit_city"
+        android:layout_alignStart="@+id/settings_edit_city"
+        android:layout_width="190dp" />
 
 </RelativeLayout>

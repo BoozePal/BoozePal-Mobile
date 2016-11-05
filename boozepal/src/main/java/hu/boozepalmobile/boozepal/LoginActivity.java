@@ -201,8 +201,11 @@ public class LoginActivity extends AppCompatActivity implements
 
     private class LoginTask extends AsyncTask<String, Void, String> {
 
+        private String token;
+
         @Override
         protected String doInBackground(String... params) {
+            token = params[0];
             String result = authenticate(params[0]);
             return result;
         }
@@ -253,6 +256,10 @@ public class LoginActivity extends AppCompatActivity implements
                 if(!obj.isNull("fullName"))
                     name = obj.getString("fullName");
 
+                String city = "";
+                if(!obj.isNull("city"))
+                    city = obj.getString("city");
+
                 String id = "";
                 if(!obj.isNull("id"))
                     id = obj.getString("id");
@@ -265,7 +272,7 @@ public class LoginActivity extends AppCompatActivity implements
                 if(!obj.isNull("priceCategory"))
                     priceCategory = Integer.getInteger(obj.getString("priceCategory"));
 
-                User user = new User(id, name, favouriteBoozes, favouritePubs, radius, priceCategory);
+                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, token);
 
                 Intent intent = new Intent(getApplicationContext(), PalListActivity.class);
                 intent.putExtra("USER_DATA", user);

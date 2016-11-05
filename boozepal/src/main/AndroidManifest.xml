@@ -30,7 +30,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="hu.boozepalmobile.boozepal.PalListActivity" />
         </activity>
-        <activity android:name=".SettingsMainActivity"></activity>
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>
