@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,12 +18,12 @@ public class User implements Parcelable{
     //private String gender;
     private List<String> boozes;
     private List<String> pubs;
+    private List<Date> savedDates;
     private int searchRadius;
     private int priceCategory;
+    //private
 
-    private String token;
-
-    public User(String id, String name, String city, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory, String token) {
+    public User(String id, String name, String city, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory, List<Date> savedDates) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -31,7 +32,7 @@ public class User implements Parcelable{
         this.pubs = pubs;
         this.searchRadius = searchRadius;
         this.priceCategory = priceCategory;
-        this.token = token;
+        this.savedDates = savedDates;
     }
 
     // Parcelling part
@@ -46,7 +47,8 @@ public class User implements Parcelable{
         in.readList(pubs,null);
         this.searchRadius = in.readInt();
         this.priceCategory = in.readInt();
-        this.token = in.readString();
+        this.savedDates = new ArrayList<Date>();
+        in.readList(savedDates, null);
     }
 
 
@@ -65,7 +67,7 @@ public class User implements Parcelable{
         dest.writeList(this.pubs);
         dest.writeInt(this.searchRadius);
         dest.writeInt(this.priceCategory);
-        dest.writeString(this.token);
+        dest.writeList(this.savedDates);
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public User createFromParcel(Parcel in) {
@@ -113,14 +115,6 @@ public class User implements Parcelable{
         this.city = city;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
     /*public void setGender(String gender) {
         this.gender = gender;
     }*/
@@ -149,4 +143,11 @@ public class User implements Parcelable{
         this.priceCategory = priceCategory;
     }
 
+    public List<Date> getSavedDates() {
+        return savedDates;
+    }
+
+    public void setSavedDates(List<Date> savedDates) {
+        this.savedDates = savedDates;
+    }
 }

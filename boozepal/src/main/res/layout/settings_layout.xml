@@ -14,17 +14,6 @@
         android:textAlignment="textEnd"
         android:layout_height="40dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_alignTop="@+id/settings_label_name"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/settings_edit_name"
-        android:textSize="16sp"
-        android:layout_height="35dp" />
-
     <TextView
         android:text="Gender:"
         android:layout_width="90dp"
@@ -76,14 +65,6 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_alignTop="@+id/settings_label_booze"
-        android:layout_alignLeft="@+id/settings_edit_gender_radiogroup"
-        android:layout_alignStart="@+id/settings_edit_gender_radiogroup"
-        android:layout_height="150dp"
-        android:id="@+id/settings_boozelist" />
-
-    <ListView
-        android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignLeft="@+id/settings_boozelist"
         android:layout_alignStart="@+id/settings_boozelist"
@@ -117,18 +98,6 @@
         android:layout_alignRight="@+id/settings_label_pub"
         android:layout_alignEnd="@+id/settings_label_pub"
         android:layout_height="40dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:layout_alignTop="@+id/settings_label_city"
-        android:layout_alignLeft="@+id/settings_publist"
-        android:layout_alignStart="@+id/settings_publist"
-        android:id="@+id/settings_edit_city"
-        android:textSize="16sp" />
 
     <TextView
         android:text="Price:"
@@ -199,24 +168,58 @@
         android:layout_alignEnd="@+id/settings_edit_price"
         android:id="@+id/settings_label_km" />
 
-    <Button
-        android:text="Save changes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/settings_edit_radius"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
-        android:layout_marginTop="69dp"
-        android:id="@+id/edit_settings_button" />
-
     <RatingBar
         android:layout_height="wrap_content"
         android:id="@+id/settings_edit_price"
         android:stepSize="1"
-        android:max="5"
+        android:max="4"
         android:layout_alignTop="@+id/settings_label_price"
         android:layout_alignLeft="@+id/settings_edit_city"
         android:layout_alignStart="@+id/settings_edit_city"
         android:layout_width="190dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/settings_edit_city"
+        android:textSize="16sp"
+        android:layout_alignTop="@+id/settings_label_city"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/settings_boozelist"
+        android:layout_alignTop="@+id/settings_label_booze"
+        android:layout_alignLeft="@+id/settings_edit_city"
+        android:layout_alignStart="@+id/settings_edit_city" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/settings_edit_name"
+        android:textSize="16sp"
+        android:layout_alignTop="@+id/settings_label_name"
+        android:layout_alignLeft="@+id/settings_boozelist"
+        android:layout_alignStart="@+id/settings_boozelist"
+        android:layout_height="40dp" />
+
+    <Button
+        android:text="Save changes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="51dp"
+        android:id="@+id/edit_settings_button"
+        android:layout_below="@+id/settings_edit_radius"
+        android:layout_alignRight="@+id/settings_edit_gender_radiogroup"
+        android:layout_alignEnd="@+id/settings_edit_gender_radiogroup"
+        android:layout_marginRight="11dp"
+        android:layout_marginEnd="11dp" />
 
 </RelativeLayout>

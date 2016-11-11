@@ -39,9 +39,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import hu.boozepalmobile.boozepal.User.User;
 
@@ -50,6 +55,8 @@ public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
+
+    private String token;
 
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions googleSignInOptions;
@@ -148,14 +155,10 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInAccount account = result.getSignInAccount();
             System.out.println(account.getDisplayName() + " " + account.getIdToken() + account.getEmail());
 
+            this.token = account.getIdToken();
+
             LoginTask ltask = new LoginTask();
             ltask.execute(account.getIdToken());
-
-            //String response = authenticate(account.getIdToken());
-            //System.out.println(response);
-
-            //Intent intent = new Intent(this, PalListActivity.class);
-            //startActivity(intent);
         } else {
             System.out.println("Something went wrong");
         }
@@ -252,6 +255,23 @@ public class LoginActivity extends AppCompatActivity implements
                     }
                 }
 
+                List<Date> savedDates = new ArrayList<>();
+                if(!obj.isNull("savedDates")) {
+                    JSONArray dates = obj.getJSONArray("savedDates");
+                    for (int i = 0; i < dates.length(); ++i) {
+                        JSONObject date = dates.getJSONObject(i);
+                        Iterator<?> keys = date.keys();
+
+                        while (keys.hasNext()) {
+                            DateFormat format = new SimpleDateFormat("MMMM d yyyy", Locale.ENGLISH);
+                            Date key = format.parse(keys.next().toString());
+                            //favouritePubs.add((String) booze.get(key));
+                            savedDates.add(key);
+                        }
+                    }
+                }
+
+
                 String name = "";
                 if(!obj.isNull("fullName"))
                     name = obj.getString("fullName");
@@ -266,19 +286,22 @@ public class LoginActivity extends AppCompatActivity implements
 
                 int radius = 10;
                 if(!obj.isNull("searchRadius"))
-                    radius = Integer.getInteger(obj.getString("searchRadius"));
+                    radius = Integer.parseInt(obj.getString("searchRadius"));
 
                 int priceCategory = 1;
                 if(!obj.isNull("priceCategory"))
-                    priceCategory = Integer.getInteger(obj.getString("priceCategory"));
+                    priceCategory = Integer.parseInt(obj.getString("priceCategory"));
 
-                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, token);
+                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates);
 
                 Intent intent = new Intent(getApplicationContext(), PalListActivity.class);
                 intent.putExtra("USER_DATA", user);
+                intent.putExtra("TOKEN", LoginActivity.this.token);
                 startActivity(intent);
 
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 

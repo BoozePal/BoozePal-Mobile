@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class PalListActivity extends AppCompatActivity {
 
     private boolean mTwoPane;
     private User user;
+    private String token;
 
     private TextView userNameLabel;
 
@@ -46,16 +48,45 @@ public class PalListActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton settingsButton = (ImageButton) toolbar.findViewById(R.id.settingButton);
-        settingsButton.setOnClickListener(new View.OnClickListener(){
+        ImageButton calendarButton = (ImageButton) toolbar.findViewById(R.id.calendar_button);
+        calendarButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                Log.d("PalListActivity", "Clicked on calendar button");
 
-                Intent intent = new Intent(v.getContext(), SettingsActivity.class);
+                Intent intent = new Intent(v.getContext(), CalendarActivity.class);
                 intent.putExtra("USER_DATA", user);
+                intent.putExtra("TOKEN", token);
                 startActivity(intent);
             }
         });
+
+        ImageButton settingsButton = (ImageButton) toolbar.findViewById(R.id.setting_button);
+        settingsButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("PalListActivity", "Clicked on settings button");
+
+                Intent intent = new Intent(v.getContext(), SettingsActivity.class);
+                intent.putExtra("USER_DATA", user);
+                intent.putExtra("TOKEN", token);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton PALButton = (ImageButton) toolbar.findViewById(R.id.pal_button);
+        settingsButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("PalListActivity", "Clicked on pal button");
+
+                Intent intent = new Intent(v.getContext(), SettingsActivity.class);
+                intent.putExtra("USER_DATA", user);
+                intent.putExtra("TOKEN", token);
+                startActivity(intent);
+            }
+        });
+
 
         View recyclerView = findViewById(R.id.pal_list);
         assert recyclerView != null;
@@ -65,11 +96,11 @@ public class PalListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-
-        //Login arguments
         Bundle b = getIntent().getExtras();
-        if(b != null)
+        if(b != null) {
             user = b.getParcelable("USER_DATA");
+            token = b.getString("TOKEN");
+        }
 
         if(user != null){
             setupView();
@@ -79,10 +110,11 @@ public class PalListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
-        List<String> l1 = Arrays.asList("vodka", "rum", "bor", "heineken");
+        /*List<String> l1 = Arrays.asList("vodka", "rum", "bor", "heineken");
         List<String> l2 = Arrays.asList("vodka", "rum", "konyak", "heineken");
         List<String> l3 = Arrays.asList("Ibolya", "Pikolo", "Valhalla");
         List<String> l4 = Arrays.asList("Ibolya", "Valhalla");
+
         User us1 = new User("1","Jonas", "Karcag", l1, l3, 2, 2);
         User us2 = new User("2","Bodza", "Debrecen", l2, l4, 10, 4);
 
@@ -90,7 +122,7 @@ public class PalListActivity extends AppCompatActivity {
         users.add(us1);
         users.add(us2);
 
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(users));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(users));*/
     }
 
     public class SimpleItemRecyclerViewAdapter

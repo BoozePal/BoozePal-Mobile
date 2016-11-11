@@ -12,10 +12,11 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="title_activity_settings">SettingscActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 
     <string name="server_client_id"></string>
     <string name="loading">Loading…</string>
     <string name="rest_url_login">http://boozepal.mircloud.host/boozepal/rest/user/login</string>
     <string name="rest_url_settings"></string>
+    <string name="rest_url_save_calendar"></string>
 </resources>

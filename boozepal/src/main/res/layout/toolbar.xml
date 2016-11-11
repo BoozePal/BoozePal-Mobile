@@ -6,20 +6,32 @@
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimary">
 
-<!--    <TextView
-        android:layout_width="wrap_content"
-        android:layout_marginTop="19dp"
-        android:id="@+id/list_user_name_label"
-        android:textSize="20sp"
-        android:textAlignment="textEnd"
-        android:layout_height="match_parent"/>-->
-
     <ImageButton
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:src="@mipmap/ic_settings_white_24dp"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:background="@android:color/transparent"
-        android:id="@+id/settingButton" />
+        android:id="@+id/setting_button"
+        android:layout_marginRight="30dp" />
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_date_range_white_24dp"
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"
+        android:id="@+id/calendar_button"
+        android:layout_marginRight="30dp" />
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_people_outline_white_24dp"
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"
+        android:id="@+id/pal_button"
+        android:layout_marginRight="30dp" />
+
 
 </android.support.v7.widget.Toolbar>
