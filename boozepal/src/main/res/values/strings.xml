@@ -16,7 +16,8 @@
 
     <string name="server_client_id"></string>
     <string name="loading">Loading…</string>
-    <string name="rest_url_login">http://boozepal.mircloud.host/boozepal/rest/user/login</string>
+    <string name="rest_url_login">rest/user/login</string>
+    <string name="rest_url">http://boozepal.mircloud.host/boozepal/</string>
     <string name="rest_url_settings"></string>
     <string name="rest_url_save_calendar"></string>
 </resources>

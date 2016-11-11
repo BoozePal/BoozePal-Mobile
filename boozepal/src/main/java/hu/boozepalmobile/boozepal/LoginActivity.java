@@ -9,9 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.AsyncTask;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -58,15 +63,60 @@ public class LoginActivity extends AppCompatActivity implements
 
     private String token;
 
+    private String loginURL;
+    private String customLoginURL;
+
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions googleSignInOptions;
     private ProgressDialog progressDialog;
-    //private Button
+
+    private ToggleButton devToggleButton;
+    private EditText devEditUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        devToggleButton = (ToggleButton) findViewById(R.id.dev_toggle_button);
+        devEditUrl = (EditText) findViewById(R.id.dev_edit_url);
+
+        devEditUrl.setVisibility(View.INVISIBLE);
+
+        loginURL = getString(R.string.rest_url) + getString(R.string.rest_url_login);
+        customLoginURL = getString(R.string.rest_url);
+
+        devEditUrl.setText(customLoginURL);
+
+        devToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    devEditUrl.setVisibility(View.VISIBLE);
+                    Log.d("Login Activity","Toggle button: " + devToggleButton.isChecked());
+                }
+                else{
+                    devEditUrl.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        devEditUrl.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                customLoginURL = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                customLoginURL = String.valueOf(s.toString());
+            }
+        });
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
@@ -97,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
 
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        /*OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if (opr.isDone()) {
             System.out.println("Got cached sign-in");
             GoogleSignInResult result = opr.get();
@@ -111,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements
                     handleSignInResult(googleSignInResult);
                 }
             });
-        }
+        }*/
     }
 
     @Override
@@ -192,15 +242,6 @@ public class LoginActivity extends AppCompatActivity implements
         }
 
     }
-
-    public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-        Reader reader = null;
-        reader = new InputStreamReader(stream, "UTF-8");
-        char[] buffer = new char[len];
-        reader.read(buffer);
-        return new String(buffer);
-    }
-
 
     private class LoginTask extends AsyncTask<String, Void, String> {
 
@@ -313,7 +354,13 @@ public class LoginActivity extends AppCompatActivity implements
             InputStream is = null;
             String result = null;
             try {
-                url = new URL(getString(R.string.rest_url_login));
+
+                if(devToggleButton.isChecked()){
+                    url = new URL(customLoginURL + getString(R.string.rest_url_login));
+                }
+                else{
+                    url = new URL(loginURL);
+                }
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
