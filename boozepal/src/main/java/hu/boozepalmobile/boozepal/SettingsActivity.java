@@ -153,13 +153,15 @@ public class SettingsActivity extends AppCompatActivity {
         editRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                labelRadius.setText(progress);
+                String km = seekBar.getProgress() + " km";
+                labelRadius.setText(km);
                 modifiedUser.setSearchRadius(progress);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                labelRadius.setText(seekBar.getProgress());
+                String km = seekBar.getProgress() + " km";
+                labelRadius.setText(km);
             }
 
             @Override

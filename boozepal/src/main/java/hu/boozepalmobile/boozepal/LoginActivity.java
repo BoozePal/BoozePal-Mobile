@@ -8,10 +8,8 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -19,14 +17,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -61,7 +56,6 @@ public class LoginActivity extends AppCompatActivity implements
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions googleSignInOptions;
     private ProgressDialog progressDialog;
-    //private Button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void configureSignIn() {
+        Log.d("LoginActivity","Configure sign-in");
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
@@ -97,7 +92,8 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
 
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        /*OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+
         if (opr.isDone()) {
             System.out.println("Got cached sign-in");
             GoogleSignInResult result = opr.get();
@@ -111,7 +107,8 @@ public class LoginActivity extends AppCompatActivity implements
                     handleSignInResult(googleSignInResult);
                 }
             });
-        }
+        }*/
+
     }
 
     @Override
@@ -294,7 +291,7 @@ public class LoginActivity extends AppCompatActivity implements
 
                 User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates);
 
-                Intent intent = new Intent(getApplicationContext(), PalListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("USER_DATA", user);
                 intent.putExtra("TOKEN", LoginActivity.this.token);
                 startActivity(intent);
