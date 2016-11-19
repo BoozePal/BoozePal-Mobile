@@ -84,7 +84,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("CalendarActivity","Touched back button!");
-                Intent intent = new Intent(getApplicationContext(), PalListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("USER_DATA", user);
                 intent.putExtra("TOKEN", token);
                 startActivity(intent);
@@ -97,7 +97,7 @@ public class CalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SaveCalendarTask saveTask = new SaveCalendarTask();
                 saveTask.execute(token);
-                Intent intent = new Intent(getApplicationContext(), PalListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("USER_DATA", user);
                 intent.putExtra("TOKEN", token);
                 startActivity(intent);
@@ -165,7 +165,7 @@ public class CalendarActivity extends AppCompatActivity {
 
                 user.setSavedDates(selectedDates);
 
-                Intent intent = new Intent(getApplicationContext(), PalListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("USER_DATA", user);
                 intent.putExtra("TOKEN", CalendarActivity.this.token);
                 startActivity(intent);

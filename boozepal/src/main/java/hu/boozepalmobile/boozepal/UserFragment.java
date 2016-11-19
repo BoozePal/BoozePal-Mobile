@@ -15,6 +15,8 @@ import java.util.ArrayList;
 public class UserFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private ArrayList<User> userList;
+    private User user;
+    private String token;
 
     public UserFragment() {
     }
@@ -36,7 +38,11 @@ public class UserFragment extends Fragment {
         userList = new ArrayList<>();
 
         if (getArguments() != null) {
+
             this.userList = getArguments().getParcelableArrayList("CURRENT_PALS");
+            this.user = getArguments().getParcelable("USER_DATA");
+            this.token = getArguments().getString("TOKEN");
+            System.out.println(this.user.getName());
         }
     }
 
@@ -49,7 +55,7 @@ public class UserFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setAdapter(new CurrentPalsRecyclerViewAdapter(userList, mListener));
+            recyclerView.setAdapter(new CurrentPalsRecyclerViewAdapter(userList, mListener,user, token));
         }
 
         return view;

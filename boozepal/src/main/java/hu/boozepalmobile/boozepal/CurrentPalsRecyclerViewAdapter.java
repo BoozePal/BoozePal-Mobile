@@ -19,12 +19,16 @@ import java.util.List;
  */
 public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<CurrentPalsRecyclerViewAdapter.ViewHolder> {
 
+    private User user;
+    private String token;
     private final List<User> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public CurrentPalsRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener) {
+    public CurrentPalsRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener, User user, String token) {
         mValues = items;
         mListener = listener;
+        this.user = user;
+        this.token = token;
     }
 
     @Override
@@ -51,8 +55,9 @@ public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<Current
                     mListener.onListFragmentInteraction(holder.user);
 
                     Intent intent = new Intent(v.getContext(), PalDetailActivity.class);
-                    intent.putExtra("USER_DATA", mValues.get(f_position));
-                    //intent.putExtra("TOKEN", .this.token);
+                    intent.putExtra("SELECTED_USER_DATA", mValues.get(f_position));
+                    intent.putExtra("USER_DATA", user);
+                    intent.putExtra("TOKEN", token);
                     v.getContext().startActivity(intent);
                 }
             }

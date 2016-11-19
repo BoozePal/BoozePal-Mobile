@@ -69,11 +69,6 @@ public class LoginActivity extends AppCompatActivity implements
         checkNetworkConnection();
     }
 
-    public void login(View view) {
-        Intent intent = new Intent(this, PalListActivity.class);
-        startActivity(intent);
-    }
-
     private void configureSignIn() {
         Log.d("LoginActivity","Configure sign-in");
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

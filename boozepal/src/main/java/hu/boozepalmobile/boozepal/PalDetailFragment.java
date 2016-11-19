@@ -13,16 +13,11 @@ import android.widget.TextView;
 
 import hu.boozepalmobile.boozepal.User.User;
 
-/**
- * A fragment representing a single Pal detail screen.
- * This fragment is either contained in a {@link PalListActivity}
- * in two-pane mode (on tablets) or a {@link PalDetailActivity}
- * on handsets.
- */
 public class PalDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
 
     private User UserData;
+    private User loggedUser;
 
     public TextView NameView;
     public TextView GenderView;
@@ -43,6 +38,7 @@ public class PalDetailFragment extends Fragment {
             if (appBarLayout != null) {
                 appBarLayout.setTitle(UserData.getName());
             }
+            loggedUser = (User) getArguments().getParcelable("LOGGED_USER_DATA");
         }
     }
 
@@ -57,7 +53,6 @@ public class PalDetailFragment extends Fragment {
 
         if (UserData != null) {
             NameView.setText(UserData.getName());
-            //GenderView.setText(UserData.getGender());
 
             final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
                     android.R.layout.simple_list_item_1, UserData.getBoozes());

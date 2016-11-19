@@ -66,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("SettingsActivity","Touched back button!");
-                Intent intent = new Intent(getApplicationContext(), PalListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("USER_DATA", modifiedUser);
                 intent.putExtra("TOKEN", token);
                 startActivity(intent);
