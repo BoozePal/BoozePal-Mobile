@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="hu.boozepalmobile.boozepal.PalDetailActivity"
+    tools:context="hu.boozepalmobile.boozepal.activities.PalDetailActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout

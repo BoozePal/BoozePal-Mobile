@@ -1,13 +1,13 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import hu.boozepalmobile.boozepal.MyPalFragment.OnListFragmentInteractionListener;
-import hu.boozepalmobile.boozepal.User.User;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.fragments.MyPalFragment.OnListFragmentInteractionListener;
+import hu.boozepalmobile.boozepal.models.User;
 
 import java.util.List;
 

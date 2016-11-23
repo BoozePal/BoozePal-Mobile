@@ -1,7 +1,9 @@
-package hu.boozepalmobile.boozepal.User;
+package hu.boozepalmobile.boozepal.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,18 +14,18 @@ import java.util.List;
  */
 
 public class User implements Parcelable{
-    private String id;
+
+    private Long id;
     private String name;
     private String city;
-    //private String gender;
     private List<String> boozes;
     private List<String> pubs;
     private List<Date> savedDates;
     private int searchRadius;
     private int priceCategory;
-    //private
+    private List<User> myPals;
 
-    public User(String id, String name, String city, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory, List<Date> savedDates) {
+    public User(Long id, String name, String city, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -33,11 +35,12 @@ public class User implements Parcelable{
         this.searchRadius = searchRadius;
         this.priceCategory = priceCategory;
         this.savedDates = savedDates;
+        this.myPals = myPals;
     }
 
     // Parcelling part
     public User(Parcel in){
-        this.id = in.readString();
+        this.id = in.readLong();
         this.name = in.readString();
         this.city = in.readString();
         //this.gender = in.readString();
@@ -49,6 +52,8 @@ public class User implements Parcelable{
         this.priceCategory = in.readInt();
         this.savedDates = new ArrayList<Date>();
         in.readList(savedDates, null);
+        this.myPals = new ArrayList<>();
+        in.readList(myPals, null);
     }
 
 
@@ -59,7 +64,7 @@ public class User implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.id);
+        dest.writeLong(this.id);
         dest.writeString(this.name);
         dest.writeString(this.city);
         //dest.writeString(this.gender);
@@ -68,6 +73,7 @@ public class User implements Parcelable{
         dest.writeInt(this.searchRadius);
         dest.writeInt(this.priceCategory);
         dest.writeList(this.savedDates);
+        dest.writeList(this.myPals);
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public User createFromParcel(Parcel in) {
@@ -79,7 +85,7 @@ public class User implements Parcelable{
         }
     };
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -103,7 +109,7 @@ public class User implements Parcelable{
         return pubs;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -149,5 +155,18 @@ public class User implements Parcelable{
 
     public void setSavedDates(List<Date> savedDates) {
         this.savedDates = savedDates;
+    }
+
+    public List<User> getMyPals() {
+        return myPals;
+    }
+
+    public void setMyPals(List<User> myPals) {
+        this.myPals = myPals;
+    }
+
+    @Override
+    public String toString() {
+        return new GsonBuilder().create().toJson(this, User.class);
     }
 }

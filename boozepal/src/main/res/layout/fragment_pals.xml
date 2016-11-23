@@ -5,28 +5,37 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="@color/colorAccent">
 
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@color/colorPrimary"
+            android:id="@+id/imageView3"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
         <TextView
             android:text="TextView"
             android:id="@+id/fragment_pals_city"
             android:layout_width="150dp"
             android:layout_marginTop="15dp"
-            android:layout_below="@+id/fragment_mypals_name"
-            android:layout_alignLeft="@+id/fragment_mypals_name"
-            android:layout_alignStart="@+id/fragment_mypals_name"
+            android:textAlignment="viewStart"
+            android:layout_below="@+id/fragment_pals_name"
+            android:layout_alignLeft="@+id/fragment_pals_name"
+            android:layout_alignStart="@+id/fragment_pals_name"
             android:layout_height="25dp"
             android:textAllCaps="true" />
 
         <TextView
             android:text="TextView"
             android:layout_width="253dp"
-            android:id="@+id/fragment_mypals_name"
+            android:id="@+id/fragment_pals_name"
             android:textSize="24sp"
             android:layout_height="wrap_content"
             android:textAllCaps="false"
@@ -36,16 +45,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:srcCompat="@color/colorPrimary"
-            android:id="@+id/imageView"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
     </RelativeLayout>
 
 </RelativeLayout>

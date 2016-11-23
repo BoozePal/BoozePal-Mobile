@@ -1,4 +1,4 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hu.boozepalmobile.boozepal.User.User;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.adapters.CurrentPalsRecyclerViewAdapter;
+import hu.boozepalmobile.boozepal.models.User;
 
 import java.util.ArrayList;
 
@@ -49,7 +51,7 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_pals_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {

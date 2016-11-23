@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context="hu.boozepalmobile.boozepal.PalDetailFragment" >
+    tools:context="hu.boozepalmobile.boozepal.fragments.PalDetailFragment" >
 
     <TextView
         android:text="@string/name"
@@ -78,5 +78,16 @@
         android:layout_marginTop="27dp"
         android:id="@+id/pal_detail_price_label"
         android:textSize="18sp" />
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:minDate="01/01/2016"
+        android:maxDate="01/01/2018"
+        android:id="@+id/detail_calendar_table"
+        android:layout_below="@+id/pal_detail_price_label"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="52dp" />
 
 </RelativeLayout>

@@ -1,10 +1,9 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.activities;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,23 +17,22 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
-import hu.boozepalmobile.boozepal.User.User;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.User;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -93,6 +91,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                Log.d("SettingActivity", "Sav Changed button touched!");
                 SaveSettingsTask saveTask = new SaveSettingsTask();
                 saveTask.execute(user);
             }
@@ -101,6 +100,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     void setupView() {
         editName = (EditText) findViewById(R.id.settings_edit_name);
+        editName.setSelectAllOnFocus(true);
         editName.setText(user.getName());
         editName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -118,6 +118,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         editCity = (EditText) findViewById(R.id.settings_edit_city);
+        editCity.setSelectAllOnFocus(true);
         editCity.setText(user.getCity());
         editCity.addTextChangedListener(new TextWatcher() {
             @Override
@@ -205,14 +206,13 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String s) {
-            //String result = null;
-            // JSONObject obj = new JSONObject(s);
+
         }
 
         private String saveSettings(User user) {
             URL url = null;
             InputStream is = null;
-            String result = null;
+            String result = "";
             try {
                 url = new URL(getString(R.string.rest_url_settings));
 
@@ -228,12 +228,10 @@ public class SettingsActivity extends AppCompatActivity {
 
                 JSONObject obj = new JSONObject();
                 obj.put("token", SettingsActivity.this.token);
-                obj.put("fullName", user.getName());
-                obj.put("city", user.getCity());
-                obj.put("radius", user.getSearchRadius());
-                obj.put("priceCategory", user.getPriceCategory());
-                obj.put("boozes", user.getBoozes());
-                obj.put("pubs", user.getPubs());
+                obj.put("user", user);
+
+
+                System.out.println(obj.toString());
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
@@ -241,18 +239,20 @@ public class SettingsActivity extends AppCompatActivity {
                 writer.close();
                 os.close();
 
-                //Read
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-
-                String line = null;
-                StringBuilder sb = new StringBuilder();
-
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
+                if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("USER_DATA", modifiedUser);
+                    intent.putExtra("TOKEN", token);
+                    startActivity(intent);
                 }
-
-                br.close();
-                result = sb.toString();
+                else{
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("USER_DATA", user);
+                    intent.putExtra("TOKEN", token);
+                    startActivity(intent);
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setText("Changed have not been saved");
+                }
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

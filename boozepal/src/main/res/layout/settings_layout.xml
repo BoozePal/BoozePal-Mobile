@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="1000dp"
-    android:descendantFocusability="blocksDescendants">
+    >
 
     <TextView
         android:text="Name:"
@@ -15,18 +15,6 @@
         android:textAlignment="textEnd"
         android:layout_height="40dp" />
 
-    <TextView
-        android:text="Gender:"
-        android:layout_width="90dp"
-        android:layout_height="40dp"
-        android:id="@+id/settings_label_gender"
-        android:layout_below="@+id/settings_label_name"
-        android:layout_alignRight="@+id/settings_label_name"
-        android:layout_alignEnd="@+id/settings_label_name"
-        android:layout_marginTop="22dp"
-        android:textSize="16sp"
-        android:textAlignment="textEnd" />
-
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,34 +23,7 @@
         android:layout_alignStart="@+id/settings_edit_name"
         android:id="@+id/settings_edit_gender_radiogroup">
 
-        <RadioButton
-            android:text="Female"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/settings_edit_gender_radiobutton_female"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:text="Male"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/settings_edit_gender_radiobutton_male"
-            android:layout_weight="1" />
     </RadioGroup>
-
-    <TextView
-        android:text="Favourite booze:"
-        android:layout_width="90dp"
-        android:layout_marginTop="45dp"
-        android:id="@+id/settings_label_booze"
-        android:textSize="16sp"
-        android:textAlignment="textEnd"
-        android:layout_below="@+id/settings_edit_gender_radiogroup"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/settings_label_gender"
-        android:layout_alignEnd="@+id/settings_label_gender"
-        android:layout_height="50dp" />
 
     <ListView
         android:layout_width="match_parent"
@@ -222,5 +183,17 @@
         android:layout_alignEnd="@+id/settings_edit_gender_radiogroup"
         android:layout_marginRight="11dp"
         android:layout_marginEnd="11dp" />
+
+    <TextView
+        android:text="Favourite booze:"
+        android:layout_width="90dp"
+        android:id="@+id/settings_label_booze"
+        android:textSize="16sp"
+        android:textAlignment="textEnd"
+        android:layout_height="50dp"
+        android:layout_below="@+id/settings_label_name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
 
 </RelativeLayout>

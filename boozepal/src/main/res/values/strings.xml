@@ -17,6 +17,9 @@
     <string name="server_client_id"></string>
     <string name="loading">Loading…</string>
     <string name="rest_url_login">http://boozepal.mircloud.host/boozepal/rest/user/login</string>
-    <string name="rest_url_settings"></string>
+    <string name="rest_url_settings">http://boozepal.mircloud.host/boozepal/rest/user/updateDetails</string>
     <string name="rest_url_save_calendar"></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

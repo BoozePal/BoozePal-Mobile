@@ -1,4 +1,4 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.adapters;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import hu.boozepalmobile.boozepal.User.User;
-import hu.boozepalmobile.boozepal.UserFragment.OnListFragmentInteractionListener;
-
 import java.util.List;
+
+import hu.boozepalmobile.boozepal.activities.PalDetailActivity;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.fragments.UserFragment.OnListFragmentInteractionListener;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link User} and makes a call to the
@@ -34,7 +36,7 @@ public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<Current
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_user, parent, false);
+                .inflate(R.layout.fragment_pals, parent, false);
         return new ViewHolder(view);
     }
 
@@ -42,6 +44,7 @@ public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<Current
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.user = mValues.get(position);
         holder.nameView.setText(mValues.get(position).getName());
+        holder.cityView.setText(mValues.get(position).getCity());
         //holder.mContentView.setText(mValues.get(position).content);
 
         final int f_position = position;
@@ -72,12 +75,14 @@ public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<Current
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView nameView;
+        public final TextView cityView;
         public User user;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            nameView = (TextView) view.findViewById(R.id.currentpal_list_item);
+            nameView = (TextView) view.findViewById(R.id.fragment_pals_name);
+            cityView = (TextView) view.findViewById(R.id.fragment_pals_city);
            // System.out.println(user.getName());
            // nameView.setText(user.getName());
         }

@@ -9,5 +9,6 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="hu.boozepalmobile.boozepal.UserFragment"
-    tools:listitem="@layout/fragment_user" />
+    tools:context="hu.boozepalmobile.boozepal.fragments.UserFragment"
+    tools:listitem="@layout/fragment_pals"
+    android:background="@android:color/transparent" />

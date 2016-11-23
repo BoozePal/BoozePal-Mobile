@@ -1,7 +1,9 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -43,7 +45,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import hu.boozepalmobile.boozepal.User.User;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.User;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -56,6 +59,8 @@ public class LoginActivity extends AppCompatActivity implements
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions googleSignInOptions;
     private ProgressDialog progressDialog;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,8 @@ public class LoginActivity extends AppCompatActivity implements
         configureSignIn();
 
         checkNetworkConnection();
+
+        configureLocation();
     }
 
     private void configureSignIn() {
@@ -80,6 +87,23 @@ public class LoginActivity extends AppCompatActivity implements
                 enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
+
+    }
+
+    private void requestPermission(){
+       /* if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                    );
+        }*/
+
+    }
+
+    private void configureLocation(){
+
+        /*locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
+                (float) 10.0, locationListener);*/
 
     }
 
@@ -263,18 +287,34 @@ public class LoginActivity extends AppCompatActivity implements
                     }
                 }
 
+                List<User> myPals = new ArrayList<>();
+                if(!obj.isNull("myPals")) {
+                    JSONArray mypals = obj.getJSONArray("myPals");
+                    /*for (int i = 0; i < mypals.length(); ++i) {
+                        JSONObject date = mypals.getJSONObject(i);
+                        Iterator<?> keys = date.keys();
+
+                        while (keys.hasNext()) {
+                            DateFormat format = new SimpleDateFormat("MMMM d yyyy", Locale.ENGLISH);
+                            Date key = format.parse(keys.next().toString());
+                            //favouritePubs.add((String) booze.get(key));
+                            savedDates.add(key);
+                        }
+                    }*/
+                }
+
 
                 String name = "";
-                if(!obj.isNull("fullName"))
-                    name = obj.getString("fullName");
+                if(!obj.isNull("username"))
+                    name = obj.getString("username");
 
                 String city = "";
-                if(!obj.isNull("city"))
-                    city = obj.getString("city");
+                if(!obj.isNull("address"))
+                    city = obj.getString("address");
 
-                String id = "";
+                Long id = null;
                 if(!obj.isNull("id"))
-                    id = obj.getString("id");
+                    id = obj.getLong("id");
 
                 int radius = 10;
                 if(!obj.isNull("searchRadius"))
@@ -284,7 +324,7 @@ public class LoginActivity extends AppCompatActivity implements
                 if(!obj.isNull("priceCategory"))
                     priceCategory = Integer.parseInt(obj.getString("priceCategory"));
 
-                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates);
+                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, myPals);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("USER_DATA", user);

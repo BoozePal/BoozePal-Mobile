@@ -1,23 +1,23 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-import hu.boozepalmobile.boozepal.User.User;
+import hu.boozepalmobile.boozepal.fragments.PalDetailFragment;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.User;
 
 public class PalDetailActivity extends AppCompatActivity {
 
     private User loggedUser;
     private User user;
     private String token;
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class PalDetailActivity extends AppCompatActivity {
             System.out.println("what");
             user = b.getParcelable("USER_DATA");
             token = b.getString("TOKEN");
+            type = b.getInt("TYPE");
         }
 
         if (savedInstanceState == null) {
@@ -46,6 +47,7 @@ public class PalDetailActivity extends AppCompatActivity {
             arguments.putParcelable("USER_DATA", getIntent().getParcelableExtra("SELECTED_USER_DATA"));
             arguments.putParcelable("LOGGED_USER_DATA", getIntent().getParcelableExtra("USER_DATA"));
             arguments.putString("TOKEN", getIntent().getStringExtra("TOKEN"));
+           // arguments.putInt("TYPE", getIntent().getIntExtra("TYPE"));
             PalDetailFragment fragment = new PalDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

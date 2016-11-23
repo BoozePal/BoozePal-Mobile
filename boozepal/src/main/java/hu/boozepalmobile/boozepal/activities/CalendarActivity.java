@@ -1,23 +1,19 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.activities;
 
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.ImageButton;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,10 +29,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import hu.boozepalmobile.boozepal.User.User;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.User;
 
 public class CalendarActivity extends AppCompatActivity {
 

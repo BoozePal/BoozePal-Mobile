@@ -1,4 +1,4 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import hu.boozepalmobile.boozepal.User.User;
+import hu.boozepalmobile.boozepal.adapters.MyPalsRecyclerViewAdapter;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.User;
 
 public class MyPalFragment extends Fragment {
 

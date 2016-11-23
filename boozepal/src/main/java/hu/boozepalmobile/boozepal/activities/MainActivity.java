@@ -1,4 +1,4 @@
-package hu.boozepalmobile.boozepal;
+package hu.boozepalmobile.boozepal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +17,14 @@ import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import hu.boozepalmobile.boozepal.User.User;
+import hu.boozepalmobile.boozepal.fragments.MyPalFragment;
+import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.fragments.UserFragment;
+import hu.boozepalmobile.boozepal.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements UserFragment.OnListFragmentInteractionListener, MyPalFragment.OnListFragmentInteractionListener{
+        implements UserFragment.OnListFragmentInteractionListener, MyPalFragment.OnListFragmentInteractionListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -46,8 +48,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         myPals = new ArrayList<>();
-        User user_ = new User("2", "Jonas", "Debrecen", new ArrayList<String>(), new ArrayList<String>(), 30, 2, new ArrayList<Date>());
-        User user_2 = new User("3", "Jonaska", "Karcag", new ArrayList<String>(), new ArrayList<String>(), 30, 2, new ArrayList<Date>());
+        User user_ = new User(2L, "Jonas", "Debrecen", new ArrayList<String>(), new ArrayList<String>(), 30, 2, new ArrayList<Date>(), new ArrayList<User>());
+        User user_2 = new User(3L, "Jonaska", "Karcag", new ArrayList<String>(), new ArrayList<String>(), 30, 2, new ArrayList<Date>(), new ArrayList<User>());
         currentPals = new ArrayList<>();
         currentPals.add(user_);
         currentPals.add(user_2);
@@ -151,6 +153,14 @@ public class MainActivity extends AppCompatActivity
                     userFragment.setArguments(bundle);
                     return userFragment;
                 case 1:
+                    MyPalFragment myPalFragment_ = new MyPalFragment();
+                    Bundle bundle_mypal_ = new Bundle();
+                    bundle_mypal_.putParcelableArrayList("MY_PALS",fragmentBundle.getParcelableArrayList("MY_PALS"));
+                    bundle_mypal_.putParcelable("USER",fragmentBundle.getParcelable("USER"));
+                    bundle_mypal_.putParcelable("TOKEN",fragmentBundle.getParcelable("TOKEN"));
+                    myPalFragment_.setArguments(bundle_mypal_);
+                    return myPalFragment_;
+                case 2:
                     MyPalFragment myPalFragment = new MyPalFragment();
                     Bundle bundle_mypal = new Bundle();
                     bundle_mypal.putParcelableArrayList("MY_PALS",fragmentBundle.getParcelableArrayList("MY_PALS"));
@@ -166,7 +176,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
@@ -175,6 +185,8 @@ public class MainActivity extends AppCompatActivity
                 case 0:
                     return "BoozePals";
                 case 1:
+                    return "Requests";
+                case 2:
                     return "MyPals";
             }
             return null;
