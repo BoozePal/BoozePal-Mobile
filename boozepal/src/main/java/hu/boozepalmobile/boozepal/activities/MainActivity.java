@@ -102,6 +102,20 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        ImageButton logoutButton = (ImageButton) toolbar.findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("PalListActivity", "Clicked on logout button!");
+
+                Intent intent = new Intent(v.getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void logOut() {
     }
 
 
@@ -157,7 +171,7 @@ public class MainActivity extends AppCompatActivity
                     Bundle bundle_mypal_ = new Bundle();
                     bundle_mypal_.putParcelableArrayList("MY_PALS",fragmentBundle.getParcelableArrayList("MY_PALS"));
                     bundle_mypal_.putParcelable("USER",fragmentBundle.getParcelable("USER"));
-                    bundle_mypal_.putParcelable("TOKEN",fragmentBundle.getParcelable("TOKEN"));
+                    bundle_mypal_.putString("TOKEN",fragmentBundle.getString("TOKEN"));
                     myPalFragment_.setArguments(bundle_mypal_);
                     return myPalFragment_;
                 case 2:

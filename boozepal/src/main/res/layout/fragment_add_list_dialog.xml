@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hu.boozepalmobile.boozepal.views.AddListDialogFragment">
+
+    <EditText
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:textAlignment="center"
+        android:id="@+id/settings_add_list_edit" />
+</FrameLayout>

@@ -165,6 +165,22 @@ public class User implements Parcelable{
         this.myPals = myPals;
     }
 
+    public void addBooze(String booze){
+        this.boozes.add(booze);
+    }
+
+    public void addPub(String pub){
+        this.pubs.add(pub);
+    }
+
+    public void addNewPal(User pal){
+        this.myPals.add(pal);
+    }
+
+    public void addDate(Date date){
+        this.savedDates.add(date);
+    }
+
     @Override
     public String toString() {
         return new GsonBuilder().create().toJson(this, User.class);

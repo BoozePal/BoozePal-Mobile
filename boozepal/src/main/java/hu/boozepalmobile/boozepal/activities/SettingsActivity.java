@@ -1,5 +1,7 @@
 package hu.boozepalmobile.boozepal.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,7 +37,7 @@ import java.net.URL;
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity{
 
     private User user;
     private User modifiedUser;
@@ -190,10 +193,67 @@ public class SettingsActivity extends AppCompatActivity {
         addBooze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               showAddBoozeDialog();
             }
         });
 
+        addPub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddPubDialog();
+            }
+        });
+
+    }
+
+    private void showAddBoozeDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.fragment_add_list_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText editBooze = (EditText) dialogView.findViewById(R.id.settings_add_list_edit);
+
+        dialogBuilder.setTitle("Add new booze");
+        dialogBuilder.setMessage("Enter the new booze");
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Log.d("SettingsActivity", "Added new booze!");
+                modifiedUser.addBooze(editBooze.getText().toString());
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+    private void showAddPubDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.fragment_add_list_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText editText = (EditText) dialogView.findViewById(R.id.settings_add_list_edit);
+
+        dialogBuilder.setTitle("Add new pub");
+        dialogBuilder.setMessage("Enter the new pub");
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Log.d("SettingsActivity", "Added new pub!");
+                modifiedUser.addPub(editText.getText().toString());
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 
     private class SaveSettingsTask extends AsyncTask<User, Void, String> {
@@ -239,19 +299,21 @@ public class SettingsActivity extends AppCompatActivity {
                 writer.close();
                 os.close();
 
+                System.out.println(conn.getResponseMessage());
+
                 if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    Log.d("SettingsActivity", "Saving OK");
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("USER_DATA", modifiedUser);
                     intent.putExtra("TOKEN", token);
                     startActivity(intent);
                 }
                 else{
+                    Log.d("SettingsActivity", "Error occured during saving");
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("USER_DATA", user);
                     intent.putExtra("TOKEN", token);
                     startActivity(intent);
-                    Toast toast = new Toast(getApplicationContext());
-                    toast.setText("Changed have not been saved");
                 }
 
             } catch (MalformedURLException e) {

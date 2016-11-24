@@ -43,6 +43,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     private String token;
     private User user;
+    private User modifiedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +53,20 @@ public class CalendarActivity extends AppCompatActivity {
         selectedDates = new ArrayList<>();
 
         Bundle b = getIntent().getExtras();
-        if(b != null) {
+        if (b != null) {
             user = b.getParcelable("USER_DATA");
+            modifiedUser = b.getParcelable("USER_DATA");
             token = b.getString("TOKEN");
         }
 
         calendarView = (MaterialCalendarView) findViewById(R.id.calendar_table);
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
+
+        for(Date d: user.getSavedDates()){
+            selectedDates.add(d);
+            calendarView.setDateSelected(d,true);
+        }
+
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -124,7 +132,7 @@ public class CalendarActivity extends AppCompatActivity {
             InputStream is = null;
             String result = null;
             try {
-                url = new URL(getString(R.string.rest_url_save_calendar));
+                url = new URL(getString(R.string.rest_url_settings));
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
@@ -137,8 +145,11 @@ public class CalendarActivity extends AppCompatActivity {
                 conn.connect();
 
                 JSONObject obj = new JSONObject();
-                obj.put("token", token);
-                obj.put("dates", selectedDates);
+                obj.put("token", CalendarActivity.this.token);
+                obj.put("user", user);
+
+
+                System.out.println(obj.toString());
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
@@ -146,25 +157,22 @@ public class CalendarActivity extends AppCompatActivity {
                 writer.close();
                 os.close();
 
-                //Read
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                System.out.println(conn.getResponseMessage());
 
-                String line = null;
-                StringBuilder sb = new StringBuilder();
-
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
+                if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    Log.d("SettingsActivity", "Saving OK");
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("USER_DATA", modifiedUser);
+                    intent.putExtra("TOKEN", token);
+                    startActivity(intent);
                 }
-
-                br.close();
-                result = sb.toString();
-
-                user.setSavedDates(selectedDates);
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("USER_DATA", user);
-                intent.putExtra("TOKEN", CalendarActivity.this.token);
-                startActivity(intent);
+                else{
+                    Log.d("SettingsActivity", "Error occured during saving");
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("USER_DATA", user);
+                    intent.putExtra("TOKEN", token);
+                    startActivity(intent);
+                }
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

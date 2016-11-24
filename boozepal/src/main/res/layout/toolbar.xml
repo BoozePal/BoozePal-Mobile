@@ -9,6 +9,15 @@
     <ImageButton
         android:layout_width="30dp"
         android:layout_height="match_parent"
+        android:src="@mipmap/ic_exit_to_app_white_24dp"
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"
+        android:id="@+id/logout_button"
+        android:layout_marginRight="30dp" />
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
         android:src="@mipmap/ic_settings_white_24dp"
         android:layout_gravity="end"
         android:background="@android:color/transparent"
