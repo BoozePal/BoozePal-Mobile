@@ -114,7 +114,7 @@ public class UserFragment extends Fragment implements FindPalsResponse{
     public void onTaskFinished(ArrayList<User> result) {
         userList = result;
         rv.setAdapter(new CurrentPalsRecyclerViewAdapter(userList, mListener,user, token));
-        rv.invalidate();
+        //rv.invalidate();
         swipeRefreshLayout.setRefreshing(false);
         System.out.println("fickyeah");
     }

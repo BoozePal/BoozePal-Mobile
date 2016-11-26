@@ -51,6 +51,7 @@ public class User implements Parcelable{
         this.priceCategory = priceCategory;
         this.savedDates = savedDates;
         this.myPals = myPals;
+        this.lastKnownCoordinate = null;
     }
 
     // Parcelling part

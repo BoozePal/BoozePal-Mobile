@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +18,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
@@ -94,14 +102,82 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
             br.close();
             String result = sb.toString();
 
-            JSONObject jsonResult = new JSONObject(result);
+            JSONArray jsonResult = new JSONArray(result);
 
-            if(obj.length() == 0){
-                Log.v(TAG, "Error occured during findPals!");
-                return new ArrayList<>();
+            for (int i = 0; i < jsonResult.length(); i++)
+            {
+                JSONObject jsonObj = jsonResult.getJSONObject(i);
+
+                List<String> favouriteBoozes = new ArrayList<>();
+                if(!jsonObj.isNull("favouriteDrink")) {
+                    JSONArray boozes = jsonObj.getJSONArray("favouriteDrink");
+                    for (int j = 0; j < boozes.length(); ++j) {
+                        JSONObject booze = boozes.getJSONObject(j);
+                        Iterator<?> keys = booze.keys();
+
+                        while (keys.hasNext()) {
+                            String key = (String) keys.next();
+                            //favouriteBoozes.add((String) booze.get(key));
+                            favouriteBoozes.add(key);
+                        }
+                    }
+                }
+
+                List<String> favouritePubs = new ArrayList<>();
+                if(!jsonObj.isNull("favouritePub")) {
+                    JSONArray pubs = jsonObj.getJSONArray("favouritePub");
+                    for (int j = 0; j < pubs.length(); ++j) {
+                        JSONObject pub = pubs.getJSONObject(j);
+                        Iterator<?> keys = pub.keys();
+
+                        while (keys.hasNext()) {
+                            String key = (String) keys.next();
+                            //favouritePubs.add((String) booze.get(key));
+                            favouritePubs.add(key);
+                        }
+                    }
+                }
+
+                List<Date> savedDates = new ArrayList<>();
+                if(!jsonObj.isNull("savedDates")) {
+                    JSONArray dates = jsonObj.getJSONArray("savedDates");
+                    for (int j = 0; j < dates.length(); ++j) {
+                        JSONObject date = dates.getJSONObject(j);
+                        Iterator<?> keys = date.keys();
+
+                        while (keys.hasNext()) {
+                            DateFormat format = new SimpleDateFormat("MMMM d yyyy", Locale.ENGLISH);
+                            Date key = format.parse(keys.next().toString());
+                            //favouritePubs.add((String) booze.get(key));
+                            savedDates.add(key);
+                        }
+                    }
+                }
+
+                String name = "";
+                if(!jsonObj.isNull("username"))
+                    name = jsonObj.getString("username");
+
+                String city = "";
+                if(!jsonObj.isNull("address"))
+                    city = jsonObj.getString("address");
+
+                Long id = null;
+                if(!jsonObj.isNull("id"))
+                    id = jsonObj.getLong("id");
+
+                int radius = 10;
+                if(!jsonObj.isNull("searchRadius"))
+                    radius = Integer.parseInt(jsonObj.getString("searchRadius"));
+
+                int priceCategory = 1;
+                if(!jsonObj.isNull("priceCategory"))
+                    priceCategory = Integer.parseInt(jsonObj.getString("priceCategory"));
+
+                System.out.println(jsonObj);
+                User currentuser = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, new ArrayList<User>(), null);
+                users.add(currentuser);
             }
-
-            //TODO
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -109,9 +185,11 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        return new ArrayList<User>();
+        return users;
 
     }
 }
