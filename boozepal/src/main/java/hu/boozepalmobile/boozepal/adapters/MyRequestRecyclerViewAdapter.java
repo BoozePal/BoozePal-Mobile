@@ -1,5 +1,6 @@
 package hu.boozepalmobile.boozepal.adapters;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.fragments.RequestDetailFragment;
 import hu.boozepalmobile.boozepal.fragments.RequestFragment.OnListFragmentInteractionListener;
 import hu.boozepalmobile.boozepal.models.User;
 
@@ -33,7 +35,7 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = users.get(position);
         //holder.mIdView.setText(mValues.get(position).id);
         //holder.mContentView.setText(mValues.get(position).content);
@@ -44,7 +46,13 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                   // mListener.onListFragmentInteraction(holder.user);
+
+                    Intent intent = new Intent(v.getContext(), RequestDetailFragment.class);
+                    intent.putExtra("LOGGED_USER_DATA", user);
+                    intent.putExtra("USER_DATA", users.get(position));
+                    intent.putExtra("TOKEN", token);
+                    v.getContext().startActivity(intent);
                 }
             }
         });
@@ -58,13 +66,17 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        //public final TextView mIdView;
-        //public final TextView mContentView;
+        public final TextView NameView;
+        public final TextView CityView;
+        public final TextView DateView;
         public User mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            NameView = (TextView) view.findViewById(R.id.fragment_request_name);
+            CityView = (TextView) view.findViewById(R.id.fragment_request_city);
+            DateView = (TextView) view.findViewById(R.id.fragment_request_date);
             //mIdView = (TextView) view.findViewById(R.id.id);
             //mContentView = (TextView) view.findViewById(R.id.content);
         }
