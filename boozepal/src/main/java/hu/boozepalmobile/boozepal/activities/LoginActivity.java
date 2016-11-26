@@ -7,9 +7,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
@@ -46,7 +46,9 @@ import java.util.List;
 import java.util.Locale;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.Coordinate;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.BoozePalLocation;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -324,7 +326,13 @@ public class LoginActivity extends AppCompatActivity implements
                 if(!obj.isNull("priceCategory"))
                     priceCategory = Integer.parseInt(obj.getString("priceCategory"));
 
-                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, myPals);
+                BoozePalLocation bl = new BoozePalLocation(getApplicationContext());
+                System.out.println("location: " + bl.getLocation().toString());
+                Coordinate coord = new Coordinate(bl.getLocation().getLatitude(), bl.getLocation().getLongitude());
+
+                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, myPals, coord);
+
+                Log.d("LoginActivity", user.toString());
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("USER_DATA", user);

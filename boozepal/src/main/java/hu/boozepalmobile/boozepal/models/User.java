@@ -1,5 +1,6 @@
 package hu.boozepalmobile.boozepal.models;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -24,6 +25,20 @@ public class User implements Parcelable{
     private int searchRadius;
     private int priceCategory;
     private List<User> myPals;
+    private Coordinate lastKnownCoordinate;
+
+    public User(Long id, String name, String city, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals, Coordinate location) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+        this.boozes = boozes;
+        this.pubs = pubs;
+        this.searchRadius = searchRadius;
+        this.priceCategory = priceCategory;
+        this.savedDates = savedDates;
+        this.myPals = myPals;
+        this.lastKnownCoordinate = location;
+    }
 
     public User(Long id, String name, String city, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals) {
         this.id = id;
@@ -54,6 +69,7 @@ public class User implements Parcelable{
         in.readList(savedDates, null);
         this.myPals = new ArrayList<>();
         in.readList(myPals, null);
+        this.lastKnownCoordinate = in.readParcelable(Coordinate.class.getClassLoader());
     }
 
 
@@ -74,6 +90,7 @@ public class User implements Parcelable{
         dest.writeInt(this.priceCategory);
         dest.writeList(this.savedDates);
         dest.writeList(this.myPals);
+        dest.writeParcelable(this.lastKnownCoordinate,0);
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public User createFromParcel(Parcel in) {
@@ -179,6 +196,14 @@ public class User implements Parcelable{
 
     public void addDate(Date date){
         this.savedDates.add(date);
+    }
+
+    public Coordinate getCurrentLocation() {
+        return lastKnownCoordinate;
+    }
+
+    public void setCurrentLocation(Coordinate currentLocation) {
+        this.lastKnownCoordinate = currentLocation;
     }
 
     @Override
