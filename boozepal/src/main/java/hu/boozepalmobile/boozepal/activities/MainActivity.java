@@ -1,5 +1,6 @@
 package hu.boozepalmobile.boozepal.activities;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,11 +19,13 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 import java.util.Date;
 
+import hu.boozepalmobile.boozepal.application.BoozePalApplication;
 import hu.boozepalmobile.boozepal.fragments.MyPalFragment;
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.fragments.RequestFragment;
 import hu.boozepalmobile.boozepal.fragments.UserFragment;
 import hu.boozepalmobile.boozepal.models.Coordinate;
+import hu.boozepalmobile.boozepal.models.Token;
 import hu.boozepalmobile.boozepal.models.User;
 
 public class MainActivity extends AppCompatActivity
@@ -44,11 +47,19 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*Token.setToken(token);
+        String t = Token.getToken();
+        System.out.println("main" + t);*/
+
         Bundle b = getIntent().getExtras();
         if(b != null) {
             user = b.getParcelable("USER_DATA");
             token = b.getString("TOKEN");
         }
+
+        Token.setToken(token);
+        String t = Token.getToken();
+        System.out.println("main" + t);
 
         myPals = new ArrayList<>();
         requestPals = new ArrayList<>();

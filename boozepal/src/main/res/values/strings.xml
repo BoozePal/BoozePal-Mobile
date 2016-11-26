@@ -21,7 +21,7 @@
     <string name="rest_url_sendRequest"></string>
     <string name="rest_url_acceptRequest"></string>
     <string name="rest_url_denyRequest"></string>
-    <string name="rest_url_logout"></string>
+    <string name="rest_url_logout">http://boozepal.mircloud.host/boozepal/rest/user/logout</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
