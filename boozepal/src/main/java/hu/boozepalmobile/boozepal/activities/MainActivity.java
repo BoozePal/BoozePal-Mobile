@@ -20,12 +20,13 @@ import java.util.Date;
 
 import hu.boozepalmobile.boozepal.fragments.MyPalFragment;
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.fragments.RequestFragment;
 import hu.boozepalmobile.boozepal.fragments.UserFragment;
 import hu.boozepalmobile.boozepal.models.Coordinate;
 import hu.boozepalmobile.boozepal.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements UserFragment.OnListFragmentInteractionListener, MyPalFragment.OnListFragmentInteractionListener {
+        implements UserFragment.OnListFragmentInteractionListener, MyPalFragment.OnListFragmentInteractionListener, RequestFragment.OnListFragmentInteractionListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<User> myPals;
     private ArrayList<User> currentPals;
+    private ArrayList<User> requestPals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         myPals = new ArrayList<>();
+        requestPals = new ArrayList<>();
         User user_ = new User(2L, "Jonas", "Debrecen", new ArrayList<String>(), new ArrayList<String>(), 30, 2, new ArrayList<Date>(), new ArrayList<User>());
         User user_2 = new User(3L, "Jonaska", "Karcag", new ArrayList<String>(), new ArrayList<String>(), 30, 2, new ArrayList<Date>(), new ArrayList<User>());
         currentPals = new ArrayList<>();
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("CURRENT_PALS", currentPals);
         bundle.putParcelableArrayList("MY_PALS", myPals);
+        bundle.putParcelableArrayList("PALS", requestPals);
         bundle.putParcelable("USER_DATA", user);
         bundle.putString("TOKEN", token);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), bundle);
@@ -168,19 +172,19 @@ public class MainActivity extends AppCompatActivity
                     userFragment.setArguments(bundle);
                     return userFragment;
                 case 1:
-                    MyPalFragment myPalFragment_ = new MyPalFragment();
-                    Bundle bundle_mypal_ = new Bundle();
-                    bundle_mypal_.putParcelableArrayList("MY_PALS",fragmentBundle.getParcelableArrayList("MY_PALS"));
-                    bundle_mypal_.putParcelable("USER",fragmentBundle.getParcelable("USER"));
-                    bundle_mypal_.putString("TOKEN",fragmentBundle.getString("TOKEN"));
-                    myPalFragment_.setArguments(bundle_mypal_);
-                    return myPalFragment_;
+                    RequestFragment requestFragment = new RequestFragment();
+                    Bundle bundle_request = new Bundle();
+                    bundle_request.putParcelableArrayList("PALS",fragmentBundle.getParcelableArrayList("PALS"));
+                    bundle_request.putParcelable("USER_DATA",fragmentBundle.getParcelable("USER_DATA"));
+                    bundle_request.putString("TOKEN",fragmentBundle.getString("TOKEN"));
+                    requestFragment.setArguments(bundle_request);
+                    return requestFragment;
                 case 2:
                     MyPalFragment myPalFragment = new MyPalFragment();
                     Bundle bundle_mypal = new Bundle();
                     bundle_mypal.putParcelableArrayList("MY_PALS",fragmentBundle.getParcelableArrayList("MY_PALS"));
-                    bundle_mypal.putParcelable("USER",fragmentBundle.getParcelable("USER"));
-                    bundle_mypal.putParcelable("TOKEN",fragmentBundle.getParcelable("TOKEN"));
+                    bundle_mypal.putParcelable("USER_DATA",fragmentBundle.getParcelable("USER_DATA"));
+                    bundle_mypal.putString("TOKEN",fragmentBundle.getString("TOKEN"));
                     myPalFragment.setArguments(bundle_mypal);
                     return myPalFragment;
             }

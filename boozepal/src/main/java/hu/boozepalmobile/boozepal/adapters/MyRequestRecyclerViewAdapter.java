@@ -4,21 +4,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import hu.boozepalmobile.boozepal.R;
-import hu.boozepalmobile.boozepal.fragments.MyPalFragment.OnListFragmentInteractionListener;
+import hu.boozepalmobile.boozepal.fragments.RequestFragment.OnListFragmentInteractionListener;
 import hu.boozepalmobile.boozepal.models.User;
 
 import java.util.List;
 
-public class MyPalsRecyclerViewAdapter extends RecyclerView.Adapter<MyPalsRecyclerViewAdapter.ViewHolder> {
-
+public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequestRecyclerViewAdapter.ViewHolder> {
     private User user;
     private String token;
     private final List<User> users;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyPalsRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener, User user, String token) {
+    public MyRequestRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener, User user, String token) {
         users = items;
         mListener = listener;
         this.user = user;
@@ -28,7 +28,7 @@ public class MyPalsRecyclerViewAdapter extends RecyclerView.Adapter<MyPalsRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_mypals, parent, false);
+                .inflate(R.layout.fragment_request, parent, false);
         return new ViewHolder(view);
     }
 
