@@ -22,11 +22,7 @@
         <activity
             android:name=".activities.PalDetailActivity"
             android:label="@string/title_pal_detail"
-            android:parentActivityName=".PalListActivity"
             android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="hu.boozepalmobile.boozepal.PalListActivity" />
         </activity>
         <activity android:name=".activities.SettingsActivity" />
         <activity android:name=".activities.CalendarActivity" />
@@ -36,9 +32,10 @@
             android:theme="@style/AppTheme" />
 
         <service
-            android:name=".services.LocationService"
+            android:name=".utils.LocationService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
     </application>
 
 </manifest>

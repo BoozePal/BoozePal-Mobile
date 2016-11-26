@@ -21,6 +21,7 @@ import java.util.Date;
 import hu.boozepalmobile.boozepal.fragments.MyPalFragment;
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.fragments.UserFragment;
+import hu.boozepalmobile.boozepal.models.Coordinate;
 import hu.boozepalmobile.boozepal.models.User;
 
 public class MainActivity extends AppCompatActivity
