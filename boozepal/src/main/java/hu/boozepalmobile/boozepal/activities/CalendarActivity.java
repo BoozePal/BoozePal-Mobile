@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -49,6 +50,8 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        final ViewGroup rv = (ViewGroup) ((ViewGroup) this
+                .findViewById(android.R.id.content)).getChildAt(0);
 
         selectedDates = new ArrayList<>();
 
@@ -77,6 +80,10 @@ public class CalendarActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        calendarView.setTileWidth(rv.getWidth()/7);
+        calendarView.setTileHeight(rv.getWidth()/7);
 
         setupToolbar();
     }

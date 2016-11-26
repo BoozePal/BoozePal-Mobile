@@ -88,6 +88,8 @@
         android:layout_below="@+id/pal_detail_price_label"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="52dp" />
+        android:layout_marginTop="52dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

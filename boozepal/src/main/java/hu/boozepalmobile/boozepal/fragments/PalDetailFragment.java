@@ -1,6 +1,8 @@
 package hu.boozepalmobile.boozepal.fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Parcel;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,22 +13,28 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.CalendarDecorator;
 
 public class PalDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
 
-    private User UserData;
+    private User userData;
     private User loggedUser;
 
     public TextView NameView;
     public TextView GenderView;
     public ListView BoozeListView;
     public ListView PubListView;
-    public MaterialCalendarView calendarView;
+    public MaterialCalendarView CalendarView;
 
     public PalDetailFragment() {
     }
@@ -38,9 +46,9 @@ public class PalDetailFragment extends Fragment {
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
 
         if(getArguments().containsKey("USER_DATA")){
-            UserData = (User) getArguments().getParcelable("USER_DATA");
+            userData = (User) getArguments().getParcelable("USER_DATA");
             if (appBarLayout != null) {
-                appBarLayout.setTitle(UserData.getName());
+                appBarLayout.setTitle(userData.getName());
             }
             loggedUser = (User) getArguments().getParcelable("LOGGED_USER_DATA");
         }
@@ -51,19 +59,34 @@ public class PalDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.pal_detail, container, false);
         NameView = (TextView) rootView.findViewById(R.id.NameText);
-        //GenderView = (TextView) rootView.findViewById(R.id.GenderText);
         BoozeListView = (ListView) rootView.findViewById(R.id.BoozeListView);
         PubListView = (ListView) rootView.findViewById(R.id.PubListView);
+        CalendarView = (MaterialCalendarView) rootView.findViewById(R.id.detail_calendar_table);
+        CalendarView.setTileWidth(rootView.getWidth()/7);
+        CalendarView.setTileHeight(rootView.getWidth()/7);
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY,0);
+        //Calendar maxDate = Calendar.getInstance();
+        //maxDate.set(Calendar.MONTH,today.get(Calendar.MONTH) + 3);
+        CalendarView.state().edit().setMinimumDate(CalendarDay.from(today))
+                //.setMaximumDate(CalendarDay.from(maxDate))
+                .commit();
 
-        if (UserData != null) {
-            NameView.setText(UserData.getName());
+        if (userData != null) {
+            NameView.setText(userData.getName());
 
             final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
-                    android.R.layout.simple_list_item_1, UserData.getBoozes());
+                    android.R.layout.simple_list_item_1, userData.getBoozes());
             BoozeListView.setAdapter(BoozeAdapter);
             final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
-                    android.R.layout.simple_list_item_1, UserData.getPubs());
+                    android.R.layout.simple_list_item_1, userData.getPubs());
             PubListView.setAdapter(PubAdapter);
+
+            ArrayList<CalendarDay> calendarDays = new ArrayList<>();
+            for(Date d : userData.getSavedDates()){
+                calendarDays.add(CalendarDay.from(d));
+            }
+            CalendarView.addDecorator(new CalendarDecorator(Color.BLUE,calendarDays));
         }
 
         return rootView;
