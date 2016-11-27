@@ -159,8 +159,10 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
                     name = jsonObj.getString("username");
 
                 String city = "";
-                if(!jsonObj.isNull("address"))
-                    city = jsonObj.getString("address");
+                if(!jsonObj.isNull("address")){
+                    JSONObject address = new JSONObject(jsonObj.getString("address"));
+                    city = address.getString("town");
+                }
 
                 Long id = null;
                 if(!jsonObj.isNull("id"))
