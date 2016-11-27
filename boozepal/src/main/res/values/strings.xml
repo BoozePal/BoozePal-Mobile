@@ -18,6 +18,7 @@
     <string name="rest_url_login">http://boozepal.mircloud.host/boozepal/rest/user/login</string>
     <string name="rest_url_settings">http://boozepal.mircloud.host/boozepal/rest/user/updateDetails</string>
     <string name="rest_url_findpals">http://boozepal.mircloud.host/boozepal/rest/user/findPals</string>
+    <string name="rest_url_timetable">http://boozepal.mircloud.host/boozepal/rest/user/timetable</string>
     <string name="rest_url_sendRequest"></string>
     <string name="rest_url_acceptRequest"></string>
     <string name="rest_url_denyRequest"></string>
