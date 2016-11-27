@@ -3,6 +3,7 @@ package hu.boozepalmobile.boozepal.fragments;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Parcel;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +39,10 @@ public class PalDetailFragment extends Fragment {
     public ListView BoozeListView;
     public ListView PubListView;
     public MaterialCalendarView CalendarView;
+    public Toolbar toolbar;
+    public ImageButton saveButton;
+
+    public CalendarDay selectedDay;
 
     public PalDetailFragment() {
     }
@@ -58,6 +66,17 @@ public class PalDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.pal_detail, container, false);
+
+        saveButton = (ImageButton) rootView.findViewById(R.id.pal_request_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(PalDetailFragment.this.selectedDay != null){
+
+                }
+            }
+        });
+
         NameView = (TextView) rootView.findViewById(R.id.NameText);
         BoozeListView = (ListView) rootView.findViewById(R.id.BoozeListView);
         PubListView = (ListView) rootView.findViewById(R.id.PubListView);
@@ -87,6 +106,18 @@ public class PalDetailFragment extends Fragment {
                 calendarDays.add(CalendarDay.from(d));
             }
             CalendarView.addDecorator(new CalendarDecorator(Color.BLUE,calendarDays));
+
+            CalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+                @Override
+                public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                    if(selected){
+                        selectedDay = date;
+                    }
+                    else{
+                        selectedDay = null;
+                    }
+                }
+            });
         }
 
         return rootView;
