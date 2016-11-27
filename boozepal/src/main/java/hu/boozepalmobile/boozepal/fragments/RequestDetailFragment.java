@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,9 +24,10 @@ import java.util.Date;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.network.RequestPalResponse;
 import hu.boozepalmobile.boozepal.utils.CalendarDecorator;
 
-public class RequestDetailFragment extends Fragment {
+public class RequestDetailFragment extends Fragment{
     private User userData;
     private User loggedUser;
 
@@ -40,7 +42,7 @@ public class RequestDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Activity activity = this.getActivity();
-        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_collapsing_requestdetail);
 
         if(getArguments().containsKey("USER_DATA")){
             userData = (User) getArguments().getParcelable("USER_DATA");
@@ -72,4 +74,5 @@ public class RequestDetailFragment extends Fragment {
 
         return rootView;
     }
+
 }

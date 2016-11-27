@@ -311,8 +311,10 @@ public class LoginActivity extends AppCompatActivity implements
                     name = obj.getString("username");
 
                 String city = "";
-                if(!obj.isNull("address"))
-                    city = obj.getString("address");
+                if(!obj.isNull("address ")){
+                    JSONObject address = new JSONObject(obj.getString("address"));
+                    city = address.getString("town");
+                }
 
                 Long id = null;
                 if(!obj.isNull("id"))

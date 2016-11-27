@@ -15,7 +15,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
+import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.Token;
 import hu.boozepalmobile.boozepal.models.User;
 
@@ -23,34 +25,37 @@ import hu.boozepalmobile.boozepal.models.User;
  * Created by fanny on 2016.11.27..
  */
 
-public class RequestPalTask extends AsyncTask<User, Void, Integer>{
+public class RequestPalTask extends AsyncTask<User, Void, User>{
 
-    public FindPalsResponse delegate = null;
+    private final String TAG = "RequestPalTask";
+
+    public RequestPalResponse delegate = null;
     private Context context;
+    private Date date;
 
-    public RequestPalTask(Context context){
+    public RequestPalTask(Context context, Date date){
         this.context = context;
+        this.date = date;
     }
 
     @Override
-    protected Integer doInBackground(User... params) {
-        int result = request(params[0], params[1]);
+    protected User doInBackground(User... params) {
+        User result = request(params[0], params[1]);
         return result;
     }
 
     @Override
-    protected void onPostExecute(Integer i) {
-        //System.out.println(s);
-
-        //super.onPostExecute(s);
+    protected void onPostExecute(User u) {
+        super.onPostExecute(u);
+        delegate.onTaskFinished(u);
     }
 
-    private int request(User loggedUser, User requestedUser) {
+    private User request(User loggedUser, User requestedUser) {
         URL url = null;
         InputStream is = null;
-        int result = 0;
+        User result = null;
         try {
-            //url = new URL();
+            url = new URL(context.getString(R.string.rest_url_sendRequest));
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
@@ -64,7 +69,9 @@ public class RequestPalTask extends AsyncTask<User, Void, Integer>{
 
             JSONObject obj = new JSONObject();
             obj.put("token", Token.getToken());
-            //obj.put("use")
+            obj.put("loggedUser", loggedUser);
+            obj.put("requestedUser", requestedUser);
+            obj.put("date",this.date);
 
             System.out.println(obj.toString());
 
@@ -76,13 +83,13 @@ public class RequestPalTask extends AsyncTask<User, Void, Integer>{
 
             System.out.println(conn.getResponseMessage());
 
-            result = conn.getResponseCode();
-
             if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
-                Log.d("LogoutTask", "Remote logout OK");
+                Log.d(TAG, "Request OK");
+                //loggedUser ADD REQUEST
             }
             else{
-                Log.d("LogoutTask", "Error occured during remote logout");
+                Log.d(TAG, "Error occured during request");
+                result = loggedUser;
             }
 
         } catch (MalformedURLException e) {

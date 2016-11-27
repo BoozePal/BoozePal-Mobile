@@ -106,6 +106,7 @@ public class CalendarActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("CalendarActivity","Saving!");
                 SaveCalendarTask saveTask = new SaveCalendarTask();
                 saveTask.execute(token);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -139,7 +140,7 @@ public class CalendarActivity extends AppCompatActivity {
             InputStream is = null;
             String result = null;
             try {
-                url = new URL(getString(R.string.rest_url_settings));
+                url = new URL(getString(R.string.rest_url_timetable));
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
@@ -153,10 +154,11 @@ public class CalendarActivity extends AppCompatActivity {
 
                 JSONObject obj = new JSONObject();
                 obj.put("token", CalendarActivity.this.token);
-                obj.put("user", user);
+                obj.put("timeTableList", CalendarActivity.this.selectedDates);
+                //obj.put("user", user);
 
 
-                System.out.println(obj.toString());
+                System.out.println("timetable:" + obj.toString());
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
@@ -164,7 +166,7 @@ public class CalendarActivity extends AppCompatActivity {
                 writer.close();
                 os.close();
 
-                System.out.println(conn.getResponseMessage());
+                System.out.println("response: " + conn.getResponseMessage() + conn.getResponseCode());
 
                 if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
                     Log.d("SettingsActivity", "Saving OK");

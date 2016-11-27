@@ -1,6 +1,7 @@
 package hu.boozepalmobile.boozepal.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
@@ -25,20 +26,25 @@ import java.util.Calendar;
 import java.util.Date;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.activities.MainActivity;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.network.RequestPalResponse;
+import hu.boozepalmobile.boozepal.network.RequestPalTask;
 import hu.boozepalmobile.boozepal.utils.CalendarDecorator;
 
-public class PalDetailFragment extends Fragment {
+public class PalDetailFragment extends Fragment implements RequestPalResponse {
     public static final String ARG_ITEM_ID = "item_id";
 
     private User userData;
     private User loggedUser;
+    private String token;
 
     public TextView NameView;
     public TextView GenderView;
     public ListView BoozeListView;
     public ListView PubListView;
     public MaterialCalendarView CalendarView;
+    private CollapsingToolbarLayout appBarLayout;
     public Toolbar toolbar;
     public ImageButton saveButton;
 
@@ -51,7 +57,7 @@ public class PalDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Activity activity = this.getActivity();
-        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+        appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_collapsing_detail);
 
         if(getArguments().containsKey("USER_DATA")){
             userData = (User) getArguments().getParcelable("USER_DATA");
@@ -59,6 +65,7 @@ public class PalDetailFragment extends Fragment {
                 appBarLayout.setTitle(userData.getName());
             }
             loggedUser = (User) getArguments().getParcelable("LOGGED_USER_DATA");
+            token = getArguments().getString("TOKEN");
         }
     }
 
@@ -67,12 +74,13 @@ public class PalDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.pal_detail, container, false);
 
-        saveButton = (ImageButton) rootView.findViewById(R.id.pal_request_button);
+        saveButton = (ImageButton) appBarLayout.findViewById(R.id.pal_request_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(PalDetailFragment.this.selectedDay != null){
-
+                    RequestPalTask rTask = new RequestPalTask(getContext(),PalDetailFragment.this.selectedDay.getDate());
+                    rTask.execute(PalDetailFragment.this.loggedUser, PalDetailFragment.this.userData);
                 }
             }
         });
@@ -121,5 +129,14 @@ public class PalDetailFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onTaskFinished(User result) {
+        this.loggedUser = result;
+        Intent intent = new Intent(this.getContext(), MainActivity.class);
+        intent.putExtra("USER_DATA", loggedUser);
+        intent.putExtra("TOKEN", this.token);
+        startActivity(intent);
     }
 }

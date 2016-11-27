@@ -1,9 +1,11 @@
 package hu.boozepalmobile.boozepal.network;
 
+import hu.boozepalmobile.boozepal.models.User;
+
 /**
  * Created by fanny on 2016.11.27..
  */
 
 public interface RequestPalResponse {
-    void onTaskFinished(Integer result);
+    void onTaskFinished(User result);
 }
