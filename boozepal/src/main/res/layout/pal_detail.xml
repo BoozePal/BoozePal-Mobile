@@ -12,8 +12,8 @@
         android:layout_height="30dp"
         android:id="@+id/NameLabel"
         android:textAlignment="textEnd"
-        android:layout_width="120dp"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_width="60dp" />
 
     <TextView
         android:layout_height="30dp"
@@ -31,14 +31,14 @@
         android:text="Pubs:"
         android:layout_height="30dp"
         android:textAlignment="textEnd"
-        android:layout_width="120dp"
         android:textSize="18sp"
         android:layout_below="@+id/BoozeListView"
         android:layout_alignRight="@+id/BoozeLabel"
         android:layout_alignEnd="@+id/BoozeLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/PubLabel" />
+        android:id="@+id/PubLabel"
+        android:layout_width="60dp" />
 
     <ListView
         android:layout_width="match_parent"
@@ -52,32 +52,25 @@
         android:text="@string/boozes"
         android:layout_height="30dp"
         android:textAlignment="textEnd"
-        android:layout_width="120dp"
         android:textSize="18sp"
         android:layout_marginTop="20dp"
         android:id="@+id/BoozeLabel"
         android:layout_below="@+id/NameLabel"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:id="@+id/BoozeListView"
-        android:layout_height="150dp"
-        android:layout_alignTop="@+id/BoozeLabel"
-        android:layout_alignLeft="@+id/NameText"
-        android:layout_alignStart="@+id/NameText" />
+        android:layout_alignParentStart="true"
+        android:layout_width="60dp" />
 
     <TextView
         android:text="Price:"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/PubListView"
         android:layout_alignRight="@+id/PubLabel"
         android:layout_alignEnd="@+id/PubLabel"
         android:layout_marginTop="27dp"
         android:id="@+id/pal_detail_price_label"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textAlignment="textEnd" />
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:layout_width="match_parent"
@@ -91,5 +84,27 @@
         android:layout_marginTop="52dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <RatingBar
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/pal_detail_price"
+        android:numStars="5"
+        android:stepSize="1"
+        android:layout_marginLeft="49dp"
+        android:layout_marginStart="49dp"
+        android:layout_below="@+id/PubListView"
+        android:layout_toRightOf="@+id/pal_detail_price_label"
+        android:layout_marginTop="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/BoozeListView"
+        android:layout_height="150dp"
+        android:layout_alignTop="@+id/BoozeLabel"
+        android:layout_alignLeft="@+id/pal_detail_price"
+        android:layout_alignStart="@+id/pal_detail_price" />
 
 </RelativeLayout>

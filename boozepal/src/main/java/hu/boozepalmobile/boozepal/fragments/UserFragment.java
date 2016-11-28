@@ -8,12 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.adapters.CurrentPalsRecyclerViewAdapter;
+import hu.boozepalmobile.boozepal.models.Coordinate;
+import hu.boozepalmobile.boozepal.models.Token;
 import hu.boozepalmobile.boozepal.models.User;
 import hu.boozepalmobile.boozepal.network.FindPalsResponse;
 import hu.boozepalmobile.boozepal.network.FindPalsTask;
+import hu.boozepalmobile.boozepal.utils.BoozePalLocation;
 
 import java.util.ArrayList;
 
@@ -85,7 +89,19 @@ public class UserFragment extends Fragment implements FindPalsResponse{
     void refreshItems(){
         FindPalsTask fpTask = new FindPalsTask(getContext(), this.token);
         fpTask.delegate = this;
+
+        BoozePalLocation bl = new BoozePalLocation(getContext());
+        Coordinate coord = new Coordinate(bl.getLocation().getLatitude(), bl.getLocation().getLongitude());
+
+        if(coord.getLatitude() == 0 || coord.getLongitude() == 0){
+            Toast toast = Toast.makeText(getContext(), "GPS is not enabled!", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
+        user.setCurrentLocation(coord);
         fpTask.execute(this.user);
+
         //onItemsLoaded();
     }
 
@@ -116,7 +132,6 @@ public class UserFragment extends Fragment implements FindPalsResponse{
         rv.setAdapter(new CurrentPalsRecyclerViewAdapter(userList, mListener,user, token));
         //rv.invalidate();
         swipeRefreshLayout.setRefreshing(false);
-        System.out.println("fickyeah");
     }
 
     public interface OnListFragmentInteractionListener {

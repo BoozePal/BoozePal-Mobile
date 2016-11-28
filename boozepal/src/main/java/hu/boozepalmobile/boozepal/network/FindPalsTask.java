@@ -28,7 +28,11 @@ import java.util.List;
 import java.util.Locale;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.application.BoozePalApplication;
+import hu.boozepalmobile.boozepal.models.Coordinate;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.BoozePalLocation;
+import hu.boozepalmobile.boozepal.utils.FindPalsJSON;
 
 /**
  * Created by fanny on 2016.11.26..
@@ -77,15 +81,13 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
             conn.setDoOutput(true);
             conn.connect();
 
-            JSONObject obj = new JSONObject();
-            obj.put("token", this.token);
-            obj.put("user", user);
+            FindPalsJSON js = new FindPalsJSON(this.token, user);
 
-            System.out.println(obj.toString());
+            System.out.println(user.toString());
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(obj.toString());
+            writer.write(js.toString());
             writer.close();
             os.close();
 

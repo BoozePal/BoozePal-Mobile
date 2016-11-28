@@ -18,7 +18,6 @@
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/settings_label_gender"
         android:layout_alignLeft="@+id/settings_edit_name"
         android:layout_alignStart="@+id/settings_edit_name"
         android:id="@+id/settings_edit_gender_radiogroup">

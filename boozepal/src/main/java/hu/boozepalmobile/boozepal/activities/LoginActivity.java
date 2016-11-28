@@ -274,18 +274,21 @@ public class LoginActivity extends AppCompatActivity implements
                 }
 
                 List<Date> savedDates = new ArrayList<>();
-                if(!obj.isNull("savedDates")) {
-                    JSONArray dates = obj.getJSONArray("savedDates");
+                if(!obj.isNull("timeBoard")) {
+                    JSONArray dates = obj.getJSONArray("timeBoard");
                     for (int i = 0; i < dates.length(); ++i) {
-                        JSONObject date = dates.getJSONObject(i);
-                        Iterator<?> keys = date.keys();
+                        Long date = dates.getLong(i);
+                        //Long date = Long.valueOf(dates.getJSONObject(i).toString());
+                        //Iterator<?> keys = date.keys();
 
-                        while (keys.hasNext()) {
-                            DateFormat format = new SimpleDateFormat("MMMM d yyyy", Locale.ENGLISH);
-                            Date key = format.parse(keys.next().toString());
+                       // while (keys.hasNext()) {
+                            //System.out.println("time: " + date);
+                            //DateFormat df = new SimpleDateFormat("MMM d, yyyy HH:mm:ss aa", Locale.ENGLISH);
+                            //Date key = df.parse(date.toString());
+                        Date d = new Date(date);
                             //favouritePubs.add((String) booze.get(key));
-                            savedDates.add(key);
-                        }
+                            savedDates.add(d);
+                        //}
                     }
                 }
 
@@ -330,9 +333,9 @@ public class LoginActivity extends AppCompatActivity implements
 
                 BoozePalLocation bl = new BoozePalLocation(getApplicationContext());
                 System.out.println("location: " + bl.getLocation().toString());
-                Coordinate coord = new Coordinate(bl.getLocation().getLatitude(), bl.getLocation().getLongitude());
 
-                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, myPals, coord);
+                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, myPals, null);
+                //user.setToken(token);
 
                 Log.d("LoginActivity", user.toString());
 
@@ -343,10 +346,7 @@ public class LoginActivity extends AppCompatActivity implements
 
             } catch (JSONException e) {
                 e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
-
             //super.onPostExecute(s);
         }
 

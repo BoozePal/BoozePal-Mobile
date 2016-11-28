@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -30,11 +31,11 @@ public class PalDetailFragment extends Fragment {
     private User userData;
     private User loggedUser;
 
-    public TextView NameView;
-    public TextView GenderView;
-    public ListView BoozeListView;
-    public ListView PubListView;
-    public MaterialCalendarView CalendarView;
+    private TextView NameView;
+    private ListView BoozeListView;
+    private ListView PubListView;
+    private MaterialCalendarView CalendarView;
+    private RatingBar ratingBar;
 
     public PalDetailFragment() {
     }
@@ -61,6 +62,7 @@ public class PalDetailFragment extends Fragment {
         NameView = (TextView) rootView.findViewById(R.id.NameText);
         BoozeListView = (ListView) rootView.findViewById(R.id.BoozeListView);
         PubListView = (ListView) rootView.findViewById(R.id.PubListView);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.pal_detail_price);
         CalendarView = (MaterialCalendarView) rootView.findViewById(R.id.detail_calendar_table);
         CalendarView.setTileWidth(rootView.getWidth()/7);
         CalendarView.setTileHeight(rootView.getWidth()/7);
@@ -81,6 +83,9 @@ public class PalDetailFragment extends Fragment {
             final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
                     android.R.layout.simple_list_item_1, userData.getPubs());
             PubListView.setAdapter(PubAdapter);
+
+            ratingBar.setStepSize(1);
+            ratingBar.setRating(userData.getPriceCategory());
 
             ArrayList<CalendarDay> calendarDays = new ArrayList<>();
             for(Date d : userData.getSavedDates()){

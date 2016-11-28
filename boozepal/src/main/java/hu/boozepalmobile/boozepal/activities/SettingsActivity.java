@@ -36,6 +36,7 @@ import java.net.URL;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.UpdateUserJSON;
 
 public class SettingsActivity extends AppCompatActivity{
 
@@ -286,16 +287,11 @@ public class SettingsActivity extends AppCompatActivity{
                 conn.setDoOutput(true);
                 conn.connect();
 
-                JSONObject obj = new JSONObject();
-                obj.put("token", SettingsActivity.this.token);
-                obj.put("user", user);
-
-
-                System.out.println(obj.toString());
+                UpdateUserJSON gson = new UpdateUserJSON(SettingsActivity.this.token, SettingsActivity.this.modifiedUser);
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write(obj.toString());
+                writer.write(gson.toString());
                 writer.close();
                 os.close();
 
@@ -319,8 +315,6 @@ public class SettingsActivity extends AppCompatActivity{
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
