@@ -12,6 +12,7 @@ public class Token {
     }
 
     public static String getToken() {return token;}
+
     public static void setToken(String t) {
         System.out.println("lol");
         token = t;}

@@ -1,11 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/pal_detail"
     style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context="hu.boozepalmobile.boozepal.fragments.PalDetailFragment" >
+    tools:context="hu.boozepalmobile.boozepal.fragments.PalDetailFragment">
 
     <TextView
         android:text="@string/name"
@@ -75,8 +76,7 @@
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:minDate="01/01/2016"
-        android:maxDate="01/01/2018"
+        app:mcv_showOtherDates="out_of_range"
         android:id="@+id/detail_calendar_table"
         android:layout_below="@+id/pal_detail_price_label"
         android:layout_alignParentLeft="true"

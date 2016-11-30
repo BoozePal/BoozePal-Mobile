@@ -14,20 +14,32 @@ import java.util.List;
  * Created by fanny on 2016.10.09..
  */
 
-public class User implements Parcelable{
+public class User implements Parcelable {
 
     private Long id;
+
     private String name;
+
     private String city;
-    private List<String> boozes;
-    private List<String> pubs;
+
+    private List<Drink> boozes;
+
+    private List<Pub> pubs;
+
     private List<Date> savedDates;
+
     private int searchRadius;
+
     private int priceCategory;
+
     private List<User> myPals;
+
     private Coordinate lastKnownCoordinate;
 
-    public User(Long id, String name, String city, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals, Coordinate location) {
+    public User() {
+    }
+
+    public User(Long id, String name, String city, List<Drink> boozes, List<Pub> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals, Coordinate location) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -40,7 +52,7 @@ public class User implements Parcelable{
         this.lastKnownCoordinate = location;
     }
 
-    public User(Long id, String name, String city, List<String> boozes, List<String> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals) {
+    public User(Long id, String name, String city, List<Drink> boozes, List<Pub> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -55,15 +67,14 @@ public class User implements Parcelable{
     }
 
     // Parcelling part
-    public User(Parcel in){
+    public User(Parcel in) {
         this.id = in.readLong();
         this.name = in.readString();
         this.city = in.readString();
-        //this.gender = in.readString();
-        this.boozes = new ArrayList<String>();
-        in.readList(boozes,null);
-        this.pubs = new ArrayList<String>();
-        in.readList(pubs,null);
+        this.boozes = in.readArrayList(Drink.class.getClassLoader());
+        //in.readList(boozes, null);
+        this.pubs = in.readArrayList(Pub.class.getClassLoader());
+        //in.readList(pubs, null);
         this.searchRadius = in.readInt();
         this.priceCategory = in.readInt();
         this.savedDates = new ArrayList<Date>();
@@ -91,8 +102,9 @@ public class User implements Parcelable{
         dest.writeInt(this.priceCategory);
         dest.writeList(this.savedDates);
         dest.writeList(this.myPals);
-        dest.writeParcelable(this.lastKnownCoordinate,0);
+        dest.writeParcelable(this.lastKnownCoordinate, 0);
     }
+
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public User createFromParcel(Parcel in) {
             return new User(in);
@@ -115,15 +127,11 @@ public class User implements Parcelable{
         return city;
     }
 
-    /*public String getGender() {
-        return gender;
-    }*/
-
-    public List<String> getBoozes() {
+    public List<Drink> getBoozes() {
         return boozes;
     }
 
-    public List<String> getPubs() {
+    public List<Pub> getPubs() {
         return pubs;
     }
 
@@ -139,15 +147,11 @@ public class User implements Parcelable{
         this.city = city;
     }
 
-    /*public void setGender(String gender) {
-        this.gender = gender;
-    }*/
-
-    public void setBoozes(List<String> boozes) {
+    public void setBoozes(List<Drink> boozes) {
         this.boozes = boozes;
     }
 
-    public void setPubs(List<String> pubs) {
+    public void setPubs(List<Pub> pubs) {
         this.pubs = pubs;
     }
 
@@ -183,19 +187,19 @@ public class User implements Parcelable{
         this.myPals = myPals;
     }
 
-    public void addBooze(String booze){
+    public void addBooze(Drink booze) {
         this.boozes.add(booze);
     }
 
-    public void addPub(String pub){
+    public void addPub(Pub pub) {
         this.pubs.add(pub);
     }
 
-    public void addNewPal(User pal){
+    public void addNewPal(User pal) {
         this.myPals.add(pal);
     }
 
-    public void addDate(Date date){
+    public void addDate(Date date) {
         this.savedDates.add(date);
     }
 

@@ -27,8 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_alignParentTop="true"
-        android:minDate="01/01/2016"
-        android:maxDate="01/01/2018"
+        app:mcv_showOtherDates="out_of_range"
         android:layout_marginTop="54dp"
         android:id="@+id/calendar_table" />
 

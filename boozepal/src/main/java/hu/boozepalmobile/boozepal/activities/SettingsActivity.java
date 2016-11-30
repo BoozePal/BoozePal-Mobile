@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,15 +32,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.Drink;
+import hu.boozepalmobile.boozepal.models.DrinkType;
+import hu.boozepalmobile.boozepal.models.DrinkTypeEnum;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.network.GetDrinkTask;
+import hu.boozepalmobile.boozepal.network.GetDrinkTaskResponse;
 import hu.boozepalmobile.boozepal.utils.UpdateUserJSON;
 
-public class SettingsActivity extends AppCompatActivity{
+public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskResponse {
 
     private User user;
     private User modifiedUser;
@@ -54,6 +67,14 @@ public class SettingsActivity extends AppCompatActivity{
     private ListView pubListView;
     private ImageButton addBooze;
     private ImageButton addPub;
+    private Spinner typeSpinner;
+    private Spinner drinkSpinner;
+
+    private List<String> drinktype;
+    private List<String> drink;
+
+    private HashMap<DrinkTypeEnum, List<Drink>> drinks;
+    private List<DrinkTypeEnum> types;
 
     private Button saveSettingsButton;
 
@@ -67,7 +88,7 @@ public class SettingsActivity extends AppCompatActivity{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("SettingsActivity","Touched back button!");
+                Log.d("SettingsActivity", "Touched back button!");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("USER_DATA", modifiedUser);
                 intent.putExtra("TOKEN", token);
@@ -194,7 +215,7 @@ public class SettingsActivity extends AppCompatActivity{
         addBooze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               showAddBoozeDialog();
+                showAddBoozeDialog();
             }
         });
 
@@ -205,22 +226,62 @@ public class SettingsActivity extends AppCompatActivity{
             }
         });
 
+        GetDrinkTask dt = new GetDrinkTask(getApplicationContext());
+        dt.delegate = this;
+        dt.execute();
     }
 
     private void showAddBoozeDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.fragment_add_list_dialog, null);
+        final View dialogView = inflater.inflate(R.layout.add_booze_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText editBooze = (EditText) dialogView.findViewById(R.id.settings_add_list_edit);
+        //final EditText editBooze = (EditText) dialogView.findViewById(R.id.settings_add_list_edit);
+        typeSpinner = (Spinner) dialogView.findViewById(R.id.settings_drinktype_spinner);
+        drinkSpinner = (Spinner) dialogView.findViewById(R.id.settings_drink_spinner);
+
+        types = new ArrayList<>(this.drinks.keySet());
+        ArrayAdapter<DrinkTypeEnum> drinktypeAdapter = new ArrayAdapter<DrinkTypeEnum>(this, android.R.layout.simple_spinner_item, types);
+        typeSpinner.setAdapter(drinktypeAdapter);
+
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                List<String> names = new ArrayList<String>();
+                for (Drink d : SettingsActivity.this.drinks.get(SettingsActivity.this.types.get(position))) {
+                    names.add(d.getName());
+                }
+
+                ArrayAdapter<String> drinkadapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, names);
+                SettingsActivity.this.drinkSpinner.setAdapter(drinkadapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         dialogBuilder.setTitle("Add new booze");
         dialogBuilder.setMessage("Enter the new booze");
         dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Log.d("SettingsActivity", "Added new booze!");
-                modifiedUser.addBooze(editBooze.getText().toString());
+                DrinkTypeEnum drinkEnum = DrinkTypeEnum.valueOf(typeSpinner.getSelectedItem().toString());
+                int id = 0;
+                for (Drink d : SettingsActivity.this.drinks.get(drinkEnum)) {
+                    if (d.getName().equals(drinkSpinner.getSelectedItem().toString()))
+                        id = d.getId();
+                }
+                modifiedUser.addBooze(new Drink(
+                        id,
+                        drinkSpinner.getSelectedItem().toString(),
+                        drinkEnum));
+                final ArrayAdapter BoozeAdapter = new ArrayAdapter(SettingsActivity.this,
+                        android.R.layout.simple_list_item_1, modifiedUser.getBoozes());
+                boozeListView.setAdapter(BoozeAdapter);
+                //modifiedUser.addBooze(editBooze.getText().toString());
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -245,7 +306,7 @@ public class SettingsActivity extends AppCompatActivity{
         dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Log.d("SettingsActivity", "Added new pub!");
-                modifiedUser.addPub(editText.getText().toString());
+                //modifiedUser.addPub(editText.getText().toString());
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -255,6 +316,17 @@ public class SettingsActivity extends AppCompatActivity{
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
+    }
+
+    @Override
+    public void onTaskFinished(HashMap<DrinkTypeEnum, List<Drink>> result) {
+        this.drinks = result;
+        /*this.drinks = result;
+        this.drinktype = new ArrayList<>();
+        for(DrinkType d : result){
+            this.drinktype.add(d.getDrinkType().getValue());
+        }*/
+
     }
 
     private class SaveSettingsTask extends AsyncTask<User, Void, String> {
@@ -297,14 +369,13 @@ public class SettingsActivity extends AppCompatActivity{
 
                 System.out.println(conn.getResponseMessage());
 
-                if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     Log.d("SettingsActivity", "Saving OK");
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("USER_DATA", modifiedUser);
                     intent.putExtra("TOKEN", token);
                     startActivity(intent);
-                }
-                else{
+                } else {
                     Log.d("SettingsActivity", "Error occured during saving");
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("USER_DATA", user);
