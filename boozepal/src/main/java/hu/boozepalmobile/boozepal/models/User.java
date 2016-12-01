@@ -8,7 +8,9 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by fanny on 2016.10.09..
@@ -32,24 +34,27 @@ public class User implements Parcelable {
 
     private int priceCategory;
 
-    private List<User> myPals;
+    //private List<User> myPals;
 
     private Coordinate lastKnownCoordinate;
+
+    private Map<User, PalRequest> actualPals;
 
     public User() {
     }
 
-    public User(Long id, String name, String city, List<Drink> boozes, List<Pub> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals, Coordinate location) {
+    public User(Long id, String name, String city, List<Drink> boozes, List<Pub> pubs, List<Date> savedDates, int searchRadius, int priceCategory, Coordinate lastKnownCoordinate, Map<User, PalRequest> actualPals) {
         this.id = id;
         this.name = name;
         this.city = city;
         this.boozes = boozes;
         this.pubs = pubs;
+        this.savedDates = savedDates;
         this.searchRadius = searchRadius;
         this.priceCategory = priceCategory;
-        this.savedDates = savedDates;
-        this.myPals = myPals;
-        this.lastKnownCoordinate = location;
+        //this.myPals = myPals;
+        this.lastKnownCoordinate = lastKnownCoordinate;
+        this.actualPals = actualPals;
     }
 
     public User(Long id, String name, String city, List<Drink> boozes, List<Pub> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals) {
@@ -62,7 +67,7 @@ public class User implements Parcelable {
         this.searchRadius = searchRadius;
         this.priceCategory = priceCategory;
         this.savedDates = savedDates;
-        this.myPals = myPals;
+        //this.myPals = myPals;
         this.lastKnownCoordinate = null;
     }
 
@@ -79,9 +84,17 @@ public class User implements Parcelable {
         this.priceCategory = in.readInt();
         this.savedDates = new ArrayList<Date>();
         in.readList(savedDates, null);
-        this.myPals = new ArrayList<>();
-        in.readList(myPals, null);
+        //this.myPals = new ArrayList<>();
+        //in.readList(myPals, null);
         this.lastKnownCoordinate = in.readParcelable(Coordinate.class.getClassLoader());
+        this.actualPals = new HashMap<>();
+        int size = in.readInt();
+        for(int i = 0; i < size; i++){
+            User key = in.readParcelable(User.class.getClassLoader());
+            PalRequest value = in.readParcelable(PalRequest.class.getClassLoader());
+            this.actualPals.put(key,value);
+        }
+
     }
 
 
@@ -101,8 +114,13 @@ public class User implements Parcelable {
         dest.writeInt(this.searchRadius);
         dest.writeInt(this.priceCategory);
         dest.writeList(this.savedDates);
-        dest.writeList(this.myPals);
+        //dest.writeList(this.myPals);
         dest.writeParcelable(this.lastKnownCoordinate, 0);
+        dest.writeInt(actualPals.size());
+        for(Map.Entry<User,PalRequest> entry : actualPals.entrySet()){
+            dest.writeParcelable(entry.getKey(),0);
+            dest.writeParcelable(entry.getValue(),0);
+        }
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -179,14 +197,6 @@ public class User implements Parcelable {
         this.savedDates = savedDates;
     }
 
-    public List<User> getMyPals() {
-        return myPals;
-    }
-
-    public void setMyPals(List<User> myPals) {
-        this.myPals = myPals;
-    }
-
     public void addBooze(Drink booze) {
         this.boozes.add(booze);
     }
@@ -195,16 +205,20 @@ public class User implements Parcelable {
         this.pubs.add(pub);
     }
 
-    public void addNewPal(User pal) {
-        this.myPals.add(pal);
-    }
-
     public void addDate(Date date) {
         this.savedDates.add(date);
     }
 
     public Coordinate getCurrentLocation() {
         return lastKnownCoordinate;
+    }
+
+    public Map<User, PalRequest> getActualPals() {
+        return actualPals;
+    }
+
+    public void setActualPals(Map<User, PalRequest> actualPals) {
+        this.actualPals = actualPals;
     }
 
     public void setCurrentLocation(Coordinate currentLocation) {

@@ -32,15 +32,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.CalendarJSON;
 import hu.boozepalmobile.boozepal.utils.CalendarJSON;
 
 public class CalendarActivity extends AppCompatActivity {

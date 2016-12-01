@@ -354,7 +354,7 @@ public class LoginTask extends AsyncTask<String, Void, User> {
             //User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, myPals, null);
             //user.setToken(token);
 
-            User user = new User(remoteUser.getId(), remoteUser.getUsername(), remoteUser.getAddress().getTown(), remoteUser.getFavouriteDrinks(), remoteUser.getFavouritePub(), remoteUser.getSearchRadius(), remoteUser.getPriceCategory(), remoteUser.getTimeBoard(), null, null);
+            User user = new User(remoteUser.getId(), remoteUser.getUsername(), remoteUser.getAddress().getTown(), remoteUser.getFavouriteDrinks(), remoteUser.getFavouritePub(), remoteUser.getTimeBoard(), remoteUser.getSearchRadius(), remoteUser.getPriceCategory(), remoteUser.getLastKnownCoordinate(), remoteUser.getActualPals());
             Log.d(TAG, user.toString());
 
             result = user;

@@ -35,7 +35,7 @@ public class MyPalDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Activity activity = this.getActivity();
-        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_collapsing_mypaldetail);
 
         if(getArguments().containsKey("USER_DATA")){
             UserData = (User) getArguments().getParcelable("USER_DATA");

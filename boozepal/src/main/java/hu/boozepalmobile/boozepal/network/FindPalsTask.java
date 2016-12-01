@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +41,7 @@ import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.application.BoozePalApplication;
 import hu.boozepalmobile.boozepal.models.Coordinate;
 import hu.boozepalmobile.boozepal.models.Drink;
+import hu.boozepalmobile.boozepal.models.PalRequest;
 import hu.boozepalmobile.boozepal.models.Pub;
 import hu.boozepalmobile.boozepal.models.RemoteUser;
 import hu.boozepalmobile.boozepal.models.User;
@@ -155,6 +157,11 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
                     ruser.setSavedDates(new ArrayList<Date>());
                 else
                     ruser.setSavedDates(remoteUser.getTimeBoard());
+
+                if(remoteUser.getActualPals().isEmpty())
+                    ruser.setActualPals(new HashMap<User, PalRequest>());
+                else
+                    ruser.setActualPals(remoteUser.getActualPals());
 
                 Log.d(TAG, ruser.toString());
                 users.add(ruser);

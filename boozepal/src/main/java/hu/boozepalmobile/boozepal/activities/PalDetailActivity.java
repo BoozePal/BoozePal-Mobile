@@ -35,7 +35,8 @@ public class PalDetailActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if(b != null) {
             System.out.println("what");
-            user = b.getParcelable("USER_DATA");
+            loggedUser = b.getParcelable("USER_DATA");
+            user = b.getParcelable("SELECTED_USER_DATA");
             token = b.getString("TOKEN");
             type = b.getInt("TYPE");
         }
@@ -47,7 +48,6 @@ public class PalDetailActivity extends AppCompatActivity {
             arguments.putParcelable("USER_DATA", getIntent().getParcelableExtra("SELECTED_USER_DATA"));
             arguments.putParcelable("LOGGED_USER_DATA", getIntent().getParcelableExtra("USER_DATA"));
             arguments.putString("TOKEN", getIntent().getStringExtra("TOKEN"));
-           // arguments.putInt("TYPE", getIntent().getIntExtra("TYPE"));
             PalDetailFragment fragment = new PalDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -60,9 +60,8 @@ public class PalDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            System.out.println("hehe");
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("USER_DATA", this.user);
+            intent.putExtra("USER_DATA", this.loggedUser);
             intent.putExtra("TOKEN", this.token);
             startActivity(intent);
             NavUtils.navigateUpTo(this, intent);
