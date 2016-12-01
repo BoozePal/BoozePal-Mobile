@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,20 +23,23 @@ import java.util.Date;
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.Token;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.RequestJSON;
+import hu.boozepalmobile.boozepal.utils.UpdateUserJSON;
 
 /**
  * Created by fanny on 2016.11.27..
  */
 
-public class RequestPalTask extends AsyncTask<User, Void, User>{
+public class RequestPalTask extends AsyncTask<User, Void, User> {
 
     private final String TAG = "RequestPalTask";
 
     public RequestPalResponse delegate = null;
     private Context context;
     private Date date;
+    private String token;
 
-    public RequestPalTask(Context context, Date date){
+    public RequestPalTask(Context context, Date date) {
         this.context = context;
         this.date = date;
     }
@@ -67,27 +73,20 @@ public class RequestPalTask extends AsyncTask<User, Void, User>{
             conn.setDoOutput(true);
             conn.connect();
 
-            JSONObject obj = new JSONObject();
-            obj.put("token", Token.getToken());
-            obj.put("loggedUser", loggedUser);
-            obj.put("requestedUser", requestedUser);
-            obj.put("date",this.date);
-
-            System.out.println(obj.toString());
+            RequestJSON reqjson = new RequestJSON(loggedUser.getId(), requestedUser.getId(), this.date, null);
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(obj.toString());
+            writer.write(reqjson.toString());
             writer.close();
             os.close();
 
             System.out.println(conn.getResponseMessage());
 
-            if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Log.d(TAG, "Request OK");
-                //loggedUser ADD REQUEST
-            }
-            else{
+                result = loggedUser;
+            } else {
                 Log.d(TAG, "Error occured during request");
                 result = loggedUser;
             }
@@ -95,8 +94,6 @@ public class RequestPalTask extends AsyncTask<User, Void, User>{
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 

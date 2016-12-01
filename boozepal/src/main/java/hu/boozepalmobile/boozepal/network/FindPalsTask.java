@@ -4,6 +4,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,12 +32,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.application.BoozePalApplication;
+import hu.boozepalmobile.boozepal.models.Coordinate;
+import hu.boozepalmobile.boozepal.models.Drink;
+import hu.boozepalmobile.boozepal.models.PalRequest;
+import hu.boozepalmobile.boozepal.models.Pub;
+import hu.boozepalmobile.boozepal.models.RemoteUser;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.BoozePalLocation;
+import hu.boozepalmobile.boozepal.utils.FindPalsJSON;
 
 /**
  * Created by fanny on 2016.11.26..
@@ -43,7 +61,7 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
     private String token;
     private Context context;
 
-    public FindPalsTask(Context context, String token){
+    public FindPalsTask(Context context, String token) {
         this.context = context;
         this.token = token;
     }
@@ -77,15 +95,13 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
             conn.setDoOutput(true);
             conn.connect();
 
-            JSONObject obj = new JSONObject();
-            obj.put("token", this.token);
-            obj.put("user", user);
+            FindPalsJSON js = new FindPalsJSON(this.token, user);
 
-            System.out.println(obj.toString());
+            System.out.println(user.toString());
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(obj.toString());
+            writer.write(js.toString());
             writer.close();
             os.close();
 
@@ -100,9 +116,60 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
             }
 
             br.close();
-            String result = sb.toString();
 
-            JSONArray jsonResult = new JSONArray(result);
+            Log.d(TAG, sb.toString());
+
+            Type listType = new TypeToken<List<RemoteUser>>() {
+            }.getType();
+
+            List<RemoteUser> remoteUsers = new GsonBuilder().registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    return new Date(json.getAsJsonPrimitive().getAsLong());
+                }
+            }).create().fromJson(sb.toString(), listType);
+
+            for (RemoteUser remoteUser : remoteUsers) {
+                User ruser = new User();
+                if (remoteUser.getId() != null)
+                    ruser.setId(remoteUser.getId());
+
+                if (remoteUser.getAddress() != null)
+                    ruser.setCity(remoteUser.getAddress().getTown());
+
+                if (remoteUser.getUsername() != null)
+                    ruser.setName(remoteUser.getUsername());
+
+                if (remoteUser.getFavouriteDrinks().isEmpty())
+                    ruser.setBoozes(new ArrayList<Drink>());
+                else
+                    ruser.setBoozes(remoteUser.getFavouriteDrinks());
+
+                if (remoteUser.getFavouritePub().isEmpty())
+                    ruser.setPubs(new ArrayList<Pub>());
+                else
+                    ruser.setPubs(remoteUser.getFavouritePub());
+
+                ruser.setSearchRadius(remoteUser.getSearchRadius());
+
+                ruser.setPriceCategory(remoteUser.getPriceCategory());
+
+                if (remoteUser.getTimeBoard().isEmpty())
+                    ruser.setSavedDates(new ArrayList<Date>());
+                else
+                    ruser.setSavedDates(remoteUser.getTimeBoard());
+
+                if(remoteUser.getActualPals().isEmpty())
+                    ruser.setActualPals(new HashMap<User, PalRequest>());
+                else
+                    ruser.setActualPals(remoteUser.getActualPals());
+
+                Log.d(TAG, ruser.toString());
+                users.add(ruser);
+
+            }
+            //users.add(new User(remoteUser.getId(), remoteUser.getUsername(), remoteUser.getAddress().getTown(), remoteUser.getFavouriteDrinks(), remoteUser.getFavouritePub(), remoteUser.getSearchRadius(), remoteUser.getPriceCategory(), remoteUser.getTimeBoard(), null, null));
+
+            /*JSONArray jsonResult = new JSONArray(result);
 
             for (int i = 0; i < jsonResult.length(); i++)
             {
@@ -177,17 +244,13 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
                     priceCategory = Integer.parseInt(jsonObj.getString("priceCategory"));
 
                 System.out.println(jsonObj);
-                User currentuser = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, new ArrayList<User>(), null);
-                users.add(currentuser);
-            }
+                //User currentuser = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, new ArrayList<User>(), null);
+                //users.add(currentuser);
+            }*/
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
 

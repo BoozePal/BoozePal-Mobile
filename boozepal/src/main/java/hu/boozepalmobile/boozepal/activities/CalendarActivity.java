@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -28,12 +30,23 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.CalendarJSON;
+import hu.boozepalmobile.boozepal.utils.CalendarJSON;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -64,6 +77,10 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendarView = (MaterialCalendarView) findViewById(R.id.calendar_table);
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY,0);
+        calendarView.state().edit().setMinimumDate(CalendarDay.from(today))
+                .commit();
 
         for(Date d: user.getSavedDates()){
             selectedDates.add(d);
@@ -109,10 +126,10 @@ public class CalendarActivity extends AppCompatActivity {
                 Log.d("CalendarActivity","Saving!");
                 SaveCalendarTask saveTask = new SaveCalendarTask();
                 saveTask.execute(token);
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("USER_DATA", user);
-                intent.putExtra("TOKEN", token);
-                startActivity(intent);
+                //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                //intent.putExtra("USER_DATA", user);
+                //intent.putExtra("TOKEN", token);
+                //startActivity(intent);
             }
         });
     }
@@ -152,24 +169,38 @@ public class CalendarActivity extends AppCompatActivity {
                 conn.setDoOutput(true);
                 conn.connect();
 
-                JSONObject obj = new JSONObject();
-                obj.put("token", CalendarActivity.this.token);
-                obj.put("timeTableList", CalendarActivity.this.selectedDates);
+                TimeZone tz = TimeZone.getDefault();
+                List<String> dateList = new ArrayList<>();
+                for(Date d: CalendarActivity.this.selectedDates){
+                    //DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+                    DateFormat df = new SimpleDateFormat("MMM d, yyyy HH:mm:ss aa", Locale.ENGLISH);
+                    System.out.println(d.toString());
+                    //df.setTimeZone(tz);
+                    dateList.add(df.format(d).toString());
+                }
+
+                CalendarJSON j = new CalendarJSON(CalendarActivity.this.token, dateList);
+
+                //JSONObject obj = new JSONObject();
+                //obj.put("token", CalendarActivity.this.token);
+                //obj.put("timeTableList", dateList.toString());
                 //obj.put("user", user);
 
+                //String g = new GsonBuilder().create().toJson(dateList);
 
-                System.out.println("timetable:" + obj.toString());
+                //System.out.println("timetable:" + g);
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write(obj.toString());
+                writer.write(j.toString());
                 writer.close();
                 os.close();
 
-                System.out.println("response: " + conn.getResponseMessage() + conn.getResponseCode());
+                //System.out.println("response: " + conn.getResponseMessage() + conn.getResponseCode());
 
                 if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
                     Log.d("SettingsActivity", "Saving OK");
+                    modifiedUser.setSavedDates(CalendarActivity.this.selectedDates);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("USER_DATA", modifiedUser);
                     intent.putExtra("TOKEN", token);
@@ -186,8 +217,6 @@ public class CalendarActivity extends AppCompatActivity {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
                 e.printStackTrace();
             }
 

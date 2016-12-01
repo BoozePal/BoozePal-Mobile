@@ -27,6 +27,7 @@ import hu.boozepalmobile.boozepal.fragments.UserFragment;
 import hu.boozepalmobile.boozepal.models.Coordinate;
 import hu.boozepalmobile.boozepal.models.Token;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.network.GetUserTask;
 
 public class MainActivity extends AppCompatActivity
         implements UserFragment.OnListFragmentInteractionListener, MyPalFragment.OnListFragmentInteractionListener, RequestFragment.OnListFragmentInteractionListener {
@@ -52,22 +53,12 @@ public class MainActivity extends AppCompatActivity
         System.out.println("main" + t);*/
 
         Bundle b = getIntent().getExtras();
-        if(b != null) {
+        if (b != null) {
             user = b.getParcelable("USER_DATA");
             token = b.getString("TOKEN");
         }
 
         Token.setToken(token);
-        String t = Token.getToken();
-        System.out.println("main" + t);
-
-        myPals = new ArrayList<>();
-        requestPals = new ArrayList<>();
-        User user_ = new User(2L, "Jonas", "Debrecen", new ArrayList<String>(), new ArrayList<String>(), 30, 2, new ArrayList<Date>(), new ArrayList<User>());
-        User user_2 = new User(3L, "Jonaska", "Karcag", new ArrayList<String>(), new ArrayList<String>(), 30, 2, new ArrayList<Date>(), new ArrayList<User>());
-        currentPals = new ArrayList<>();
-        currentPals.add(user_);
-        currentPals.add(user_2);
 
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("CURRENT_PALS", currentPals);
@@ -83,17 +74,21 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        GetUserTask gt = new GetUserTask(getApplicationContext());
+        gt.execute(this.token);
+
+
         setupView();
     }
 
-    void setupView(){
+    void setupView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
         getSupportActionBar().setTitle(user.getName());
 
         ImageButton calendarButton = (ImageButton) toolbar.findViewById(R.id.calendar_button);
-        calendarButton.setOnClickListener(new View.OnClickListener(){
+        calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("PalListActivity", "Clicked on calendar button");
@@ -106,7 +101,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         ImageButton settingsButton = (ImageButton) toolbar.findViewById(R.id.setting_button);
-        settingsButton.setOnClickListener(new View.OnClickListener(){
+        settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("PalListActivity", "Clicked on settings button");
@@ -119,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         ImageButton logoutButton = (ImageButton) toolbar.findViewById(R.id.logout_button);
-        logoutButton.setOnClickListener(new View.OnClickListener(){
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("PalListActivity", "Clicked on logout button!");
@@ -164,38 +159,38 @@ public class MainActivity extends AppCompatActivity
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-        public SectionsPagerAdapter(FragmentManager fm, Bundle data)
-        {
+
+        public SectionsPagerAdapter(FragmentManager fm, Bundle data) {
             super(fm);
             fragmentBundle = data;
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     UserFragment userFragment = new UserFragment();
                     Bundle bundle = new Bundle();
 
-                    bundle.putParcelableArrayList("CURRENT_PALS",fragmentBundle.getParcelableArrayList("CURRENT_PALS"));
-                    bundle.putParcelable("USER_DATA",fragmentBundle.getParcelable("USER_DATA"));
-                    bundle.putString("TOKEN",fragmentBundle.getString("TOKEN"));
+                    bundle.putParcelableArrayList("CURRENT_PALS", fragmentBundle.getParcelableArrayList("CURRENT_PALS"));
+                    bundle.putParcelable("USER_DATA", fragmentBundle.getParcelable("USER_DATA"));
+                    bundle.putString("TOKEN", fragmentBundle.getString("TOKEN"));
                     userFragment.setArguments(bundle);
                     return userFragment;
                 case 1:
                     RequestFragment requestFragment = new RequestFragment();
                     Bundle bundle_request = new Bundle();
-                    bundle_request.putParcelableArrayList("PALS",fragmentBundle.getParcelableArrayList("PALS"));
-                    bundle_request.putParcelable("USER_DATA",fragmentBundle.getParcelable("USER_DATA"));
-                    bundle_request.putString("TOKEN",fragmentBundle.getString("TOKEN"));
+                    bundle_request.putParcelableArrayList("PALS", fragmentBundle.getParcelableArrayList("PALS"));
+                    bundle_request.putParcelable("USER_DATA", fragmentBundle.getParcelable("USER_DATA"));
+                    bundle_request.putString("TOKEN", fragmentBundle.getString("TOKEN"));
                     requestFragment.setArguments(bundle_request);
                     return requestFragment;
                 case 2:
                     MyPalFragment myPalFragment = new MyPalFragment();
                     Bundle bundle_mypal = new Bundle();
-                    bundle_mypal.putParcelableArrayList("MY_PALS",fragmentBundle.getParcelableArrayList("MY_PALS"));
-                    bundle_mypal.putParcelable("USER_DATA",fragmentBundle.getParcelable("USER_DATA"));
-                    bundle_mypal.putString("TOKEN",fragmentBundle.getString("TOKEN"));
+                    bundle_mypal.putParcelableArrayList("MY_PALS", fragmentBundle.getParcelableArrayList("MY_PALS"));
+                    bundle_mypal.putParcelable("USER_DATA", fragmentBundle.getParcelable("USER_DATA"));
+                    bundle_mypal.putString("TOKEN", fragmentBundle.getString("TOKEN"));
                     myPalFragment.setArguments(bundle_mypal);
                     return myPalFragment;
             }

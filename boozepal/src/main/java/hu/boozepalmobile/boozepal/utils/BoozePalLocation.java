@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import java.util.List;
+
 public class BoozePalLocation implements LocationListener {
 
     private final Context context;
@@ -41,7 +43,24 @@ public class BoozePalLocation implements LocationListener {
 
         if(gpsEnabled){
             Log.d("BoozePalLocation", "GPS enabled");
+            locationManager = (LocationManager)context.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    1,
+                    1, this);
+            List<String> providers = locationManager.getProviders(true);
+            Location bestLocation = null;
+            for (String provider : providers) {
+                Location l = locationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    bestLocation = l;
+                }
+            }
+            location = bestLocation;
+            /*locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     1,
                     1, this);
@@ -51,11 +70,28 @@ public class BoozePalLocation implements LocationListener {
                 if (location != null) {
                     location = location;
                 }
-            }
+            }*/
         }
         else if(!gpsEnabled && networkEnabled){
             Log.d("BoozePalLocation", "GPS not enabled, network enabled");
+            /*locationManager = (LocationManager)context.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    1,
+                    1, this);
+            List<String> providers = locationManager.getProviders(true);
+            Location bestLocation = null;
+            for (String provider : providers) {
+                Location l = locationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    bestLocation = l;
+                }
+            }
+            location = bestLocation;*/
+            /*locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
                     1,
                     1, this);
@@ -65,7 +101,7 @@ public class BoozePalLocation implements LocationListener {
                 if (location != null) {
                     location = location;
                 }
-            }
+            }*/
         }
 
         return location;

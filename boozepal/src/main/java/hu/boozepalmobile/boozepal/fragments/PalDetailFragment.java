@@ -2,8 +2,10 @@ package hu.boozepalmobile.boozepal.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Parcel;
+import android.support.annotation.NonNull;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
@@ -13,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 import android.widget.Toolbar;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -40,9 +45,9 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
     private String token;
 
     public TextView NameView;
-    public TextView GenderView;
     public ListView BoozeListView;
     public ListView PubListView;
+    private RatingBar ratingBar;
     public MaterialCalendarView CalendarView;
     private CollapsingToolbarLayout appBarLayout;
     public Toolbar toolbar;
@@ -88,6 +93,7 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
         NameView = (TextView) rootView.findViewById(R.id.NameText);
         BoozeListView = (ListView) rootView.findViewById(R.id.BoozeListView);
         PubListView = (ListView) rootView.findViewById(R.id.PubListView);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.pal_detail_price);
         CalendarView = (MaterialCalendarView) rootView.findViewById(R.id.detail_calendar_table);
         CalendarView.setTileWidth(rootView.getWidth()/7);
         CalendarView.setTileHeight(rootView.getWidth()/7);
@@ -108,6 +114,9 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
             final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
                     android.R.layout.simple_list_item_1, userData.getPubs());
             PubListView.setAdapter(PubAdapter);
+
+            ratingBar.setStepSize(1);
+            ratingBar.setRating(userData.getPriceCategory());
 
             ArrayList<CalendarDay> calendarDays = new ArrayList<>();
             for(Date d : userData.getSavedDates()){

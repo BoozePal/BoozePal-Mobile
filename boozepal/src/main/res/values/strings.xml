@@ -17,7 +17,11 @@
     <string name="rest_url_settings">http://boozepal.mircloud.host/boozepal/rest/user/updateDetails</string>
     <string name="rest_url_findpals">http://boozepal.mircloud.host/boozepal/rest/user/findPals</string>
     <string name="rest_url_timetable">http://boozepal.mircloud.host/boozepal/rest/user/timetable</string>
-    <string name="rest_url_sendRequest"></string>
+    <string name="rest_url_getuser">http://boozepal.mircloud.host/boozepal/rest/user/getUser/</string>
+    <string name="rest_url_getdrinksall">http://boozepal.mircloud.host/boozepal/rest/drinks/all</string>
+    <string name="rest_url_getdrinktype">http://boozepal.mircloud.host/boozepal/rest/drinks/type/</string>
+    <string name="rest_url_sendRequest">http://boozepal.mircloud.host/boozepal/rest/user/sendrequest</string>
+    <string name="rest_url_getpubs">http://boozepal.mircloud.host/boozepal/rest/allPubs</string>
     <string name="rest_url_acceptRequest"></string>
     <string name="rest_url_denyRequest"></string>
     <string name="rest_url_logout">http://boozepal.mircloud.host/boozepal/rest/user/logout</string>

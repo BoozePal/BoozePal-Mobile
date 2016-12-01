@@ -6,7 +6,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,39 +19,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 import hu.boozepalmobile.boozepal.R;
-import hu.boozepalmobile.boozepal.models.Coordinate;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.utils.BoozePalLocation;
+import hu.boozepalmobile.boozepal.network.LoginResponse;
+import hu.boozepalmobile.boozepal.network.LoginTask;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener {
+        View.OnClickListener,
+        LoginResponse {
 
     private static final String TAG = "LoginActivity";
 
@@ -61,8 +42,6 @@ public class LoginActivity extends AppCompatActivity implements
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions googleSignInOptions;
     private ProgressDialog progressDialog;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +53,10 @@ public class LoginActivity extends AppCompatActivity implements
         configureSignIn();
 
         checkNetworkConnection();
-
-        configureLocation();
     }
 
     private void configureSignIn() {
-        Log.d("LoginActivity","Configure sign-in");
+        Log.d("LoginActivity", "Configure sign-in");
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
@@ -89,46 +66,6 @@ public class LoginActivity extends AppCompatActivity implements
                 enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
-
-    }
-
-    private void requestPermission(){
-       /* if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    );
-        }*/
-
-    }
-
-    private void configureLocation(){
-
-        /*locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
-                (float) 10.0, locationListener);*/
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        /*OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
-
-        if (opr.isDone()) {
-            System.out.println("Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
-        } else {
-            showProgressDialog();
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    hideProgressDialog();
-                    handleSignInResult(googleSignInResult);
-                }
-            });
-        }*/
 
     }
 
@@ -175,7 +112,8 @@ public class LoginActivity extends AppCompatActivity implements
 
             this.token = account.getIdToken();
 
-            LoginTask ltask = new LoginTask();
+            LoginTask ltask = new LoginTask(getApplicationContext());
+            ltask.delegate = this;
             ltask.execute(account.getIdToken());
         } else {
             System.out.println("Something went wrong");
@@ -211,195 +149,12 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
-    public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-        Reader reader = null;
-        reader = new InputStreamReader(stream, "UTF-8");
-        char[] buffer = new char[len];
-        reader.read(buffer);
-        return new String(buffer);
-    }
-
-
-    private class LoginTask extends AsyncTask<String, Void, String> {
-
-        private String token;
-
-        @Override
-        protected String doInBackground(String... params) {
-            token = params[0];
-            String result = authenticate(params[0]);
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            System.out.println(s);
-
-            try {
-                JSONObject obj = new JSONObject(s);
-
-                if(obj.length() == 0){
-                    Log.v(TAG, "Error occured during login!");
-                    return;
-                }
-
-                List<String> favouriteBoozes = new ArrayList<>();
-                if(!obj.isNull("favouriteDrink")) {
-                    JSONArray boozes = obj.getJSONArray("favouriteDrink");
-                    for (int i = 0; i < boozes.length(); ++i) {
-                        JSONObject booze = boozes.getJSONObject(i);
-                        Iterator<?> keys = booze.keys();
-
-                        while (keys.hasNext()) {
-                            String key = (String) keys.next();
-                            //favouriteBoozes.add((String) booze.get(key));
-                            favouriteBoozes.add(key);
-                        }
-                    }
-                }
-
-                List<String> favouritePubs = new ArrayList<>();
-                if(!obj.isNull("favouritePub")) {
-                    JSONArray pubs = obj.getJSONArray("favouritePub");
-                    for (int i = 0; i < pubs.length(); ++i) {
-                        JSONObject pub = pubs.getJSONObject(i);
-                        Iterator<?> keys = pub.keys();
-
-                        while (keys.hasNext()) {
-                            String key = (String) keys.next();
-                            //favouritePubs.add((String) booze.get(key));
-                            favouritePubs.add(key);
-                        }
-                    }
-                }
-
-                List<Date> savedDates = new ArrayList<>();
-                if(!obj.isNull("savedDates")) {
-                    JSONArray dates = obj.getJSONArray("savedDates");
-                    for (int i = 0; i < dates.length(); ++i) {
-                        JSONObject date = dates.getJSONObject(i);
-                        Iterator<?> keys = date.keys();
-
-                        while (keys.hasNext()) {
-                            DateFormat format = new SimpleDateFormat("MMMM d yyyy", Locale.ENGLISH);
-                            Date key = format.parse(keys.next().toString());
-                            //favouritePubs.add((String) booze.get(key));
-                            savedDates.add(key);
-                        }
-                    }
-                }
-
-                List<User> myPals = new ArrayList<>();
-                if(!obj.isNull("myPals")) {
-                    JSONArray mypals = obj.getJSONArray("myPals");
-                    /*for (int i = 0; i < mypals.length(); ++i) {
-                        JSONObject date = mypals.getJSONObject(i);
-                        Iterator<?> keys = date.keys();
-
-                        while (keys.hasNext()) {
-                            DateFormat format = new SimpleDateFormat("MMMM d yyyy", Locale.ENGLISH);
-                            Date key = format.parse(keys.next().toString());
-                            //favouritePubs.add((String) booze.get(key));
-                            savedDates.add(key);
-                        }
-                    }*/
-                }
-
-
-                String name = "";
-                if(!obj.isNull("username"))
-                    name = obj.getString("username");
-
-                String city = "";
-                if(!obj.isNull("address ")){
-                    JSONObject address = new JSONObject(obj.getString("address"));
-                    city = address.getString("town");
-                }
-
-                Long id = null;
-                if(!obj.isNull("id"))
-                    id = obj.getLong("id");
-
-                int radius = 10;
-                if(!obj.isNull("searchRadius"))
-                    radius = Integer.parseInt(obj.getString("searchRadius"));
-
-                int priceCategory = 1;
-                if(!obj.isNull("priceCategory"))
-                    priceCategory = Integer.parseInt(obj.getString("priceCategory"));
-
-                BoozePalLocation bl = new BoozePalLocation(getApplicationContext());
-                System.out.println("location: " + bl.getLocation().toString());
-                Coordinate coord = new Coordinate(bl.getLocation().getLatitude(), bl.getLocation().getLongitude());
-
-                User user = new User(id, name, city, favouriteBoozes, favouritePubs, radius, priceCategory, savedDates, myPals, coord);
-
-                Log.d("LoginActivity", user.toString());
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("USER_DATA", user);
-                intent.putExtra("TOKEN", LoginActivity.this.token);
-                startActivity(intent);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            //super.onPostExecute(s);
-        }
-
-        private String authenticate(String token) {
-            URL url = null;
-            InputStream is = null;
-            String result = null;
-            try {
-                url = new URL(getString(R.string.rest_url_login));
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestProperty("Accept", "*/*");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.connect();
-
-                JSONObject obj = new JSONObject();
-                obj.put("token", token);
-
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write(obj.toString());
-                writer.close();
-                os.close();
-
-                //Read
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-
-                String line = null;
-                StringBuilder sb = new StringBuilder();
-
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                br.close();
-                result = sb.toString();
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return result;
-
-        }
+    @Override
+    public void onTaskFinished(User result) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("USER_DATA", result);
+        intent.putExtra("TOKEN", LoginActivity.this.token);
+        startActivity(intent);
     }
 
 }

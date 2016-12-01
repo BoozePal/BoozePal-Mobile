@@ -23,13 +23,14 @@
         <activity
             android:name=".activities.PalDetailActivity"
             android:label="@string/title_pal_detail"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".activities.SettingsActivity" />
         <activity android:name=".activities.CalendarActivity" />
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme" />
+        <activity android:name=".activities.BaseActivity"></activity>
     </application>
 
 </manifest>
