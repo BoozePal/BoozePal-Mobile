@@ -7,7 +7,7 @@ import android.util.Log;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.Token;
-import hu.boozepalmobile.boozepal.network.LogoutTask;
+import hu.boozepalmobile.boozepal.network.logout.LogoutTask;
 
 /**
  * Created by fanny on 2016.11.26..

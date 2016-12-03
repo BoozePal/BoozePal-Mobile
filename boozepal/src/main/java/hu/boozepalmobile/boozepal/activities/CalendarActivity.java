@@ -11,20 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -32,20 +25,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.utils.CalendarJSON;
 import hu.boozepalmobile.boozepal.utils.CalendarJSON;
 
 public class CalendarActivity extends AppCompatActivity {
@@ -82,7 +70,7 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView.state().edit().setMinimumDate(CalendarDay.from(today))
                 .commit();
 
-        for(Date d: user.getSavedDates()){
+        for(Date d: user.getTimeBoard()){
             selectedDates.add(d);
             calendarView.setDateSelected(d,true);
         }
@@ -200,7 +188,7 @@ public class CalendarActivity extends AppCompatActivity {
 
                 if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
                     Log.d("SettingsActivity", "Saving OK");
-                    modifiedUser.setSavedDates(CalendarActivity.this.selectedDates);
+                    modifiedUser.setTimeBoard(CalendarActivity.this.selectedDates);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("USER_DATA", modifiedUser);
                     intent.putExtra("TOKEN", token);

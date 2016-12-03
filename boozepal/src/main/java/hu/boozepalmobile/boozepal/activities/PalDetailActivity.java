@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 import hu.boozepalmobile.boozepal.fragments.PalDetailFragment;
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.fragments.RequestDetailFragment;
+import hu.boozepalmobile.boozepal.models.PalRequest;
 import hu.boozepalmobile.boozepal.models.User;
 
 public class PalDetailActivity extends AppCompatActivity {
@@ -33,7 +35,7 @@ public class PalDetailActivity extends AppCompatActivity {
         }
 
         Bundle b = getIntent().getExtras();
-        if(b != null) {
+        if (b != null) {
             System.out.println("what");
             loggedUser = b.getParcelable("USER_DATA");
             user = b.getParcelable("SELECTED_USER_DATA");
@@ -43,8 +45,6 @@ public class PalDetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
-            arguments.putString(PalDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(PalDetailFragment.ARG_ITEM_ID));
             arguments.putParcelable("USER_DATA", getIntent().getParcelableExtra("SELECTED_USER_DATA"));
             arguments.putParcelable("LOGGED_USER_DATA", getIntent().getParcelableExtra("USER_DATA"));
             arguments.putString("TOKEN", getIntent().getStringExtra("TOKEN"));
@@ -53,6 +53,7 @@ public class PalDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.pal_detail_container, fragment)
                     .commit();
+
         }
     }
 

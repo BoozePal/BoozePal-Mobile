@@ -1,10 +1,7 @@
 package hu.boozepalmobile.boozepal.models;
 
-import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,90 +10,217 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by fanny on 2016.10.09..
+ * Created by fanny on 2016.11.30..
  */
 
-public class User implements Parcelable {
+public class User implements Parcelable{
 
     private Long id;
 
-    private String name;
+    private String username;
 
-    private String city;
+    private String password;
 
-    private List<Drink> boozes;
+    private String email;
 
-    private List<Pub> pubs;
+    private boolean remove;
 
-    private List<Date> savedDates;
+    private List<Drink> favouriteDrinks;
 
-    private int searchRadius;
+    private List<Pub> favouritePub;
 
     private int priceCategory;
 
-    //private List<User> myPals;
+    private Address address;
 
     private Coordinate lastKnownCoordinate;
 
-    private Map<User, PalRequest> actualPals;
+    private int searchRadius;
 
-    public User() {
+    private Map<Long, PalRequest> actualPals;
+
+    private boolean loggedIn;
+
+    private List<Date> timeBoard;
+
+
+    /*public User(Long id, String username, String password, String email, boolean remove, List<Drink> favouriteDrinks, List<Pub> favouritePub, int priceCategory, Address address, Coordinate lastKnownCoordinate, int searchRadius, boolean loggedIn, List<Date> timeBoard) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.remove = remove;
+        this.favouriteDrinks = favouriteDrinks;
+        this.favouritePub = favouritePub;
+        this.priceCategory = priceCategory;
+        this.address = address;
+        this.lastKnownCoordinate = lastKnownCoordinate;
+        this.searchRadius = searchRadius;
+        this.loggedIn = loggedIn;
+        this.timeBoard = timeBoard;
+    }*/
+
+    public User(Long id, String username, String password, String email, boolean remove, List<Drink> favouriteDrinks, List<Pub> favouritePub, int priceCategory, Address address, Coordinate lastKnownCoordinate, int searchRadius, Map<Long, PalRequest> actualPals, boolean loggedIn, List<Date> timeBoard) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.remove = remove;
+        this.favouriteDrinks = favouriteDrinks;
+        this.favouritePub = favouritePub;
+        this.priceCategory = priceCategory;
+        this.address = address;
+        this.lastKnownCoordinate = lastKnownCoordinate;
+        this.searchRadius = searchRadius;
+        this.actualPals = actualPals;
+        this.loggedIn = loggedIn;
+        this.timeBoard = timeBoard;
     }
 
-    public User(Long id, String name, String city, List<Drink> boozes, List<Pub> pubs, List<Date> savedDates, int searchRadius, int priceCategory, Coordinate lastKnownCoordinate, Map<User, PalRequest> actualPals) {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
-        this.name = name;
-        this.city = city;
-        this.boozes = boozes;
-        this.pubs = pubs;
-        this.savedDates = savedDates;
-        this.searchRadius = searchRadius;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public void setRemove(boolean remove) {
+        this.remove = remove;
+    }
+
+    public List<Drink> getFavouriteDrinks() {
+        return favouriteDrinks;
+    }
+
+    public void setFavouriteDrinks(List<Drink> favouriteDrinks) {
+        this.favouriteDrinks = favouriteDrinks;
+    }
+
+    public List<Pub> getFavouritePub() {
+        return favouritePub;
+    }
+
+    public void setFavouritePub(List<Pub> favouritePub) {
+        this.favouritePub = favouritePub;
+    }
+
+    public int getPriceCategory() {
+        return priceCategory;
+    }
+
+    public void setPriceCategory(int priceCategory) {
         this.priceCategory = priceCategory;
-        //this.myPals = myPals;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Coordinate getLastKnownCoordinate() {
+        return lastKnownCoordinate;
+    }
+
+    public void setLastKnownCoordinate(Coordinate lastKnownCoordinate) {
         this.lastKnownCoordinate = lastKnownCoordinate;
+    }
+
+    public int getSearchRadius() {
+        return searchRadius;
+    }
+
+    public void setSearchRadius(int searchRadius) {
+        this.searchRadius = searchRadius;
+    }
+
+    public Map<Long, PalRequest> getActualPals() {
+        return actualPals;
+    }
+
+    public void setActualPals(Map<Long, PalRequest> actualPals) {
         this.actualPals = actualPals;
     }
 
-    public User(Long id, String name, String city, List<Drink> boozes, List<Pub> pubs, int searchRadius, int priceCategory, List<Date> savedDates, List<User> myPals) {
-        this.id = id;
-        this.name = name;
-        this.city = city;
-        //this.gender = gender;
-        this.boozes = boozes;
-        this.pubs = pubs;
-        this.searchRadius = searchRadius;
-        this.priceCategory = priceCategory;
-        this.savedDates = savedDates;
-        //this.myPals = myPals;
-        this.lastKnownCoordinate = null;
+    public boolean isLoggedIn() {
+        return loggedIn;
     }
 
-    // Parcelling part
-    public User(Parcel in) {
-        this.id = in.readLong();
-        this.name = in.readString();
-        this.city = in.readString();
-        this.boozes = in.readArrayList(Drink.class.getClassLoader());
-        //in.readList(boozes, null);
-        this.pubs = in.readArrayList(Pub.class.getClassLoader());
-        //in.readList(pubs, null);
-        this.searchRadius = in.readInt();
-        this.priceCategory = in.readInt();
-        this.savedDates = new ArrayList<Date>();
-        in.readList(savedDates, null);
-        //this.myPals = new ArrayList<>();
-        //in.readList(myPals, null);
-        this.lastKnownCoordinate = in.readParcelable(Coordinate.class.getClassLoader());
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
+    public List<Date> getTimeBoard() {
+        return timeBoard;
+    }
+
+    public void setTimeBoard(List<Date> timeBoard) {
+        this.timeBoard = timeBoard;
+    }
+
+    public User(){
+        this.favouriteDrinks = new ArrayList<>();
+        this.favouritePub = new ArrayList<>();
+        this.timeBoard = new ArrayList<>();
         this.actualPals = new HashMap<>();
+    }
+
+    public User(Parcel in){
+        this.id = in.readLong();
+        this.username = in.readString();
+        this.password = in.readString();
+        this.email = in.readString();
+        this.remove = in.readByte() != 0;
+        this.favouriteDrinks = new ArrayList<>();
+        this.favouriteDrinks = in.readArrayList(Drink.class.getClassLoader());
+        this.favouritePub = new ArrayList<>();
+        this.favouritePub = in.readArrayList(Pub.class.getClassLoader());
+        this.priceCategory = in.readInt();
+        this.address = in.readParcelable(Address.class.getClassLoader());
+        this.lastKnownCoordinate = in.readParcelable(Coordinate.class.getClassLoader());
+        this.searchRadius = in.readInt();
         int size = in.readInt();
+        this.actualPals = new HashMap<>();
         for(int i = 0; i < size; i++){
-            User key = in.readParcelable(User.class.getClassLoader());
+            Long key = in.readLong();
             PalRequest value = in.readParcelable(PalRequest.class.getClassLoader());
             this.actualPals.put(key,value);
         }
-
+        this.loggedIn = in.readByte() != 0;
+        this.timeBoard = new ArrayList<>();
+        this.timeBoard = in.readArrayList(Date.class.getClassLoader());
     }
-
 
     @Override
     public int describeContents() {
@@ -106,21 +230,23 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
-        dest.writeString(this.name);
-        dest.writeString(this.city);
-        //dest.writeString(this.gender);
-        dest.writeList(this.boozes);
-        dest.writeList(this.pubs);
-        dest.writeInt(this.searchRadius);
+        dest.writeString(this.username);
+        dest.writeString(this.password);
+        dest.writeString(this.email);
+        dest.writeByte((byte) (this.remove ? 1 : 0));
+        dest.writeList(this.favouriteDrinks);
+        dest.writeList(this.favouritePub);
         dest.writeInt(this.priceCategory);
-        dest.writeList(this.savedDates);
-        //dest.writeList(this.myPals);
-        dest.writeParcelable(this.lastKnownCoordinate, 0);
+        dest.writeParcelable(this.address,0);
+        dest.writeParcelable(this.lastKnownCoordinate,0);
+        dest.writeInt(this.searchRadius);
         dest.writeInt(actualPals.size());
-        for(Map.Entry<User,PalRequest> entry : actualPals.entrySet()){
-            dest.writeParcelable(entry.getKey(),0);
+        for(Map.Entry<Long,PalRequest> entry : actualPals.entrySet()){
+            dest.writeLong(entry.getKey());
             dest.writeParcelable(entry.getValue(),0);
         }
+        dest.writeByte((byte) (loggedIn ? 1 : 0));
+        dest.writeList(this.timeBoard);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -133,100 +259,35 @@ public class User implements Parcelable {
         }
     };
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public List<Drink> getBoozes() {
-        return boozes;
-    }
-
-    public List<Pub> getPubs() {
-        return pubs;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setBoozes(List<Drink> boozes) {
-        this.boozes = boozes;
-    }
-
-    public void setPubs(List<Pub> pubs) {
-        this.pubs = pubs;
-    }
-
-    public int getSearchRadius() {
-        return searchRadius;
-    }
-
-    public void setSearchRadius(int searchRadius) {
-        this.searchRadius = searchRadius;
-    }
-
-    public int getPriceCategory() {
-        return priceCategory;
-    }
-
-    public void setPriceCategory(int priceCategory) {
-        this.priceCategory = priceCategory;
-    }
-
-    public List<Date> getSavedDates() {
-        return savedDates;
-    }
-
-    public void setSavedDates(List<Date> savedDates) {
-        this.savedDates = savedDates;
-    }
-
     public void addBooze(Drink booze) {
-        this.boozes.add(booze);
+        this.favouriteDrinks.add(booze);
     }
 
     public void addPub(Pub pub) {
-        this.pubs.add(pub);
+        this.favouritePub.add(pub);
     }
 
     public void addDate(Date date) {
-        this.savedDates.add(date);
-    }
-
-    public Coordinate getCurrentLocation() {
-        return lastKnownCoordinate;
-    }
-
-    public Map<User, PalRequest> getActualPals() {
-        return actualPals;
-    }
-
-    public void setActualPals(Map<User, PalRequest> actualPals) {
-        this.actualPals = actualPals;
-    }
-
-    public void setCurrentLocation(Coordinate currentLocation) {
-        this.lastKnownCoordinate = currentLocation;
+        this.timeBoard.add(date);
     }
 
     @Override
     public String toString() {
-        return new GsonBuilder().create().toJson(this, User.class);
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", remove=" + remove +
+                ", favouriteDrinks=" + favouriteDrinks +
+                ", favouritePub=" + favouritePub +
+                ", priceCategory=" + priceCategory +
+                ", address=" + address +
+                ", lastKnownCoordinate=" + lastKnownCoordinate +
+                ", searchRadius=" + searchRadius +
+                ", actualPals=" + actualPals +
+                ", loggedIn=" + loggedIn +
+                ", timeBoard=" + timeBoard +
+                '}';
     }
 }

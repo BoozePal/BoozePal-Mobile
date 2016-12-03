@@ -1,26 +1,36 @@
 package hu.boozepalmobile.boozepal.adapters;
 
+import android.app.DownloadManager;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.activities.PalDetailActivity;
+import hu.boozepalmobile.boozepal.activities.RequestDetailActivity;
 import hu.boozepalmobile.boozepal.fragments.RequestDetailFragment;
 import hu.boozepalmobile.boozepal.fragments.RequestFragment.OnListFragmentInteractionListener;
+import hu.boozepalmobile.boozepal.models.PalRequest;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 
 import java.util.List;
 
 public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequestRecyclerViewAdapter.ViewHolder> {
+
+    private final String TAG = "MyRequestRecyclerViewA";
+
     private User user;
     private String token;
-    private final List<User> users;
+    private final List<UIPalRequest> users;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyRequestRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener, User user, String token) {
+    public MyRequestRecyclerViewAdapter(List<UIPalRequest> items, OnListFragmentInteractionListener listener, User user, String token) {
         users = items;
         mListener = listener;
         this.user = user;
@@ -31,26 +41,31 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_request, parent, false);
+        Log.d(TAG,"wat3");
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        Log.d(TAG,"wat2");
         holder.mItem = users.get(position);
-        //holder.mIdView.setText(mValues.get(position).id);
-        //holder.mContentView.setText(mValues.get(position).content);
+        if(users.get(position).getUser() != null) {
+            holder.NameView.setText(users.get(position).getUser().getUsername());
+            if(users.get(position).getUser().getAddress() != null)
+                holder.CityView.setText(users.get(position).getUser().getAddress().getTown());
+            holder.DateView.setText(users.get(position).getDate().toString());
+        }
+
+        Log.d(TAG,"wat");
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                   // mListener.onListFragmentInteraction(holder.user);
-
-                    Intent intent = new Intent(v.getContext(), RequestDetailFragment.class);
+                    Intent intent = new Intent(v.getContext(), RequestDetailActivity
+                            .class);
                     intent.putExtra("LOGGED_USER_DATA", user);
-                    intent.putExtra("USER_DATA", users.get(position));
+                    intent.putExtra("SELECTED_REQUEST_DATA", users.get(position));
                     intent.putExtra("TOKEN", token);
                     v.getContext().startActivity(intent);
                 }
@@ -69,7 +84,7 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
         public final TextView NameView;
         public final TextView CityView;
         public final TextView DateView;
-        public User mItem;
+        public UIPalRequest mItem;
 
         public ViewHolder(View view) {
             super(view);

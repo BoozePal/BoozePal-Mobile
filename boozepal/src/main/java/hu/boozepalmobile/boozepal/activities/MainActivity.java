@@ -1,6 +1,5 @@
 package hu.boozepalmobile.boozepal.activities;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -17,17 +16,15 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 
-import hu.boozepalmobile.boozepal.application.BoozePalApplication;
 import hu.boozepalmobile.boozepal.fragments.MyPalFragment;
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.fragments.RequestFragment;
 import hu.boozepalmobile.boozepal.fragments.UserFragment;
-import hu.boozepalmobile.boozepal.models.Coordinate;
+import hu.boozepalmobile.boozepal.models.PalRequest;
 import hu.boozepalmobile.boozepal.models.Token;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.network.GetUserTask;
 
 public class MainActivity extends AppCompatActivity
         implements UserFragment.OnListFragmentInteractionListener, MyPalFragment.OnListFragmentInteractionListener, RequestFragment.OnListFragmentInteractionListener {
@@ -55,8 +52,11 @@ public class MainActivity extends AppCompatActivity
         Bundle b = getIntent().getExtras();
         if (b != null) {
             user = b.getParcelable("USER_DATA");
+            //user.setActualPals(new HashMap<Long, PalRequest>());
             token = b.getString("TOKEN");
         }
+
+        System.out.println(user.toString());
 
         Token.setToken(token);
 
@@ -74,10 +74,6 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        GetUserTask gt = new GetUserTask(getApplicationContext());
-        gt.execute(this.token);
-
-
         setupView();
     }
 
@@ -85,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
-        getSupportActionBar().setTitle(user.getName());
+        getSupportActionBar().setTitle(user.getUsername());
 
         ImageButton calendarButton = (ImageButton) toolbar.findViewById(R.id.calendar_button);
         calendarButton.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +206,7 @@ public class MainActivity extends AppCompatActivity
                 case 0:
                     return "BoozePals";
                 case 1:
-                    return "Requests";
+                    return "Request";
                 case 2:
                     return "MyPals";
             }

@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,36 +23,32 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.Address;
 import hu.boozepalmobile.boozepal.models.Drink;
-import hu.boozepalmobile.boozepal.models.DrinkType;
 import hu.boozepalmobile.boozepal.models.DrinkTypeEnum;
+import hu.boozepalmobile.boozepal.models.Pub;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.network.GetDrinkTask;
-import hu.boozepalmobile.boozepal.network.GetDrinkTaskResponse;
+import hu.boozepalmobile.boozepal.network.getdrink.GetDrinkTask;
+import hu.boozepalmobile.boozepal.network.getdrink.GetDrinkTaskResponse;
+import hu.boozepalmobile.boozepal.network.getpubs.GetPubTaskResponse;
+import hu.boozepalmobile.boozepal.network.getpubs.GetPubsTask;
 import hu.boozepalmobile.boozepal.utils.UpdateUserJSON;
 
-public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskResponse {
+public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskResponse, GetPubTaskResponse {
 
     private User user;
     private User modifiedUser;
@@ -69,12 +66,11 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
     private ImageButton addPub;
     private Spinner typeSpinner;
     private Spinner drinkSpinner;
-
-    private List<String> drinktype;
-    private List<String> drink;
+    private Spinner pubSpinner;
 
     private HashMap<DrinkTypeEnum, List<Drink>> drinks;
     private List<DrinkTypeEnum> types;
+    private List<Pub> pubs;
 
     private Button saveSettingsButton;
 
@@ -126,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
     void setupView() {
         editName = (EditText) findViewById(R.id.settings_edit_name);
         editName.setSelectAllOnFocus(true);
-        editName.setText(user.getName());
+        editName.setText(user.getUsername());
         editName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -138,13 +134,13 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
 
             @Override
             public void afterTextChanged(Editable s) {
-                modifiedUser.setName(String.valueOf(s.toString()));
+                modifiedUser.setUsername(String.valueOf(s.toString()));
             }
         });
 
         editCity = (EditText) findViewById(R.id.settings_edit_city);
         editCity.setSelectAllOnFocus(true);
-        editCity.setText(user.getCity());
+        editCity.setText(user.getAddress().getTown());
         editCity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -156,7 +152,9 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
 
             @Override
             public void afterTextChanged(Editable s) {
-                modifiedUser.setCity(String.valueOf(s.toString()));
+                Address address = modifiedUser.getAddress();
+                address.setTown(String.valueOf(s.toString()));
+                modifiedUser.setAddress(address);
             }
         });
 
@@ -203,11 +201,27 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
         pubListView = (ListView) findViewById(R.id.settings_publist);
 
         final ArrayAdapter BoozeAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, user.getBoozes());
+                android.R.layout.simple_list_item_1, user.getFavouriteDrinks());
         boozeListView.setAdapter(BoozeAdapter);
         final ArrayAdapter PubAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, user.getPubs());
+                android.R.layout.simple_list_item_1, user.getFavouritePub());
         pubListView.setAdapter(PubAdapter);
+
+        pubListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        boozeListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
 
         addBooze = (ImageButton) findViewById(R.id.settings_add_booze);
         addPub = (ImageButton) findViewById(R.id.settings_add_pub);
@@ -229,6 +243,10 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
         GetDrinkTask dt = new GetDrinkTask(getApplicationContext());
         dt.delegate = this;
         dt.execute();
+
+        GetPubsTask getPubsTask = new GetPubsTask(getApplicationContext());
+        getPubsTask.delegate = this;
+        getPubsTask.execute();
     }
 
     private void showAddBoozeDialog() {
@@ -279,7 +297,7 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
                         drinkSpinner.getSelectedItem().toString(),
                         drinkEnum));
                 final ArrayAdapter BoozeAdapter = new ArrayAdapter(SettingsActivity.this,
-                        android.R.layout.simple_list_item_1, modifiedUser.getBoozes());
+                        android.R.layout.simple_list_item_1, modifiedUser.getFavouriteDrinks());
                 boozeListView.setAdapter(BoozeAdapter);
                 //modifiedUser.addBooze(editBooze.getText().toString());
             }
@@ -296,17 +314,22 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
     private void showAddPubDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.fragment_add_list_dialog, null);
+        final View dialogView = inflater.inflate(R.layout.select_pub_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText editText = (EditText) dialogView.findViewById(R.id.settings_add_list_edit);
+        pubSpinner = (Spinner) dialogView.findViewById(R.id.select_pub_spinner);
 
-        dialogBuilder.setTitle("Add new pub");
-        dialogBuilder.setMessage("Enter the new pub");
+        ArrayAdapter<Pub> pubAdapter = new ArrayAdapter<Pub>(this, android.R.layout.simple_spinner_item, pubs);
+        pubSpinner.setAdapter(pubAdapter);
+
+        dialogBuilder.setTitle("Select new pub");
         dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Log.d("SettingsActivity", "Added new pub!");
-                //modifiedUser.addPub(editText.getText().toString());
+                modifiedUser.addPub(SettingsActivity.this.pubs.get(pubSpinner.getSelectedItemPosition()));
+                final ArrayAdapter PubAdapter = new ArrayAdapter(SettingsActivity.this,
+                        android.R.layout.simple_list_item_1, modifiedUser.getFavouritePub());
+                pubListView.setAdapter(PubAdapter);
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -327,6 +350,11 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
             this.drinktype.add(d.getDrinkType().getValue());
         }*/
 
+    }
+
+    @Override
+    public void onTaskFinished(ArrayList<Pub> pubs) {
+        this.pubs = pubs;
     }
 
     private class SaveSettingsTask extends AsyncTask<User, Void, String> {
@@ -360,6 +388,8 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
                 conn.connect();
 
                 UpdateUserJSON gson = new UpdateUserJSON(SettingsActivity.this.token, SettingsActivity.this.modifiedUser);
+
+                System.out.println(gson.toString());
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));

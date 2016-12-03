@@ -59,8 +59,8 @@ public class Coordinate implements Parcelable {
             return new Coordinate(in);
         }
 
-        public User[] newArray(int size) {
-            return new User[size];
+        public Coordinate[] newArray(int size) {
+            return new Coordinate[size];
         }
     };
 }

@@ -11,13 +11,11 @@ import java.util.List;
 
 import hu.boozepalmobile.boozepal.activities.PalDetailActivity;
 import hu.boozepalmobile.boozepal.R;
-import hu.boozepalmobile.boozepal.models.User;
 import hu.boozepalmobile.boozepal.fragments.UserFragment.OnListFragmentInteractionListener;
+import hu.boozepalmobile.boozepal.models.User;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link User} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
+ *
  */
 public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<CurrentPalsRecyclerViewAdapter.ViewHolder> {
 
@@ -43,8 +41,9 @@ public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<Current
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.user = mValues.get(position);
-        holder.nameView.setText(mValues.get(position).getName());
-        holder.cityView.setText(mValues.get(position).getCity());
+        holder.nameView.setText(mValues.get(position).getUsername());
+        if(mValues.get(position).getAddress() != null)
+            holder.cityView.setText(mValues.get(position).getAddress().getTown());
         //holder.mContentView.setText(mValues.get(position).content);
 
         final int f_position = position;

@@ -2,8 +2,6 @@ package hu.boozepalmobile.boozepal.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,16 +17,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.network.LoginResponse;
-import hu.boozepalmobile.boozepal.network.LoginTask;
+import hu.boozepalmobile.boozepal.network.login.LoginResponse;
+import hu.boozepalmobile.boozepal.network.login.LoginTask;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,

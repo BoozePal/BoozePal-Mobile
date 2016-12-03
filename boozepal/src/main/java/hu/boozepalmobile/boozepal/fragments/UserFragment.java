@@ -13,15 +13,16 @@ import android.widget.Toast;
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.adapters.CurrentPalsRecyclerViewAdapter;
 import hu.boozepalmobile.boozepal.models.Coordinate;
-import hu.boozepalmobile.boozepal.models.Token;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.network.FindPalsResponse;
-import hu.boozepalmobile.boozepal.network.FindPalsTask;
+import hu.boozepalmobile.boozepal.network.findpals.FindPalsResponse;
+import hu.boozepalmobile.boozepal.network.findpals.FindPalsTask;
 import hu.boozepalmobile.boozepal.utils.BoozePalLocation;
 
 import java.util.ArrayList;
 
-public class UserFragment extends Fragment implements FindPalsResponse{
+public class UserFragment extends Fragment implements FindPalsResponse {
+    private final String TAG = "UserFragment";
+
     private OnListFragmentInteractionListener mListener;
     private ArrayList<User> userList;
     private User user;
@@ -29,20 +30,9 @@ public class UserFragment extends Fragment implements FindPalsResponse{
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rv;
-    private CurrentPalsRecyclerViewAdapter adapter;
 
     public UserFragment() {
     }
-
-    /*public static UserFragment newInstance(List<User> userList) {
-        UserFragment fragment = new UserFragment();
-        this.userList = userList;
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +45,7 @@ public class UserFragment extends Fragment implements FindPalsResponse{
             this.userList = getArguments().getParcelableArrayList("CURRENT_PALS");
             this.user = getArguments().getParcelable("USER_DATA");
             this.token = getArguments().getString("TOKEN");
-            System.out.println(this.user.getName());
+            System.out.println(this.user.getUsername());
         }
     }
 
@@ -66,7 +56,6 @@ public class UserFragment extends Fragment implements FindPalsResponse{
 
         rv = (RecyclerView) view.findViewById(R.id.currentpal_list);
         refreshItems();
-        //rv.setAdapter(new CurrentPalsRecyclerViewAdapter(userList, mListener,user, token));
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.current_pal_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -86,26 +75,32 @@ public class UserFragment extends Fragment implements FindPalsResponse{
     }
 
 
-    void refreshItems(){
+    void refreshItems() {
         FindPalsTask fpTask = new FindPalsTask(getContext(), this.token);
         fpTask.delegate = this;
 
         BoozePalLocation bl = new BoozePalLocation(getContext());
-        Coordinate coord = new Coordinate(bl.getLocation().getLatitude(), bl.getLocation().getLongitude());
 
-        if(coord.getLatitude() == 0 || coord.getLongitude() == 0){
-            Toast toast = Toast.makeText(getContext(), "GPS is not enabled!", Toast.LENGTH_SHORT);
-            toast.show();
-            return;
+        System.out.println(bl.getLocation());
+
+        if (bl.getLocation() == null) {
+            Toast toast = Toast.makeText(getContext(), "GPS Location not found!", Toast.LENGTH_SHORT);
+        } else {
+            Coordinate coord = new Coordinate(bl.getLocation().getLatitude(), bl.getLocation().getLongitude());
+
+            if (coord.getLatitude() == 0 || coord.getLongitude() == 0) {
+                Toast toast = Toast.makeText(getContext(), "GPS is not enabled!", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+
+            System.out.println(user.toString());
+            user.setLastKnownCoordinate(coord);
+            fpTask.execute(this.user);
         }
-
-        user.setCurrentLocation(coord);
-        fpTask.execute(this.user);
-
-        //onItemsLoaded();
     }
 
-    void onItemsLoaded(){
+    void onItemsLoaded() {
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -129,9 +124,8 @@ public class UserFragment extends Fragment implements FindPalsResponse{
     @Override
     public void onTaskFinished(ArrayList<User> result) {
         userList = result;
-        rv.setAdapter(new CurrentPalsRecyclerViewAdapter(userList, mListener,user, token));
-        //rv.invalidate();
-        swipeRefreshLayout.setRefreshing(false);
+        rv.setAdapter(new CurrentPalsRecyclerViewAdapter(userList, mListener, user, token));
+        onItemsLoaded();
     }
 
     public interface OnListFragmentInteractionListener {

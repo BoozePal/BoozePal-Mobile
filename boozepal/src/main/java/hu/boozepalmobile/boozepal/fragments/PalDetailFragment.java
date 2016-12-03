@@ -1,25 +1,25 @@
 package hu.boozepalmobile.boozepal.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Parcel;
-import android.support.annotation.NonNull;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toolbar;
 import android.widget.Toolbar;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -32,13 +32,16 @@ import java.util.Date;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.activities.MainActivity;
+import hu.boozepalmobile.boozepal.models.Pub;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.network.RequestPalResponse;
-import hu.boozepalmobile.boozepal.network.RequestPalTask;
+import hu.boozepalmobile.boozepal.network.getpubs.GetPubTaskResponse;
+import hu.boozepalmobile.boozepal.network.getpubs.GetPubsTask;
+import hu.boozepalmobile.boozepal.network.requestpal.RequestPalResponse;
+import hu.boozepalmobile.boozepal.network.requestpal.RequestPalTask;
 import hu.boozepalmobile.boozepal.utils.CalendarDecorator;
 
-public class PalDetailFragment extends Fragment implements RequestPalResponse {
-    public static final String ARG_ITEM_ID = "item_id";
+public class PalDetailFragment extends Fragment implements RequestPalResponse, GetPubTaskResponse{
+    private final String TAG = "PalDetailFragment";
 
     private User userData;
     private User loggedUser;
@@ -52,8 +55,12 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
     private CollapsingToolbarLayout appBarLayout;
     public Toolbar toolbar;
     public ImageButton saveButton;
+    private Spinner pubSpinner;
 
     public CalendarDay selectedDay;
+    public Pub selectedPub;
+
+    public ArrayList<Pub> pubList;
 
     public PalDetailFragment() {
     }
@@ -67,7 +74,7 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
         if(getArguments().containsKey("USER_DATA")){
             userData = (User) getArguments().getParcelable("USER_DATA");
             if (appBarLayout != null) {
-                appBarLayout.setTitle(userData.getName());
+                appBarLayout.setTitle(userData.getUsername());
             }
             loggedUser = (User) getArguments().getParcelable("LOGGED_USER_DATA");
             token = getArguments().getString("TOKEN");
@@ -83,8 +90,10 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(PalDetailFragment.this.selectedDay != null){
-                    RequestPalTask rTask = new RequestPalTask(getContext(),PalDetailFragment.this.selectedDay.getDate());
+                Log.d(TAG, "Touched button!" + PalDetailFragment.this.selectedPub.toString());
+                if((PalDetailFragment.this.selectedDay != null) && (PalDetailFragment.this.selectedPub != null)){
+                    RequestPalTask rTask = new RequestPalTask(getContext(),PalDetailFragment.this.selectedDay.getDate(), PalDetailFragment.this.selectedPub);
+                    rTask.delegate = PalDetailFragment.this;
                     rTask.execute(PalDetailFragment.this.loggedUser, PalDetailFragment.this.userData);
                 }
             }
@@ -106,20 +115,20 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
                 .commit();
 
         if (userData != null) {
-            NameView.setText(userData.getName());
+            NameView.setText(userData.getUsername());
 
             final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
-                    android.R.layout.simple_list_item_1, userData.getBoozes());
+                    android.R.layout.simple_list_item_1, userData.getFavouriteDrinks());
             BoozeListView.setAdapter(BoozeAdapter);
             final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
-                    android.R.layout.simple_list_item_1, userData.getPubs());
+                    android.R.layout.simple_list_item_1, userData.getFavouritePub());
             PubListView.setAdapter(PubAdapter);
 
             ratingBar.setStepSize(1);
             ratingBar.setRating(userData.getPriceCategory());
 
             ArrayList<CalendarDay> calendarDays = new ArrayList<>();
-            for(Date d : userData.getSavedDates()){
+            for(Date d : userData.getTimeBoard()){
                 calendarDays.add(CalendarDay.from(d));
             }
             CalendarView.addDecorator(new CalendarDecorator(Color.BLUE,calendarDays));
@@ -128,6 +137,7 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
                 @Override
                 public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                     if(selected){
+                        showDialog();
                         selectedDay = date;
                     }
                     else{
@@ -137,7 +147,49 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
             });
         }
 
+        GetPubsTask gTask = new GetPubsTask(getContext());
+        gTask.delegate = this;
+        gTask.execute();
+
         return rootView;
+    }
+
+    private void showDialog(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.select_pub_dialog, null);
+
+        pubSpinner = (Spinner) dialogView.findViewById(R.id.select_pub_spinner);
+
+        ArrayAdapter<Pub> pubAdapter = new ArrayAdapter<Pub>(getContext(), android.R.layout.simple_spinner_item, pubList);
+        pubSpinner.setAdapter(pubAdapter);
+
+        pubSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedPub = pubList.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedPub = null;
+            }
+        });
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Select pub!");
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 
     @Override
@@ -147,5 +199,10 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse {
         intent.putExtra("USER_DATA", loggedUser);
         intent.putExtra("TOKEN", this.token);
         startActivity(intent);
+    }
+
+    @Override
+    public void onTaskFinished(ArrayList<Pub> pubs) {
+        this.pubList = pubs;
     }
 }

@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 
 import hu.boozepalmobile.boozepal.models.User;
 
+
 /**
  * Created by fanny on 2016.11.28..
  */
