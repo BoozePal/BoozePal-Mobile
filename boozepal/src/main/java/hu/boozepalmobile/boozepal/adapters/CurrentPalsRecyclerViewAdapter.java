@@ -19,6 +19,8 @@ import hu.boozepalmobile.boozepal.models.User;
  */
 public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<CurrentPalsRecyclerViewAdapter.ViewHolder> {
 
+    private final String TAG = "CurrentPalRVA";
+
     private User user;
     private String token;
     private final List<User> mValues;
@@ -42,9 +44,8 @@ public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<Current
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.user = mValues.get(position);
         holder.nameView.setText(mValues.get(position).getUsername());
-        if(mValues.get(position).getAddress() != null)
+        if (mValues.get(position).getAddress() != null)
             holder.cityView.setText(mValues.get(position).getAddress().getTown());
-        //holder.mContentView.setText(mValues.get(position).content);
 
         final int f_position = position;
 
@@ -52,8 +53,6 @@ public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<Current
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.user);
 
                     Intent intent = new Intent(v.getContext(), PalDetailActivity.class);
@@ -82,8 +81,6 @@ public class CurrentPalsRecyclerViewAdapter extends RecyclerView.Adapter<Current
             mView = view;
             nameView = (TextView) view.findViewById(R.id.fragment_pals_name);
             cityView = (TextView) view.findViewById(R.id.fragment_pals_city);
-           // System.out.println(user.getName());
-           // nameView.setText(user.getName());
         }
 
 

@@ -37,7 +37,8 @@ import hu.boozepalmobile.boozepal.network.getpubs.GetPubsTask;
 import hu.boozepalmobile.boozepal.network.requestpal.RequestPalResponse;
 import hu.boozepalmobile.boozepal.utils.CalendarDecorator;
 
-public class PalDetailFragment extends Fragment implements RequestPalResponse, GetPubTaskResponse{
+public class PalDetailFragment extends Fragment implements RequestPalResponse, GetPubTaskResponse {
+
     private final String TAG = "PalDetailFragment";
 
     private User userData;
@@ -51,12 +52,6 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse, G
     private MaterialCalendarView CalendarView;
     private CollapsingToolbarLayout appBarLayout;
     public Toolbar toolbar;
-    private ImageButton saveButton;
-    private Spinner pubSpinner;
-    private TimePicker timePicker;
-
-    private CalendarDay selectedDay;
-    private Pub selectedPub;
 
     public ArrayList<Pub> pubList;
 
@@ -69,12 +64,12 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse, G
         Activity activity = this.getActivity();
         appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_collapsing_detail);
 
-        if(getArguments().containsKey("USER_DATA")){
-            userData = (User) getArguments().getParcelable("USER_DATA");
+        if (getArguments().containsKey("USER_DATA")) {
+            userData = getArguments().getParcelable("USER_DATA");
             if (appBarLayout != null) {
                 appBarLayout.setTitle(userData.getUsername());
             }
-            loggedUser = (User) getArguments().getParcelable("LOGGED_USER_DATA");
+            loggedUser = getArguments().getParcelable("LOGGED_USER_DATA");
             token = getArguments().getString("TOKEN");
         }
     }
@@ -89,14 +84,11 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse, G
         PubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
         ratingBar = (RatingBar) rootView.findViewById(R.id.mypal_detail_price);
         CalendarView = (MaterialCalendarView) rootView.findViewById(R.id.detail_calendar_table);
-        CalendarView.setTileWidth(rootView.getWidth()/7);
-        CalendarView.setTileHeight(rootView.getWidth()/7);
+        CalendarView.setTileWidth(rootView.getWidth() / 7);
+        CalendarView.setTileHeight(rootView.getWidth() / 7);
         Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY,0);
-        //Calendar maxDate = Calendar.getInstance();
-        //maxDate.set(Calendar.MONTH,today.get(Calendar.MONTH) + 3);
+        today.set(Calendar.HOUR_OF_DAY, 0);
         CalendarView.state().edit().setMinimumDate(CalendarDay.from(today))
-                //.setMaximumDate(CalendarDay.from(maxDate))
                 .commit();
 
         if (userData != null) {
@@ -113,15 +105,15 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse, G
             ratingBar.setRating(userData.getPriceCategory());
 
             ArrayList<CalendarDay> calendarDays = new ArrayList<>();
-            for(Date d : userData.getTimeBoard()){
+            for (Date d : userData.getTimeBoard()) {
                 calendarDays.add(CalendarDay.from(d));
             }
-            CalendarView.addDecorator(new CalendarDecorator(Color.BLUE,calendarDays));
+            CalendarView.addDecorator(new CalendarDecorator(Color.BLUE, calendarDays));
 
             CalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
                 @Override
                 public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                    if(selected){
+                    if (selected) {
                         Intent intent = new Intent(PalDetailFragment.this.getContext(), RequestActivity.class);
                         intent.putExtra("USER_DATA", PalDetailFragment.this.userData);
                         intent.putExtra("LOGGED_USER_DATA", PalDetailFragment.this.loggedUser);
@@ -129,9 +121,6 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse, G
                         intent.putExtra("PUBLIST", PalDetailFragment.this.pubList);
                         intent.putExtra("SELECTED_DATE", date);
                         startActivity(intent);
-                    }
-                    else{
-                        selectedDay = null;
                     }
                 }
             });

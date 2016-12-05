@@ -114,10 +114,10 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
-    private void showProgressDialog() {
+   /* private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getString(R.string.loading));
+            //progressDialog.setMessage(getString(R.string.loading));
             progressDialog.setIndeterminate(true);
         }
 
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.hide();
         }
-    }
+    } */
 
     private void checkNetworkConnection() {
         ConnectivityManager connMgr = (ConnectivityManager)

@@ -51,7 +51,6 @@ public class GetPubsTask extends AsyncTask<String, Void, ArrayList<Pub>> {
     private ArrayList<Pub> getPubs() {
         URL url = null;
         InputStream is = null;
-        //List<Pub> result = new ArrayList<>();
         ArrayList<Pub> result = new ArrayList<>();
         try {
             url = new URL(context.getString(R.string.rest_url_getpubs));
@@ -82,8 +81,7 @@ public class GetPubsTask extends AsyncTask<String, Void, ArrayList<Pub>> {
             Gson gson = new Gson();
             ArrayList<Pub> pubs = gson.fromJson(sb.toString(), listType);
             result = pubs;
-            //for(Pub p: pubs)
-            //    result.put(p.getName(),p);
+            
             Log.d(TAG, pubs.toString());
 
         } catch (MalformedURLException e) {

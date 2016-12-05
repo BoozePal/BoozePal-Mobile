@@ -21,7 +21,7 @@ import hu.boozepalmobile.boozepal.utils.RespondRequestJSON;
  * Created by fanny on 2016.12.03..
  */
 
-public class RespondRequestTask extends AsyncTask<String,Void,Integer> {
+public class RespondRequestTask extends AsyncTask<String, Void, Integer> {
 
     private final String TAG = "RespontRequestTask";
 
@@ -50,7 +50,7 @@ public class RespondRequestTask extends AsyncTask<String,Void,Integer> {
         delegate.onTaskFinished(code);
     }
 
-    private Integer send(){
+    private Integer send() {
         URL url = null;
         InputStream is = null;
         Integer result = null;
@@ -77,8 +77,6 @@ public class RespondRequestTask extends AsyncTask<String,Void,Integer> {
             writer.close();
             os.close();
 
-            System.out.println(conn.getResponseMessage());
-
             if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Log.d(TAG, "Request OK");
             } else {
@@ -91,7 +89,7 @@ public class RespondRequestTask extends AsyncTask<String,Void,Integer> {
             e.printStackTrace();
         }
 
-        Log.d(TAG,"RequestPalTask ended!");
+        Log.d(TAG, "RequestPalTask ended!");
         return result;
     }
 }

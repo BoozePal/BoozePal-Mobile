@@ -42,9 +42,9 @@ public class MyPalsRecyclerViewAdapter extends RecyclerView.Adapter<MyPalsRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = users.get(position);
-        if(users.get(position).getUser() != null) {
+        if (users.get(position).getUser() != null) {
             holder.NameView.setText(users.get(position).getUser().getUsername());
-            if(users.get(position).getUser().getAddress() != null)
+            if (users.get(position).getUser().getAddress() != null)
                 holder.CityView.setText(users.get(position).getUser().getAddress().getTown());
         }
 

@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by fanny on 2016.11.30..
  */
 
-public class PalRequest implements Parcelable{
+public class PalRequest implements Parcelable {
     private Long requesterUserId;
     private Pub pub;
     private Date date;

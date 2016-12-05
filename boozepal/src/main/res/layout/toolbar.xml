@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimary">
 
     <ImageButton
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:src="@mipmap/ic_exit_to_app_white_24dp"
-        android:layout_gravity="end"
-        android:background="@android:color/transparent"
         android:id="@+id/logout_button"
-        android:layout_marginRight="30dp" />
-
-    <ImageButton
         android:layout_width="30dp"
         android:layout_height="match_parent"
-        android:src="@mipmap/ic_settings_white_24dp"
         android:layout_gravity="end"
+        android:layout_marginRight="30dp"
         android:background="@android:color/transparent"
+        android:src="@mipmap/ic_exit_to_app_white_24dp" />
+
+    <ImageButton
         android:id="@+id/setting_button"
-        android:layout_marginRight="30dp" />
-
-    <ImageButton
         android:layout_width="30dp"
         android:layout_height="match_parent"
-        android:src="@mipmap/ic_date_range_white_24dp"
         android:layout_gravity="end"
+        android:layout_marginRight="30dp"
         android:background="@android:color/transparent"
+        android:src="@mipmap/ic_settings_white_24dp" />
+
+    <ImageButton
         android:id="@+id/calendar_button"
-        android:layout_marginRight="30dp" />
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginRight="30dp"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_date_range_white_24dp" />
 
 </android.support.v7.widget.Toolbar>

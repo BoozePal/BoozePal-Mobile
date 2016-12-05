@@ -3,152 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="1000dp"
-    android:stretchColumns="0,1,2"
-    >
+    android:stretchColumns="0,1,2">
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Name:"
-            android:layout_alignParentTop="true"
             android:id="@+id/settings_label_name"
-            android:textSize="16sp"
-            android:textAlignment="textEnd"
-            android:layout_gravity="bottom"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_width="60dp" />
+            android:layout_alignParentTop="true"
+            android:layout_gravity="bottom"
+            android:text="Name:"
+            android:textAlignment="textEnd"
+            android:textSize="16sp" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
             android:id="@+id/settings_edit_name"
-            android:textSize="16sp"
-            android:layout_alignTop="@+id/settings_label_name"
-            android:layout_alignLeft="@+id/settings_boozelist"
-            android:layout_alignStart="@+id/settings_boozelist"
-            android:layout_gravity="bottom"
-            android:layout_height="wrap_content" />
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-        <TextView
-            android:text="City:"
-            android:layout_width="90dp"
-            android:layout_gravity="bottom"
-            android:id="@+id/settings_label_city"
-            android:textSize="16sp"
-            android:textAlignment="textEnd"
-            android:layout_below="@+id/settings_publist"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/settings_label_pub"
-            android:layout_alignEnd="@+id/settings_label_pub"
-            android:layout_height="wrap_content" />
-
-        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/settings_edit_city"
-            android:layout_gravity="bottom"
-            android:textSize="16sp"
-            android:layout_alignTop="@+id/settings_label_city"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginEnd="15dp" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="Favourite pub:"
-                android:layout_width="match_parent"
-                android:id="@+id/settings_label_pub"
-                android:textSize="16sp"
-                android:textAlignment="textEnd"
-                android:layout_below="@+id/settings_boozelist"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="44dp"
-                android:layout_alignRight="@+id/settings_label_booze"
-                android:layout_alignEnd="@+id/settings_label_booze"
-                android:layout_height="wrap_content" />
-
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/settings_label_pub"
-                android:layout_alignRight="@+id/settings_label_pub"
-                android:layout_alignEnd="@+id/settings_label_pub"
-                android:background="@android:color/transparent"
-                android:src="@mipmap/ic_add_circle_outline_black_48dp"
-                android:id="@+id/settings_add_pub" />
-        </LinearLayout>
-
-        <ListView
-            android:layout_width="match_parent"
             android:layout_alignLeft="@+id/settings_boozelist"
             android:layout_alignStart="@+id/settings_boozelist"
-            android:layout_alignTop="@+id/settings_label_pub"
-            android:id="@+id/settings_publist"
-            android:layout_height="150dp" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="Favourite booze:"
-                android:layout_width="match_parent"
-                android:id="@+id/settings_label_booze"
-                android:textSize="16sp"
-                android:textAlignment="textEnd"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/settings_label_name"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="12dp" />
-
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/settings_label_booze"
-                android:layout_alignRight="@+id/settings_label_booze"
-                android:layout_alignEnd="@+id/settings_label_booze"
-                android:layout_marginTop="13dp"
-                android:background="@android:color/transparent"
-                android:src="@mipmap/ic_add_circle_outline_black_48dp"
-                android:id="@+id/settings_add_booze" />
-        </LinearLayout>
-
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:id="@+id/settings_boozelist" />
+            android:layout_alignTop="@+id/settings_label_name"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="16sp" />
 
     </TableRow>
 
@@ -157,80 +38,196 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:text="Price:"
+            android:id="@+id/settings_label_city"
             android:layout_width="90dp"
-            android:id="@+id/settings_label_price"
-            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/settings_label_pub"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/settings_label_pub"
+            android:layout_below="@+id/settings_publist"
+            android:layout_gravity="bottom"
+            android:text="City:"
             android:textAlignment="textEnd"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/settings_edit_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/settings_label_city"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="16sp" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/settings_label_pub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/settings_label_booze"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/settings_label_booze"
+                android:layout_below="@+id/settings_boozelist"
+                android:layout_marginTop="44dp"
+                android:text="Favourite pub:"
+                android:textAlignment="textEnd"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/settings_add_pub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/settings_label_pub"
+                android:layout_alignRight="@+id/settings_label_pub"
+                android:layout_below="@+id/settings_label_pub"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/ic_add_circle_outline_black_48dp" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/settings_publist"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignLeft="@+id/settings_boozelist"
+            android:layout_alignStart="@+id/settings_boozelist"
+            android:layout_alignTop="@+id/settings_label_pub" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/settings_label_booze"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/settings_label_name"
+                android:layout_marginTop="12dp"
+                android:text="Favourite booze:"
+                android:textAlignment="textEnd"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/settings_add_booze"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/settings_label_booze"
+                android:layout_alignRight="@+id/settings_label_booze"
+                android:layout_below="@+id/settings_label_booze"
+                android:layout_marginTop="13dp"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/ic_add_circle_outline_black_48dp" />
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/settings_boozelist"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/settings_label_price"
+            android:layout_width="90dp"
             android:layout_height="40dp"
-            android:layout_below="@+id/settings_label_city"
             android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView" />
+            android:layout_alignStart="@+id/textView"
+            android:layout_below="@+id/settings_label_city"
+            android:text="Price:"
+            android:textAlignment="textEnd"
+            android:textSize="16sp" />
 
         <RatingBar
-            android:layout_height="wrap_content"
             android:id="@+id/settings_edit_price"
-            android:stepSize="1"
-            android:max="4"
             android:layout_width="190dp"
-            android:layout_below="@+id/settings_label_price"
+            android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/settings_edit_city"
             android:layout_alignStart="@+id/settings_edit_city"
-             />
+            android:layout_below="@+id/settings_label_price"
+            android:max="4"
+            android:stepSize="1" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <TextView
-            android:text="Search Radius:"
             android:id="@+id/textView"
-            android:textSize="16sp"
-            android:textAlignment="textEnd"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/settings_edit_price"
             android:layout_alignLeft="@+id/edit_settings_button"
             android:layout_alignStart="@+id/edit_settings_button"
+            android:layout_below="@+id/settings_edit_price"
             android:layout_marginLeft="14dp"
             android:layout_marginStart="14dp"
-            android:layout_width="wrap_content" />
+            android:text="Search Radius:"
+            android:textAlignment="textEnd"
+            android:textSize="16sp" />
 
         <SeekBar
+            android:id="@+id/settings_edit_radius"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView"
-            android:layout_marginBottom="11dp"
-            android:id="@+id/settings_edit_radius"
             android:layout_alignLeft="@+id/settings_edit_price"
             android:layout_alignStart="@+id/settings_edit_price"
-            android:layout_width="140dp"
-            android:max="120"/>
+            android:layout_marginBottom="11dp"
+            android:max="120" />
 
         <TextView
-            android:text="km"
+            android:id="@+id/settings_label_km"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/settings_edit_radius"
-            android:layout_alignRight="@+id/settings_edit_price"
             android:layout_alignEnd="@+id/settings_edit_price"
-            android:id="@+id/settings_label_km" />
+            android:layout_alignRight="@+id/settings_edit_price"
+            android:layout_alignTop="@+id/settings_edit_radius"
+            android:text="km" />
 
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <Button
-            android:text="Save changes"
+            android:id="@+id/edit_settings_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_settings_button"
             android:layout_below="@+id/textView"
-            android:layout_toRightOf="@+id/settings_edit_gender_radiogroup"
-            android:layout_toEndOf="@+id/settings_edit_gender_radiogroup"
             android:layout_marginLeft="13dp"
-            android:layout_marginStart="13dp" />
+            android:layout_marginStart="13dp"
+            android:layout_toEndOf="@+id/settings_edit_gender_radiogroup"
+            android:layout_toRightOf="@+id/settings_edit_gender_radiogroup"
+            android:text="Save changes" />
     </TableRow>
 
     <!-- <ListView

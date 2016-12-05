@@ -9,27 +9,30 @@ import android.os.Parcelable;
 
 public class Pub implements Parcelable {
 
+    /**
+     * ID of the pub.
+     */
     private Long id;
 
+    /**
+     * Name of the pub.
+     */
     private String name;
 
+    /**
+     * Address of the pub.
+     */
     private Address address;
 
+    /**
+     * The open hours.
+     */
     private String openHours;
 
+    /**
+     * Price category of the pub.
+     */
     private Integer priceCategory;
-
-    /*private Long id;
-
-    private String name;
-
-    private String town;*/
-
-    /*public Pub(Long id, String name, String town) {
-        this.id = id;
-        this.name = name;
-        this.town = town;
-    }*/
 
     public Pub(Long id, String name, Address address, String openHours, Integer priceCategory) {
         this.id = id;
@@ -79,34 +82,9 @@ public class Pub implements Parcelable {
         this.priceCategory = priceCategory;
     }
 
-    /*public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTown() {
-        return town;
-    }
-
-    public void setTown(String town) {
-        this.town = town;
-    }*/
-
     public Pub(Parcel in) {
         this.id = in.readLong();
         this.name = in.readString();
-        //this.town = in.readString();
         this.address = in.readParcelable(Address.class.getClassLoader());
         this.openHours = in.readString();
         this.priceCategory = in.readInt();
@@ -121,7 +99,6 @@ public class Pub implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeString(this.name);
-        //dest.writeString(this.town);
         dest.writeParcelable(this.address, 0);
         dest.writeString(this.openHours);
         dest.writeInt(this.priceCategory);

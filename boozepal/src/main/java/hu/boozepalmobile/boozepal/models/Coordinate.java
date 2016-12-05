@@ -9,8 +9,14 @@ import android.os.Parcelable;
 
 public class Coordinate implements Parcelable {
 
+    /**
+     * Latitud of the coordinate (x)
+     */
     private double latitude;
 
+    /**
+     * Longitude of the coordinate (y)
+     */
     private double longitude;
 
     public Coordinate() {

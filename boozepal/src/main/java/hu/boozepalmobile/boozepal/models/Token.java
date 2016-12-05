@@ -7,13 +7,15 @@ package hu.boozepalmobile.boozepal.models;
 public class Token {
     private static String token;
 
-    public Token(String token){
+    public Token(String token) {
         this.token = token;
     }
 
-    public static String getToken() {return token;}
+    public static String getToken() {
+        return token;
+    }
 
     public static void setToken(String t) {
-        System.out.println("lol");
-        token = t;}
+        token = t;
+    }
 }

@@ -78,8 +78,6 @@ public class RequestPalTask extends AsyncTask<User, Void, User> {
             writer.close();
             os.close();
 
-            System.out.println(conn.getResponseMessage());
-
             if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Log.d(TAG, "Request OK");
                 result = loggedUser;

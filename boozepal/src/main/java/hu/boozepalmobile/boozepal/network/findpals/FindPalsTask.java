@@ -50,7 +50,7 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
 
     @Override
     protected ArrayList<User> doInBackground(User... params) {
-        Log.d(TAG,"FindPalsTask started!");
+        Log.d(TAG, "FindPalsTask started!");
         ArrayList<User> users = findPals(params[0]);
         return users;
     }
@@ -78,8 +78,7 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
             conn.setDoOutput(true);
             conn.connect();
 
-            //FindPalsJSON js = new FindPalsJSON(this.token, user);
-            String js = new GsonBuilder().create().toJson(user,User.class);
+            String js = new GsonBuilder().create().toJson(user, User.class);
 
             System.out.println(user.toString());
             System.out.println(js.toString());
@@ -90,7 +89,6 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
             writer.close();
             os.close();
 
-            //Read
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
             String line = null;
@@ -119,7 +117,7 @@ public class FindPalsTask extends AsyncTask<User, Void, ArrayList<User>> {
             e.printStackTrace();
         }
 
-        Log.d(TAG,"FindPalsTask ended!");
+        Log.d(TAG, "FindPalsTask ended!");
         return users;
 
     }

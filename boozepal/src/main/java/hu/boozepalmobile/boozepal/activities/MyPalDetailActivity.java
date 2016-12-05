@@ -16,6 +16,9 @@ import hu.boozepalmobile.boozepal.models.User;
 import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 
 public class MyPalDetailActivity extends AppCompatActivity {
+
+    private final String TAG = "MyPalDetailActivity";
+
     private User loggedUser;
     private String token;
     private UIPalRequest request;

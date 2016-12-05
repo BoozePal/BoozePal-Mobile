@@ -9,10 +9,19 @@ import android.os.Parcelable;
 
 public class Drink implements Parcelable {
 
+    /**
+     *
+     */
     private int id;
 
+    /**
+     * Name of th booze.
+     */
     private String name;
 
+    /**
+     * Type of the booze.
+     */
     private DrinkTypeEnum drinkType;
 
     public Drink(int id, String name, DrinkTypeEnum drinkType) {

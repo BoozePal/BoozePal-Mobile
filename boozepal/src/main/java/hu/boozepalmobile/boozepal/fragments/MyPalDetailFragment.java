@@ -27,7 +27,6 @@ import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 public class MyPalDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
 
-    //private User UserData;
     private User loggedUser;
     private UIPalRequest request;
     private String token;
@@ -48,7 +47,6 @@ public class MyPalDetailFragment extends Fragment {
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_collapsing_mypaldetail);
 
-        //UserData = (User) getArguments().getParcelable("USER_DATA");
         request = (UIPalRequest) getArguments().getParcelable("SELECTED_USER_DATA");
         if (appBarLayout != null) {
             appBarLayout.setTitle(request.getUser().getUsername());
@@ -73,12 +71,10 @@ public class MyPalDetailFragment extends Fragment {
             nameView.setText(user.getUsername());
 
             if(user.getFavouriteDrinks().isEmpty()){
-                System.out.println("lel");
                 final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
                         android.R.layout.simple_list_item_1, Arrays.asList("Opps - user has no favourite drink :("));
                 boozeListView.setAdapter(BoozeAdapter);
             }else{
-                System.out.println("lele");
                 final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
                         android.R.layout.simple_list_item_1, user.getFavouriteDrinks());
                 boozeListView.setAdapter(BoozeAdapter);

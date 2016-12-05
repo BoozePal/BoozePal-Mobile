@@ -23,7 +23,8 @@ import hu.boozepalmobile.boozepal.network.getuser.GetUserResponse;
 import hu.boozepalmobile.boozepal.network.getuser.GetUserTask;
 import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 
-public class MyPalFragment extends Fragment implements GetUserResponse, GetPalResponse{
+public class MyPalFragment extends Fragment implements GetUserResponse, GetPalResponse {
+
     private final String TAG = "MyPalFragment";
 
     private OnListFragmentInteractionListener mListener;
@@ -35,6 +36,7 @@ public class MyPalFragment extends Fragment implements GetUserResponse, GetPalRe
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rv;
+
     public MyPalFragment() {
     }
 
@@ -46,13 +48,6 @@ public class MyPalFragment extends Fragment implements GetUserResponse, GetPalRe
 
         if (getArguments() != null) {
             this.user = getArguments().getParcelable("USER_DATA");
-            //this.requestList = new ArrayList<>(user.getActualPals().values());
-            /*ArrayList<PalRequest> list = new ArrayList<>(user.getActualPals().values());
-            requestList = new ArrayList<>();
-            for(PalRequest p: list){
-                if(!p.isAccepted())
-                    this.requestList.add(p);
-            }*/
             this.token = getArguments().getString("TOKEN");
             System.out.println(this.user.getUsername());
         }
@@ -80,9 +75,9 @@ public class MyPalFragment extends Fragment implements GetUserResponse, GetPalRe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        for(PalRequest pal: this.user.getActualPals().values()){
+        for (PalRequest pal : this.user.getActualPals().values()) {
             Log.d(TAG, pal.getRequesterUserId().toString());
-            if(pal.isAccepted()){
+            if (pal.isAccepted()) {
                 GetPalTask gt = new GetPalTask(getContext());
                 gt.delegate = this;
                 gt.execute(pal.getRequesterUserId());
@@ -115,11 +110,11 @@ public class MyPalFragment extends Fragment implements GetUserResponse, GetPalRe
 
     @Override
     public void onTaskFinished(User user, String tag) {
-        if(tag.equals("GETUSER")){
+        if (tag.equals("GETUSER")) {
             this.requestList = new ArrayList<>();
-            for(PalRequest pal: this.user.getActualPals().values()){
+            for (PalRequest pal : this.user.getActualPals().values()) {
                 Log.d(TAG, pal.getRequesterUserId().toString());
-                if(pal.isAccepted()){
+                if (pal.isAccepted()) {
                     GetPalTask gt = new GetPalTask(getContext());
                     gt.delegate = this;
                     gt.execute(pal.getRequesterUserId());
@@ -127,10 +122,9 @@ public class MyPalFragment extends Fragment implements GetUserResponse, GetPalRe
             }
             rv.setAdapter(new MyPalsRecyclerViewAdapter(requestList, mListener, user, token));
             swipeRefreshLayout.setRefreshing(false);
-        }
-        else if(tag.equals("GETPAL")){
-            for(Long l: this.user.getActualPals().keySet()){
-                if(this.user.getActualPals().get(l).getRequesterUserId().equals(user.getId())){
+        } else if (tag.equals("GETPAL")) {
+            for (Long l : this.user.getActualPals().keySet()) {
+                if (this.user.getActualPals().get(l).getRequesterUserId().equals(user.getId())) {
                     PalRequest pr = this.user.getActualPals().get(l);
                     UIPalRequest p = new UIPalRequest(user, pr.getPub(), pr.getDate(), pr.isAccepted());
                     this.requestList.add(p);

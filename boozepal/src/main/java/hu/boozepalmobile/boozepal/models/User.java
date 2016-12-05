@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by fanny on 2016.11.30..
  */
 
-public class User implements Parcelable{
+public class User implements Parcelable {
 
     private Long id;
 
@@ -42,23 +42,6 @@ public class User implements Parcelable{
     private boolean loggedIn;
 
     private List<Date> timeBoard;
-
-
-    /*public User(Long id, String username, String password, String email, boolean remove, List<Drink> favouriteDrinks, List<Pub> favouritePub, int priceCategory, Address address, Coordinate lastKnownCoordinate, int searchRadius, boolean loggedIn, List<Date> timeBoard) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.remove = remove;
-        this.favouriteDrinks = favouriteDrinks;
-        this.favouritePub = favouritePub;
-        this.priceCategory = priceCategory;
-        this.address = address;
-        this.lastKnownCoordinate = lastKnownCoordinate;
-        this.searchRadius = searchRadius;
-        this.loggedIn = loggedIn;
-        this.timeBoard = timeBoard;
-    }*/
 
     public User(Long id, String username, String password, String email, boolean remove, List<Drink> favouriteDrinks, List<Pub> favouritePub, int priceCategory, Address address, Coordinate lastKnownCoordinate, int searchRadius, Map<Long, PalRequest> actualPals, boolean loggedIn, List<Date> timeBoard) {
         this.id = id;
@@ -189,14 +172,14 @@ public class User implements Parcelable{
         this.timeBoard = timeBoard;
     }
 
-    public User(){
+    public User() {
         this.favouriteDrinks = new ArrayList<>();
         this.favouritePub = new ArrayList<>();
         this.timeBoard = new ArrayList<>();
         this.actualPals = new HashMap<>();
     }
 
-    public User(Parcel in){
+    public User(Parcel in) {
         this.id = in.readLong();
         this.username = in.readString();
         this.password = in.readString();
@@ -212,10 +195,10 @@ public class User implements Parcelable{
         this.searchRadius = in.readInt();
         int size = in.readInt();
         this.actualPals = new HashMap<>();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             Long key = in.readLong();
             PalRequest value = in.readParcelable(PalRequest.class.getClassLoader());
-            this.actualPals.put(key,value);
+            this.actualPals.put(key, value);
         }
         this.loggedIn = in.readByte() != 0;
         this.timeBoard = new ArrayList<>();
@@ -237,13 +220,13 @@ public class User implements Parcelable{
         dest.writeList(this.favouriteDrinks);
         dest.writeList(this.favouritePub);
         dest.writeInt(this.priceCategory);
-        dest.writeParcelable(this.address,0);
-        dest.writeParcelable(this.lastKnownCoordinate,0);
+        dest.writeParcelable(this.address, 0);
+        dest.writeParcelable(this.lastKnownCoordinate, 0);
         dest.writeInt(this.searchRadius);
         dest.writeInt(actualPals.size());
-        for(Map.Entry<Long,PalRequest> entry : actualPals.entrySet()){
+        for (Map.Entry<Long, PalRequest> entry : actualPals.entrySet()) {
             dest.writeLong(entry.getKey());
-            dest.writeParcelable(entry.getValue(),0);
+            dest.writeParcelable(entry.getValue(), 0);
         }
         dest.writeByte((byte) (loggedIn ? 1 : 0));
         dest.writeList(this.timeBoard);

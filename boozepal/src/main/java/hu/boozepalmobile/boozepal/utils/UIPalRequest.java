@@ -52,7 +52,7 @@ public class UIPalRequest implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.requesterUser,0);
+        dest.writeParcelable(this.requesterUser, 0);
         dest.writeParcelable(pub, 0);
         dest.writeLong(date.getTime());
         dest.writeByte((byte) (accepted ? 1 : 0));
@@ -90,7 +90,7 @@ public class UIPalRequest implements Parcelable {
         this.accepted = accepted;
     }
 
-   public User getUser() {
+    public User getUser() {
         return requesterUser;
     }
 

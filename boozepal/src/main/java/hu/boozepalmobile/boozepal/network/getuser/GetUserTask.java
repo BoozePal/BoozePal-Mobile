@@ -79,7 +79,7 @@ public class GetUserTask extends AsyncTask<String, Void, User> {
                 public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                     return new Date(json.getAsJsonPrimitive().getAsLong());
                 }
-            }).create().fromJson(sb.toString(),User.class);
+            }).create().fromJson(sb.toString(), User.class);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

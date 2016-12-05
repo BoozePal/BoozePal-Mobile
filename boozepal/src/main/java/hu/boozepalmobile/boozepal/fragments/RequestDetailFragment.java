@@ -21,7 +21,7 @@ import hu.boozepalmobile.boozepal.network.getuser.GetUserTask;
 import hu.boozepalmobile.boozepal.network.respontrequest.RespondRequestResponse;
 import hu.boozepalmobile.boozepal.network.respontrequest.RespondRequestTask;
 
-public class RequestDetailFragment extends Fragment implements RespondRequestResponse, GetUserResponse{
+public class RequestDetailFragment extends Fragment implements RespondRequestResponse, GetUserResponse {
     private User userData;
     private String token;
     private User loggedUser;
@@ -29,9 +29,6 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
     public TextView NameView;
     public ListView BoozeListView;
     public ListView PubListView;
-
-    //private Button acceptButton;
-    //private Button denyButton;
 
     private FloatingActionButton acceptButton;
     private FloatingActionButton denyButton;
@@ -69,16 +66,13 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
         BoozeListView = (ListView) rootView.findViewById(R.id.mypal_boozelist);
         PubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
 
-        //acceptButton = (Button) rootView.findViewById(R.id.accept_button);
-        //denyButton = (Button) rootView.findViewById(R.id.deny_button);
-
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RespondRequestTask rt = new RespondRequestTask(RequestDetailFragment.this.getContext(),
-                                                                RequestDetailFragment.this.loggedUser.getId(),
-                                                                RequestDetailFragment.this.userData.getId(),
-                                                                true);
+                        RequestDetailFragment.this.loggedUser.getId(),
+                        RequestDetailFragment.this.userData.getId(),
+                        true);
                 rt.delegate = RequestDetailFragment.this;
                 rt.execute();
             }
@@ -119,7 +113,7 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
 
     @Override
     public void onTaskFinished(User user, String tag) {
-        if(tag.equals("GETUSER")){
+        if (tag.equals("GETUSER")) {
             Intent intent = new Intent(getContext(), MainActivity.class);
             intent.putExtra("USER_DATA", user);
             intent.putExtra("TOKEN", token);

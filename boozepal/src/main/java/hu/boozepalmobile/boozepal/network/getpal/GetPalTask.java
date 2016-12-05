@@ -36,7 +36,7 @@ public class GetPalTask extends AsyncTask<Long, Void, User> {
 
     private Context context;
 
-    public GetPalTask(Context context){
+    public GetPalTask(Context context) {
         this.context = context;
     }
 
@@ -49,11 +49,11 @@ public class GetPalTask extends AsyncTask<Long, Void, User> {
     @Override
     protected void onPostExecute(User user) {
         super.onPostExecute(user);
-        if(this.delegate != null)
+        if (this.delegate != null)
             this.delegate.onTaskFinished(user, "GETPAL");
     }
 
-    private User getPal(Long id){
+    private User getPal(Long id) {
         URL url = null;
         InputStream is = null;
         User result = null;

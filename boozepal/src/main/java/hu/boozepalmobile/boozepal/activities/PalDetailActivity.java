@@ -16,6 +16,8 @@ import hu.boozepalmobile.boozepal.models.User;
 
 public class PalDetailActivity extends AppCompatActivity {
 
+    private final String TAG = "PalDetailActivity";
+
     private User loggedUser;
     private User user;
     private String token;
@@ -28,7 +30,6 @@ public class PalDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

@@ -21,6 +21,7 @@ import hu.boozepalmobile.boozepal.utils.BoozePalLocation;
 import java.util.ArrayList;
 
 public class UserFragment extends Fragment implements FindPalsResponse {
+
     private final String TAG = "UserFragment";
 
     private OnListFragmentInteractionListener mListener;
@@ -45,7 +46,6 @@ public class UserFragment extends Fragment implements FindPalsResponse {
             this.userList = getArguments().getParcelableArrayList("CURRENT_PALS");
             this.user = getArguments().getParcelable("USER_DATA");
             this.token = getArguments().getString("TOKEN");
-            System.out.println(this.user.getUsername());
         }
     }
 
@@ -65,11 +65,6 @@ public class UserFragment extends Fragment implements FindPalsResponse {
                 refreshItems();
             }
         });
-        // Set the adapter
-       /* if (view instanceof RecyclerView) {
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setAdapter(new CurrentPalsRecyclerViewAdapter(userList, mListener,user, token));
-        }*/
 
         return view;
     }
@@ -85,6 +80,7 @@ public class UserFragment extends Fragment implements FindPalsResponse {
 
         if (bl.getLocation() == null) {
             Toast toast = Toast.makeText(getContext(), "GPS Location not found!", Toast.LENGTH_SHORT);
+            toast.show();
         } else {
             Coordinate coord = new Coordinate(bl.getLocation().getLatitude(), bl.getLocation().getLongitude());
 

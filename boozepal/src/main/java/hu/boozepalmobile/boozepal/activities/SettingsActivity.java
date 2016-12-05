@@ -50,6 +50,8 @@ import hu.boozepalmobile.boozepal.utils.UpdateUserJSON;
 
 public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskResponse, GetPubTaskResponse {
 
+    private final String TAG = "SettingsActivity";
+
     private User user;
     private User modifiedUser;
 
@@ -140,7 +142,7 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
 
         editCity = (EditText) findViewById(R.id.settings_edit_city);
         editCity.setSelectAllOnFocus(true);
-        if(user.getAddress() != null)
+        if (user.getAddress() != null)
             editCity.setText(user.getAddress().getTown());
         editCity.addTextChangedListener(new TextWatcher() {
             @Override
@@ -345,12 +347,6 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
     @Override
     public void onTaskFinished(HashMap<DrinkTypeEnum, List<Drink>> result) {
         this.drinks = result;
-        /*this.drinks = result;
-        this.drinktype = new ArrayList<>();
-        for(DrinkType d : result){
-            this.drinktype.add(d.getDrinkType().getValue());
-        }*/
-
     }
 
     @Override

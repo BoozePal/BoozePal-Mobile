@@ -41,7 +41,7 @@ public class GetDrinkTask extends AsyncTask<String, Void, HashMap<DrinkTypeEnum,
 
     @Override
     protected HashMap<DrinkTypeEnum, List<Drink>> doInBackground(String... params) {
-        Log.d(TAG,"GetDrinkTask started!");
+        Log.d(TAG, "GetDrinkTask started!");
         return getDrinks();
     }
 
@@ -119,7 +119,7 @@ public class GetDrinkTask extends AsyncTask<String, Void, HashMap<DrinkTypeEnum,
             e.printStackTrace();
         }
 
-        Log.d(TAG,"GetDrinkTask ended!");
+        Log.d(TAG, "GetDrinkTask ended!");
         return drinkTypes;
     }
 }

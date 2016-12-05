@@ -29,6 +29,8 @@ import hu.boozepalmobile.boozepal.models.User;
 public class MainActivity extends AppCompatActivity
         implements UserFragment.OnListFragmentInteractionListener, MyPalFragment.OnListFragmentInteractionListener, RequestFragment.OnListFragmentInteractionListener {
 
+    private final String TAG = "MainActivity";
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
@@ -45,14 +47,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*Token.setToken(token);
-        String t = Token.getToken();
-        System.out.println("main" + t);*/
-
         Bundle b = getIntent().getExtras();
         if (b != null) {
             user = b.getParcelable("USER_DATA");
-            //user.setActualPals(new HashMap<Long, PalRequest>());
             token = b.getString("TOKEN");
         }
 
@@ -80,7 +77,6 @@ public class MainActivity extends AppCompatActivity
     void setupView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //toolbar.setTitle(getTitle());
         getSupportActionBar().setTitle(user.getUsername());
 
         ImageButton calendarButton = (ImageButton) toolbar.findViewById(R.id.calendar_button);
@@ -128,7 +124,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -192,7 +187,6 @@ public class MainActivity extends AppCompatActivity
             }
 
             return null;
-            //return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override

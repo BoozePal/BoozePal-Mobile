@@ -90,7 +90,6 @@ public class LoginTask extends AsyncTask<String, Void, User> {
             writer.close();
             os.close();
 
-            //Read
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
             String line = null;
@@ -102,36 +101,33 @@ public class LoginTask extends AsyncTask<String, Void, User> {
 
             br.close();
 
-            Log.d(TAG,sb.toString());
-
             User user = new GsonBuilder().registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                 public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                     return new Date(json.getAsJsonPrimitive().getAsLong());
                 }
-            }).enableComplexMapKeySerialization().create().fromJson(sb.toString(),User.class);
+            }).enableComplexMapKeySerialization().create().fromJson(sb.toString(), User.class);
 
-            if(user.getActualPals() == null)
+            if (user.getActualPals() == null)
                 user.setActualPals(new HashMap<Long, PalRequest>());
 
-            if(user.getTimeBoard() == null)
+            if (user.getTimeBoard() == null)
                 user.setTimeBoard(new ArrayList<Date>());
 
-            if(user.getFavouriteDrinks() == null)
+            if (user.getFavouriteDrinks() == null)
                 user.setFavouriteDrinks(new ArrayList<Drink>());
 
-            if(user.getFavouritePub() == null)
+            if (user.getFavouritePub() == null)
                 user.setFavouritePub(new ArrayList<Pub>());
 
-            for(Long l: user.getActualPals().keySet()){
+            for (Long l : user.getActualPals().keySet()) {
                 System.out.println(user.getActualPals().get(l));
             }
 
-            System.out.println(user.toString());
             result = user;
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();

@@ -40,7 +40,6 @@ public class RequestActivity extends AppCompatActivity implements RequestPalResp
     private TimePicker timePicker;
 
     private CalendarDay selectedDay;
-    private Pub selectedPub;
 
     public ArrayList<Pub> pubList;
 

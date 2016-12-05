@@ -46,27 +46,27 @@
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@drawable/ic_clear_black_24dp"
         android:id="@+id/deny_floating_button"
-        app:backgroundTint="@android:color/white"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_vertical|left"
+        android:clickable="true"
+        app:backgroundTint="@android:color/white"
+        app:fabSize="mini"
         app:layout_anchor="@+id/request_detail_container"
         app:layout_anchorGravity="top|right"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        app:srcCompat="@drawable/ic_clear_black_24dp" />
 
     <android.support.design.widget.FloatingActionButton
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@android:color/white"
         android:id="@+id/accept_floating_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical|right"
+        android:clickable="true"
+        app:backgroundTint="@android:color/white"
+        app:fabSize="mini"
         app:layout_anchor="@+id/request_detail_container"
         app:layout_anchorGravity="top|left"
-        android:layout_gravity="center_vertical|right"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        app:srcCompat="@drawable/ic_add_black_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>

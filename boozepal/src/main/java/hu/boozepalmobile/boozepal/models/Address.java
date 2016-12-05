@@ -4,15 +4,24 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * Class that represents an address.
  * Created by fanny on 2016.11.30..
  */
-
 public class Address implements Parcelable {
 
-    private  Long id;
+    /**
+     * id od the address
+     */
+    private Long id;
 
+    /**
+     * name of the city
+     */
     private String town;
 
+    /**
+     * name of the street
+     */
     private String street;
 
     public Address(Long id, String town, String street) {
@@ -46,7 +55,7 @@ public class Address implements Parcelable {
     }
 
 
-    public Address(Parcel in){
+    public Address(Parcel in) {
         this.id = in.readLong();
         this.town = in.readString();
         this.street = in.readString();

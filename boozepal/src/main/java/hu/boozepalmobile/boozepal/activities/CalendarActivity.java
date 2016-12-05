@@ -38,6 +38,8 @@ import hu.boozepalmobile.boozepal.utils.CalendarJSON;
 
 public class CalendarActivity extends AppCompatActivity {
 
+    private final String TAG = "CalendarActivity";
+
     private MaterialCalendarView calendarView;
     private ImageButton saveButton;
 
