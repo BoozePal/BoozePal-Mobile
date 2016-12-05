@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -37,6 +39,7 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
     private ListView PubListView;
     private TextView dateView;
     private TextView pubView;
+    private RatingBar ratingBar;
 
     private FloatingActionButton acceptButton;
     private FloatingActionButton denyButton;
@@ -67,12 +70,16 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        User user = request.getUser();
+
         View rootView = inflater.inflate(R.layout.request_pal_detail, container, false);
         NameView = (TextView) rootView.findViewById(R.id.NameText);
         BoozeListView = (ListView) rootView.findViewById(R.id.mypal_boozelist);
         PubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
         dateView = (TextView) rootView.findViewById(R.id.request_date_text);
         pubView = (TextView) rootView.findViewById(R.id.request_pub_text);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.request_price);
 
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,12 +108,25 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
 
         NameView.setText(this.request.getUser().getUsername());
 
-        final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
-                android.R.layout.simple_list_item_1, this.request.getUser().getFavouriteDrinks());
-        BoozeListView.setAdapter(BoozeAdapter);
-        final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
-                android.R.layout.simple_list_item_1, this.request.getUser().getFavouritePub());
-        PubListView.setAdapter(PubAdapter);
+        if(user.getFavouriteDrinks().isEmpty()){
+            final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
+                    android.R.layout.simple_list_item_1, Arrays.asList("Opps - user has no favourite drink :("));
+            BoozeListView.setAdapter(BoozeAdapter);
+        }else{
+            final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
+                    android.R.layout.simple_list_item_1, user.getFavouriteDrinks());
+            BoozeListView.setAdapter(BoozeAdapter);
+        }
+
+        if(user.getFavouritePub().isEmpty()){
+            final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
+                    android.R.layout.simple_list_item_1, Arrays.asList("Oops - user has no favourite pub :("));
+            PubListView.setAdapter(PubAdapter);
+        }else{
+            final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
+                    android.R.layout.simple_list_item_1, user.getFavouritePub());
+            PubListView.setAdapter(PubAdapter);
+        }
 
         PubListView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -131,6 +151,9 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
         dateView.setText(format.format(calendar.getTime()));
         if (request.getPub() != null)
             pubView.setText(request.getPub().toString());
+
+
+        ratingBar.setRating(request.getUser().getPriceCategory());
 
         return rootView;
     }

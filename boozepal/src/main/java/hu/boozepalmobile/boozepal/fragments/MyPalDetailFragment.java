@@ -14,14 +14,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.SimpleFormatter;
 
 import hu.boozepalmobile.boozepal.R;
-import hu.boozepalmobile.boozepal.models.Drink;
 import hu.boozepalmobile.boozepal.models.User;
 import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 
@@ -65,7 +62,7 @@ public class MyPalDetailFragment extends Fragment {
         pubView = (TextView) rootView.findViewById(R.id.mypal_pub_text);
         boozeListView = (ListView) rootView.findViewById(R.id.mypal_boozelist);
         pubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
-        ratingBar = (RatingBar) rootView.findViewById(R.id.mypal_detail_price);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.request_price);
 
         if (request.getUser() != null) {
             User user = request.getUser();

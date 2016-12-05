@@ -26,10 +26,10 @@
 
             <TextView
                 android:text="Selected date:"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/request_date_label"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_width="90dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,10 +45,10 @@
 
             <TextView
                 android:text="Selected pub:"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/request_pub_label"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_width="90dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -128,8 +128,8 @@
                 android:id="@+id/mypal_boozelist"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_alignLeft="@+id/mypal_detail_price"
-                android:layout_alignStart="@+id/mypal_detail_price"
+                android:layout_alignLeft="@+id/request_price"
+                android:layout_alignStart="@+id/request_price"
                 android:layout_alignTop="@+id/BoozeLabel" />
         </TableRow>
 
@@ -150,7 +150,7 @@
                 android:textSize="18sp" />
 
             <RatingBar
-                android:id="@+id/mypal_detail_price"
+                android:id="@+id/request_price"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -166,22 +166,6 @@
                 android:stepSize="1" />
 
         </TableRow>
-
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/detail_calendar_table"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/pal_detail_price_label"
-            android:layout_marginTop="52dp"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            app:mcv_showOtherDates="out_of_range" />
 
     </TableLayout>
 

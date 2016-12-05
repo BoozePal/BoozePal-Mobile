@@ -34,7 +34,6 @@
                 android:layout_marginTop="13dp"
                 android:layout_toEndOf="@+id/fragment_request_image"
                 android:layout_toRightOf="@+id/fragment_request_image"
-                android:text="TextView"
                 android:textAlignment="viewStart"
                 android:textSize="18sp" />
 
@@ -46,7 +45,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/fragment_request_name"
                 android:layout_marginBottom="20dp"
-                android:text="TextView"
                 android:textSize="15sp" />
 
         </RelativeLayout>

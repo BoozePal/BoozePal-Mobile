@@ -12,12 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toolbar;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -83,7 +80,7 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse, G
         NameView = (TextView) rootView.findViewById(R.id.NameText);
         BoozeListView = (ListView) rootView.findViewById(R.id.mypal_boozelist);
         PubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
-        ratingBar = (RatingBar) rootView.findViewById(R.id.mypal_detail_price);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.request_price);
         CalendarView = (MaterialCalendarView) rootView.findViewById(R.id.detail_calendar_table);
         CalendarView.setTileWidth(rootView.getWidth() / 7);
         CalendarView.setTileHeight(rootView.getWidth() / 7);

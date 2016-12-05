@@ -83,8 +83,8 @@
                 android:id="@+id/mypal_boozelist"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_alignLeft="@+id/mypal_detail_price"
-                android:layout_alignStart="@+id/mypal_detail_price"
+                android:layout_alignLeft="@+id/request_price"
+                android:layout_alignStart="@+id/request_price"
                 android:layout_alignTop="@+id/BoozeLabel" />
         </TableRow>
 
@@ -105,7 +105,7 @@
                 android:textSize="18sp" />
 
             <RatingBar
-                android:id="@+id/mypal_detail_price"
+                android:id="@+id/request_price"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
