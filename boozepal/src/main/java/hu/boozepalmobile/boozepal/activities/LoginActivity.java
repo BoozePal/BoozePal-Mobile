@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -143,10 +144,16 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onTaskFinished(User result) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("USER_DATA", result);
-        intent.putExtra("TOKEN", LoginActivity.this.token);
-        startActivity(intent);
+        if(result != null){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("USER_DATA", result);
+            intent.putExtra("TOKEN", LoginActivity.this.token);
+            startActivity(intent);
+        }
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(), "Cannot connect to server!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
 }
