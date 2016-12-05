@@ -8,6 +8,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -100,6 +101,22 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse, G
             final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
                     android.R.layout.simple_list_item_1, userData.getFavouritePub());
             PubListView.setAdapter(PubAdapter);
+
+            PubListView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
+
+            BoozeListView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
 
             ratingBar.setStepSize(1);
             ratingBar.setRating(userData.getPriceCategory());

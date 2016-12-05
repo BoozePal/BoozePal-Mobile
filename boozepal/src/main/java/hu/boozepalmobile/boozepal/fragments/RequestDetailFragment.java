@@ -7,11 +7,16 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.activities.MainActivity;
@@ -20,15 +25,18 @@ import hu.boozepalmobile.boozepal.network.getuser.GetUserResponse;
 import hu.boozepalmobile.boozepal.network.getuser.GetUserTask;
 import hu.boozepalmobile.boozepal.network.respontrequest.RespondRequestResponse;
 import hu.boozepalmobile.boozepal.network.respontrequest.RespondRequestTask;
+import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 
 public class RequestDetailFragment extends Fragment implements RespondRequestResponse, GetUserResponse {
-    private User userData;
+    private UIPalRequest request;
     private String token;
     private User loggedUser;
 
-    public TextView NameView;
-    public ListView BoozeListView;
-    public ListView PubListView;
+    private TextView NameView;
+    private ListView BoozeListView;
+    private ListView PubListView;
+    private TextView dateView;
+    private TextView pubView;
 
     private FloatingActionButton acceptButton;
     private FloatingActionButton denyButton;
@@ -45,17 +53,15 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
         acceptButton = (FloatingActionButton) activity.findViewById(R.id.accept_floating_button);
         denyButton = (FloatingActionButton) activity.findViewById(R.id.deny_floating_button);
 
-        if (getArguments().containsKey("SELECTED_REQUEST_DATA")) {
-            userData = getArguments().getParcelable("SELECTED_REQUEST_DATA");
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(userData.getUsername());
-            }
-            loggedUser = getArguments().getParcelable("LOGGED_USER_DATA");
-
-            token = getArguments().getString("TOKEN");
+        request = getArguments().getParcelable("SELECTED_REQUEST_DATA");
+        if (appBarLayout != null) {
+            appBarLayout.setTitle(request.getUser().getUsername());
         }
+        loggedUser = getArguments().getParcelable("LOGGED_USER_DATA");
 
-        System.out.println(userData.getId() + " " + loggedUser.getId());
+        token = getArguments().getString("TOKEN");
+
+
     }
 
     @Override
@@ -65,13 +71,15 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
         NameView = (TextView) rootView.findViewById(R.id.NameText);
         BoozeListView = (ListView) rootView.findViewById(R.id.mypal_boozelist);
         PubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
+        dateView = (TextView) rootView.findViewById(R.id.request_date_text);
+        pubView = (TextView) rootView.findViewById(R.id.request_pub_text);
 
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RespondRequestTask rt = new RespondRequestTask(RequestDetailFragment.this.getContext(),
                         RequestDetailFragment.this.loggedUser.getId(),
-                        RequestDetailFragment.this.userData.getId(),
+                        RequestDetailFragment.this.request.getUser().getId(),
                         true);
                 rt.delegate = RequestDetailFragment.this;
                 rt.execute();
@@ -83,23 +91,46 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
             public void onClick(View v) {
                 RespondRequestTask rt = new RespondRequestTask(RequestDetailFragment.this.getContext(),
                         RequestDetailFragment.this.loggedUser.getId(),
-                        RequestDetailFragment.this.userData.getId(),
+                        RequestDetailFragment.this.request.getUser().getId(),
                         false);
                 rt.delegate = RequestDetailFragment.this;
                 rt.execute();
             }
         });
 
-        if (userData != null) {
-            NameView.setText(userData.getUsername());
 
-            final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
-                    android.R.layout.simple_list_item_1, userData.getFavouriteDrinks());
-            BoozeListView.setAdapter(BoozeAdapter);
-            final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
-                    android.R.layout.simple_list_item_1, userData.getFavouritePub());
-            PubListView.setAdapter(PubAdapter);
-        }
+        NameView.setText(this.request.getUser().getUsername());
+
+        final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
+                android.R.layout.simple_list_item_1, this.request.getUser().getFavouriteDrinks());
+        BoozeListView.setAdapter(BoozeAdapter);
+        final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
+                android.R.layout.simple_list_item_1, this.request.getUser().getFavouritePub());
+        PubListView.setAdapter(PubAdapter);
+
+        PubListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        BoozeListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy MM dd - hh:mm");
+        Date date = request.getDate();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        dateView.setText(format.format(calendar.getTime()));
+        if (request.getPub() != null)
+            pubView.setText(request.getPub().toString());
 
         return rootView;
     }

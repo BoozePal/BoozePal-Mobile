@@ -46,13 +46,11 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Log.d(TAG,"wat2");
         holder.mItem = users.get(position);
         if(users.get(position).getUser() != null) {
             holder.NameView.setText(users.get(position).getUser().getUsername());
             if(users.get(position).getUser().getAddress() != null)
                 holder.CityView.setText(users.get(position).getUser().getAddress().getTown());
-            holder.DateView.setText(users.get(position).getDate().toString());
         }
 
         final int f_position = position;
@@ -82,7 +80,6 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
         public final View mView;
         public final TextView NameView;
         public final TextView CityView;
-        public final TextView DateView;
         public UIPalRequest mItem;
 
         public ViewHolder(View view) {
@@ -90,7 +87,6 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
             mView = view;
             NameView = (TextView) view.findViewById(R.id.fragment_request_name);
             CityView = (TextView) view.findViewById(R.id.fragment_request_city);
-            DateView = (TextView) view.findViewById(R.id.fragment_request_date);
         }
 
     }

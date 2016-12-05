@@ -52,9 +52,9 @@ public class RequestDetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
                 Bundle arguments = new Bundle();
-                arguments.putParcelable("SELECTED_REQUEST_DATA", request.getUser());
-                arguments.putParcelable("LOGGED_USER_DATA", getIntent().getParcelableExtra("LOGGED_USER_DATA"));
-                arguments.putString("TOKEN", getIntent().getStringExtra("TOKEN"));
+                arguments.putParcelable("SELECTED_REQUEST_DATA", request);
+                arguments.putParcelable("LOGGED_USER_DATA", loggedUser);
+                arguments.putString("TOKEN", token);
                 RequestDetailFragment fragment = new RequestDetailFragment();
                 fragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
