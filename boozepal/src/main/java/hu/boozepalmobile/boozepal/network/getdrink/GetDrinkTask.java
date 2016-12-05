@@ -27,7 +27,7 @@ import hu.boozepalmobile.boozepal.models.DrinkTypeEnum;
  * Created by fanny on 2016.11.29..
  */
 
-public class GetDrinkTask extends AsyncTask<String,Void,HashMap<DrinkTypeEnum, List<Drink>>> {
+public class GetDrinkTask extends AsyncTask<String, Void, HashMap<DrinkTypeEnum, List<Drink>>> {
 
     private final String TAG = "GetDrinkTask";
 
@@ -41,6 +41,7 @@ public class GetDrinkTask extends AsyncTask<String,Void,HashMap<DrinkTypeEnum, L
 
     @Override
     protected HashMap<DrinkTypeEnum, List<Drink>> doInBackground(String... params) {
+        Log.d(TAG,"GetDrinkTask started!");
         return getDrinks();
     }
 
@@ -50,41 +51,25 @@ public class GetDrinkTask extends AsyncTask<String,Void,HashMap<DrinkTypeEnum, L
         delegate.onTaskFinished(drinkTypes);
     }
 
-    private HashMap<DrinkTypeEnum, List<Drink>> getDrinks(){
+    private HashMap<DrinkTypeEnum, List<Drink>> getDrinks() {
         URL url = null;
         InputStream is = null;
-        HashMap<DrinkTypeEnum,List<Drink>> drinkTypes = new HashMap<>();
+        HashMap<DrinkTypeEnum, List<Drink>> drinkTypes = new HashMap<>();
         //List<DrinkType> drinkTypes = new ArrayList<>();
         try {
-            url = new URL(context.getString(R.string.rest_url_getdrinksall));
+            //url = new URL(context.getString(R.string.rest_url_getdrinksall));
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.connect();
+            HttpURLConnection conn;
+            BufferedReader br;
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-
-            String line = null;
-            StringBuilder sb = new StringBuilder();
-
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-            br.close();
-
-            Log.d(TAG, sb.toString());
-
-            Type listType = new TypeToken<List<Drink>>() {}.getType();
-
+            String line;
+            StringBuilder sb;
             Gson gson = new Gson();
-            List<Drink> drinks = gson.fromJson(sb.toString(), listType);
+            Type listType = new TypeToken<List<Drink>>() {
+            }.getType();
 
-            for(Drink d : drinks){
-                url = new URL(context.getString(R.string.rest_url_getdrinktype) + d.getDrinkType());
+            for (DrinkTypeEnum d : DrinkTypeEnum.values()) {
+                url = new URL(context.getString(R.string.rest_url_getdrinktype) + d);
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
                 conn.setConnectTimeout(15000);
@@ -104,40 +89,32 @@ public class GetDrinkTask extends AsyncTask<String,Void,HashMap<DrinkTypeEnum, L
                 br.close();
 
                 Log.d(TAG, sb.toString());
-
-                //Gson gsondrink = new Gson();
-                //Drink drink = gsondrink.fromJson(sb.toString(), Drink.class);;
-
-                Gson gsondrink = new Gson();
                 List<Drink> typedrinks = gson.fromJson(sb.toString(), listType);
 
-                if(!typedrinks.isEmpty()){
-                    if(drinkTypes.containsKey(typedrinks.get(0))){
+                System.out.println(typedrinks.toString());
+
+                if (!typedrinks.isEmpty()) {
+                    if (drinkTypes.containsKey(typedrinks.get(0))) {
                         continue;
                     }
                 }
 
-                for(Drink drink : typedrinks){
+                for (Drink drink : typedrinks) {
                     System.out.println("drink:" + drink.toString());
-                    //Gson drinkgson = new Gson();
-                    //Drink drink = drinkgson.fromJson(sb.toString(), Drink.class);;
 
-                    if(drinkTypes.containsKey(drink.getDrinkType())){
+                    if (drinkTypes.containsKey(drink.getDrinkType())) {
                         List<Drink> drinkList = drinkTypes.get(drink.getDrinkType());
                         drinkList.add(drink);
-                        drinkTypes.put(drink.getDrinkType(),drinkList);
-                    }
-                    else{
+                        drinkTypes.put(drink.getDrinkType(), drinkList);
+                    } else {
                         ArrayList<Drink> drinklist = new ArrayList<>();
                         drinklist.add(drink);
-                        drinkTypes.put(drink.getDrinkType(),drinklist);
+                        drinkTypes.put(drink.getDrinkType(), drinklist);
                     }
 
                 }
 
             }
-
-            System.out.println("map " + drinkTypes);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -145,6 +122,7 @@ public class GetDrinkTask extends AsyncTask<String,Void,HashMap<DrinkTypeEnum, L
             e.printStackTrace();
         }
 
+        Log.d(TAG,"GetDrinkTask ended!");
         return drinkTypes;
     }
 }

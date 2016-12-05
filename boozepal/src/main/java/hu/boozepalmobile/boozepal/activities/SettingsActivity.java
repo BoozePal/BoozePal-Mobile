@@ -261,7 +261,7 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
         drinkSpinner = (Spinner) dialogView.findViewById(R.id.settings_drink_spinner);
 
         types = new ArrayList<>(this.drinks.keySet());
-        ArrayAdapter<DrinkTypeEnum> drinktypeAdapter = new ArrayAdapter<DrinkTypeEnum>(this, android.R.layout.simple_spinner_item, types);
+        ArrayAdapter<DrinkTypeEnum> drinktypeAdapter = new ArrayAdapter<DrinkTypeEnum>(this, R.layout.spinner_item, types);
         typeSpinner.setAdapter(drinktypeAdapter);
 
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -272,7 +272,7 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
                     names.add(d.getName());
                 }
 
-                ArrayAdapter<String> drinkadapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, names);
+                ArrayAdapter<String> drinkadapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, names);
                 SettingsActivity.this.drinkSpinner.setAdapter(drinkadapter);
             }
 
@@ -320,7 +320,7 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
 
         pubSpinner = (Spinner) dialogView.findViewById(R.id.select_pub_spinner);
 
-        ArrayAdapter<Pub> pubAdapter = new ArrayAdapter<Pub>(this, android.R.layout.simple_spinner_item, pubs);
+        ArrayAdapter<Pub> pubAdapter = new ArrayAdapter<Pub>(this, R.layout.spinner_item, pubs);
         pubSpinner.setAdapter(pubAdapter);
 
         dialogBuilder.setTitle("Select new pub");

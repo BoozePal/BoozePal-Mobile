@@ -4,11 +4,11 @@
     android:layout_height="match_parent">
 
     <Spinner
-        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/settings_drinktype_spinner" />
+        android:id="@+id/settings_drinktype_spinner"
+        android:layout_width="150dp" />
 
     <Spinner
         android:layout_width="match_parent"
