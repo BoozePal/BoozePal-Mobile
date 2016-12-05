@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textEnd"
                 android:textSize="18sp"
-                android:layout_below="@+id/BoozeListView"
+                android:layout_below="@+id/mypal_boozelist"
                 android:layout_alignRight="@+id/BoozeLabel"
                 android:layout_alignEnd="@+id/BoozeLabel"
                 android:layout_alignParentLeft="true"
@@ -64,11 +64,11 @@
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_below="@+id/BoozeListView"
-                android:layout_alignLeft="@+id/BoozeListView"
-                android:layout_alignStart="@+id/BoozeListView"
+                android:layout_below="@+id/mypal_boozelist"
+                android:layout_alignLeft="@+id/mypal_boozelist"
+                android:layout_alignStart="@+id/mypal_boozelist"
                 android:layout_height="150dp"
-                android:id="@+id/PubListView" />
+                android:id="@+id/mypal_publist" />
         </TableRow>
 
         <TableRow
@@ -89,11 +89,11 @@
 
             <ListView
                 android:layout_width="match_parent"
-                android:id="@+id/BoozeListView"
+                android:id="@+id/mypal_boozelist"
                 android:layout_height="150dp"
                 android:layout_alignTop="@+id/BoozeLabel"
-                android:layout_alignLeft="@+id/pal_detail_price"
-                android:layout_alignStart="@+id/pal_detail_price" />
+                android:layout_alignLeft="@+id/mypal_detail_price"
+                android:layout_alignStart="@+id/mypal_detail_price" />
         </TableRow>
 
         <TableRow
@@ -104,7 +104,7 @@
                 android:text="Price:"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/PubListView"
+                android:layout_below="@+id/mypal_publist"
                 android:layout_alignRight="@+id/PubLabel"
                 android:layout_alignEnd="@+id/PubLabel"
                 android:layout_marginTop="27dp"
@@ -114,10 +114,10 @@
 
             <RatingBar
                 android:layout_height="wrap_content"
-                android:id="@+id/pal_detail_price"
+                android:id="@+id/mypal_detail_price"
                 android:numStars="5"
                 android:stepSize="1"
-                android:layout_below="@+id/PubListView"
+                android:layout_below="@+id/mypal_publist"
                 android:layout_toRightOf="@+id/pal_detail_price_label"
                 android:layout_marginTop="12dp"
                 android:layout_alignParentRight="true"

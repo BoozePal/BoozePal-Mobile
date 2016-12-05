@@ -25,7 +25,6 @@ android:orientation="horizontal">
             android:layout_height="100dp" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -39,7 +38,6 @@ android:orientation="horizontal">
             android:textAlignment="viewStart" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -48,17 +46,6 @@ android:orientation="horizontal">
             android:layout_marginBottom="20dp"
             android:id="@+id/fragment_mypals_city"
             android:textSize="15sp" />
-
-        <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/fragment_mypals_city"
-            android:layout_toRightOf="@+id/fragment_mypals_name"
-            android:layout_toEndOf="@+id/fragment_mypals_name"
-            android:layout_marginLeft="33dp"
-            android:layout_marginStart="33dp"
-            android:id="@+id/fragment_mypals_date" />
 
     </RelativeLayout>
 

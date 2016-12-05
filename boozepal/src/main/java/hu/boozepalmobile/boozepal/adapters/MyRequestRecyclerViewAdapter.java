@@ -41,12 +41,11 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_request, parent, false);
-        Log.d(TAG,"wat3");
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Log.d(TAG,"wat2");
         holder.mItem = users.get(position);
         if(users.get(position).getUser() != null) {
@@ -56,7 +55,7 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
             holder.DateView.setText(users.get(position).getDate().toString());
         }
 
-        Log.d(TAG,"wat");
+        final int f_position = position;
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +64,7 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
                     Intent intent = new Intent(v.getContext(), RequestDetailActivity
                             .class);
                     intent.putExtra("LOGGED_USER_DATA", user);
-                    intent.putExtra("SELECTED_REQUEST_DATA", users.get(position));
+                    intent.putExtra("SELECTED_REQUEST_DATA", users.get(f_position));
                     intent.putExtra("TOKEN", token);
                     v.getContext().startActivity(intent);
                 }
@@ -92,8 +91,6 @@ public class MyRequestRecyclerViewAdapter extends RecyclerView.Adapter<MyRequest
             NameView = (TextView) view.findViewById(R.id.fragment_request_name);
             CityView = (TextView) view.findViewById(R.id.fragment_request_city);
             DateView = (TextView) view.findViewById(R.id.fragment_request_date);
-            //mIdView = (TextView) view.findViewById(R.id.id);
-            //mContentView = (TextView) view.findViewById(R.id.content);
         }
 
     }

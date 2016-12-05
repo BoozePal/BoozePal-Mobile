@@ -2,6 +2,7 @@ package hu.boozepalmobile.boozepal.adapters;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 import java.util.List;
 
 public class MyPalsRecyclerViewAdapter extends RecyclerView.Adapter<MyPalsRecyclerViewAdapter.ViewHolder> {
+
+    private final String TAG = "MyPalsRecyclerVA";
 
     private User user;
     private String token;
@@ -37,14 +40,17 @@ public class MyPalsRecyclerViewAdapter extends RecyclerView.Adapter<MyPalsRecycl
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = users.get(position);
         if(users.get(position).getUser() != null) {
             holder.NameView.setText(users.get(position).getUser().getUsername());
             if(users.get(position).getUser().getAddress() != null)
                 holder.CityView.setText(users.get(position).getUser().getAddress().getTown());
-            holder.DateView.setText(users.get(position).getDate().toString());
         }
+
+        final int f_position = position;
+        Log.d(TAG, String.valueOf(f_position));
+        Log.d(TAG, users.get(f_position).toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,9 +58,8 @@ public class MyPalsRecyclerViewAdapter extends RecyclerView.Adapter<MyPalsRecycl
                 if (null != mListener) {
                     Intent intent = new Intent(v.getContext(), MyPalDetailActivity
                             .class);
-                    intent.putExtra("FRAGMENT", 1);
                     intent.putExtra("USER_DATA", user);
-                    intent.putExtra("SELECTED_REQUEST_DATA", users.get(position));
+                    intent.putExtra("SELECTED_REQUEST_DATA", users.get(f_position));
                     intent.putExtra("TOKEN", token);
                     v.getContext().startActivity(intent);
                 }
@@ -72,7 +77,6 @@ public class MyPalsRecyclerViewAdapter extends RecyclerView.Adapter<MyPalsRecycl
         public final View mView;
         public final TextView NameView;
         public final TextView CityView;
-        public final TextView DateView;
         public UIPalRequest mItem;
 
         public ViewHolder(View view) {
@@ -80,9 +84,6 @@ public class MyPalsRecyclerViewAdapter extends RecyclerView.Adapter<MyPalsRecycl
             mView = view;
             NameView = (TextView) view.findViewById(R.id.fragment_mypals_name);
             CityView = (TextView) view.findViewById(R.id.fragment_mypals_city);
-            DateView = (TextView) view.findViewById(R.id.fragment_mypals_date);
-            //mIdView = (TextView) view.findViewById(R.id.id);
-            //mContentView = (TextView) view.findViewById(R.id.content);
         }
 
     }

@@ -17,19 +17,16 @@ import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 
 public class MyPalDetailActivity extends AppCompatActivity {
     private User loggedUser;
-    private User user;
     private String token;
     private UIPalRequest request;
-    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_request_detail);
+        setContentView(R.layout.fragment_my_pal_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -39,20 +36,18 @@ public class MyPalDetailActivity extends AppCompatActivity {
         if(b != null) {
             loggedUser = b.getParcelable("USER_DATA");
             request = b.getParcelable("SELECTED_REQUEST_DATA");
-            user = b.getParcelable("SELECTED_USER_DATA");
             token = b.getString("TOKEN");
-            type = b.getInt("TYPE");
         }
 
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
-            arguments.putParcelable("SELECTED_USER_DATA", request.getRequesterUser());
-            arguments.putParcelable("USER_DATA", getIntent().getParcelableExtra("USER_DATA"));
-            arguments.putString("TOKEN", getIntent().getStringExtra("TOKEN"));
+            arguments.putParcelable("SELECTED_USER_DATA", request);
+            arguments.putParcelable("LOGGED_USER_DATA", loggedUser);
+            arguments.putString("TOKEN",token);
             MyPalDetailFragment fragment = new MyPalDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.request_detail_container, fragment)
+                    .add(R.id.mypal_detail_container, fragment)
                     .commit();
 
         }

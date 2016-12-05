@@ -10,14 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import hu.boozepalmobile.boozepal.R;
 import hu.boozepalmobile.boozepal.activities.MainActivity;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.network.getpal.GetPalResponse;
 import hu.boozepalmobile.boozepal.network.getuser.GetUserResponse;
 import hu.boozepalmobile.boozepal.network.getuser.GetUserTask;
 import hu.boozepalmobile.boozepal.network.respontrequest.RespondRequestResponse;
@@ -68,8 +66,8 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.request_pal_detail, container, false);
         NameView = (TextView) rootView.findViewById(R.id.NameText);
-        BoozeListView = (ListView) rootView.findViewById(R.id.BoozeListView);
-        PubListView = (ListView) rootView.findViewById(R.id.PubListView);
+        BoozeListView = (ListView) rootView.findViewById(R.id.mypal_boozelist);
+        PubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
 
         //acceptButton = (Button) rootView.findViewById(R.id.accept_button);
         //denyButton = (Button) rootView.findViewById(R.id.deny_button);

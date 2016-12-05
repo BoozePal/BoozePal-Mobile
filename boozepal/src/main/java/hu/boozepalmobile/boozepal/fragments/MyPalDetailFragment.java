@@ -9,23 +9,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
 
 import hu.boozepalmobile.boozepal.R;
+import hu.boozepalmobile.boozepal.models.Drink;
 import hu.boozepalmobile.boozepal.models.User;
+import hu.boozepalmobile.boozepal.utils.UIPalRequest;
 
 public class MyPalDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
 
-    private User UserData;
+    //private User UserData;
     private User loggedUser;
+    private UIPalRequest request;
+    private String token;
 
-    public TextView NameView;
-    public ListView BoozeListView;
-    public ListView PubListView;
-    public TextView DateView;
+    private TextView nameView;
+    private ListView boozeListView;
+    private ListView pubListView;
+    private TextView dateView;
+    private TextView pubView;
+    private RatingBar ratingBar;
 
     public MyPalDetailFragment() {
     }
@@ -36,32 +48,61 @@ public class MyPalDetailFragment extends Fragment {
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_collapsing_mypaldetail);
 
-        if(getArguments().containsKey("USER_DATA")){
-            UserData = (User) getArguments().getParcelable("USER_DATA");
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(UserData.getUsername());
-            }
-            loggedUser = (User) getArguments().getParcelable("LOGGED_USER_DATA");
+        //UserData = (User) getArguments().getParcelable("USER_DATA");
+        request = (UIPalRequest) getArguments().getParcelable("SELECTED_USER_DATA");
+        if (appBarLayout != null) {
+            appBarLayout.setTitle(request.getUser().getUsername());
         }
+        loggedUser = (User) getArguments().getParcelable("LOGGED_USER_DATA");
+        token = getArguments().getString("TOKEN");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.mypal_detail, container, false);
-        NameView = (TextView) rootView.findViewById(R.id.NameText);
-        BoozeListView = (ListView) rootView.findViewById(R.id.BoozeListView);
-        PubListView = (ListView) rootView.findViewById(R.id.PubListView);
+        nameView = (TextView) rootView.findViewById(R.id.mypal_name);
+        dateView = (TextView) rootView.findViewById(R.id.mypal_date_text);
+        pubView = (TextView) rootView.findViewById(R.id.mypal_pub_text);
+        boozeListView = (ListView) rootView.findViewById(R.id.mypal_boozelist);
+        pubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.mypal_detail_price);
 
-        if (UserData != null) {
-            NameView.setText(UserData.getUsername());
+        if (request.getUser() != null) {
+            User user = request.getUser();
+            nameView.setText(user.getUsername());
 
-            final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
-                    android.R.layout.simple_list_item_1, UserData.getFavouriteDrinks());
-            BoozeListView.setAdapter(BoozeAdapter);
-            final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
-                    android.R.layout.simple_list_item_1, UserData.getFavouritePub());
-            PubListView.setAdapter(PubAdapter);
+            if(user.getFavouriteDrinks().isEmpty()){
+                System.out.println("lel");
+                final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
+                        android.R.layout.simple_list_item_1, Arrays.asList("Opps - user has no favourite drink :("));
+                boozeListView.setAdapter(BoozeAdapter);
+            }else{
+                System.out.println("lele");
+                final ArrayAdapter BoozeAdapter = new ArrayAdapter(getActivity(),
+                        android.R.layout.simple_list_item_1, user.getFavouriteDrinks());
+                boozeListView.setAdapter(BoozeAdapter);
+            }
+
+            if(user.getFavouritePub().isEmpty()){
+                final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
+                        android.R.layout.simple_list_item_1, Arrays.asList("Oops - user has no favourite pub :("));
+                pubListView.setAdapter(PubAdapter);
+            }else{
+                final ArrayAdapter PubAdapter = new ArrayAdapter(getActivity(),
+                        android.R.layout.simple_list_item_1, user.getFavouritePub());
+                pubListView.setAdapter(PubAdapter);
+            }
+
+            ratingBar.setRating(user.getPriceCategory());
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy MM dd - hh:mm");
+            Date date = request.getDate();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            dateView.setText(format.format(calendar.getTime()));
+            if(request.getPub() != null)
+                pubView.setText(request.getPub().toString());
         }
 
         return rootView;

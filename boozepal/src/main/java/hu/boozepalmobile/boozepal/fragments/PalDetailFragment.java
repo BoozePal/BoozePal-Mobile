@@ -1,20 +1,15 @@
 package hu.boozepalmobile.boozepal.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -40,7 +35,6 @@ import hu.boozepalmobile.boozepal.models.User;
 import hu.boozepalmobile.boozepal.network.getpubs.GetPubTaskResponse;
 import hu.boozepalmobile.boozepal.network.getpubs.GetPubsTask;
 import hu.boozepalmobile.boozepal.network.requestpal.RequestPalResponse;
-import hu.boozepalmobile.boozepal.network.requestpal.RequestPalTask;
 import hu.boozepalmobile.boozepal.utils.CalendarDecorator;
 
 public class PalDetailFragment extends Fragment implements RequestPalResponse, GetPubTaskResponse{
@@ -91,9 +85,9 @@ public class PalDetailFragment extends Fragment implements RequestPalResponse, G
         View rootView = inflater.inflate(R.layout.pal_detail, container, false);
 
         NameView = (TextView) rootView.findViewById(R.id.NameText);
-        BoozeListView = (ListView) rootView.findViewById(R.id.BoozeListView);
-        PubListView = (ListView) rootView.findViewById(R.id.PubListView);
-        ratingBar = (RatingBar) rootView.findViewById(R.id.pal_detail_price);
+        BoozeListView = (ListView) rootView.findViewById(R.id.mypal_boozelist);
+        PubListView = (ListView) rootView.findViewById(R.id.mypal_publist);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.mypal_detail_price);
         CalendarView = (MaterialCalendarView) rootView.findViewById(R.id.detail_calendar_table);
         CalendarView.setTileWidth(rootView.getWidth()/7);
         CalendarView.setTileHeight(rootView.getWidth()/7);
