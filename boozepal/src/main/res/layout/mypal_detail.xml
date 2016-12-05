@@ -18,6 +18,17 @@ tools:context="hu.boozepalmobile.boozepal.fragments.MyPalDetailFragment">
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
+        <Button
+            android:text="Send email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button2" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
         <TextView
             android:text="@string/name"
             android:layout_height="wrap_content"

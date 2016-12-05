@@ -30,15 +30,6 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-                <ImageButton
-                    android:id="@+id/pal_request_button"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="30dp"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_check_white_24dp" />
-
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>

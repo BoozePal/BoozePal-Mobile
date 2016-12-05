@@ -33,7 +33,6 @@ import hu.boozepalmobile.boozepal.models.Drink;
 import hu.boozepalmobile.boozepal.models.PalRequest;
 import hu.boozepalmobile.boozepal.models.Pub;
 import hu.boozepalmobile.boozepal.models.User;
-import hu.boozepalmobile.boozepal.network.login.LoginResponse;
 
 /**
  * Created by fanny on 2016.11.26..
@@ -132,7 +131,7 @@ public class LoginTask extends AsyncTask<String, Void, User> {
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }  catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();

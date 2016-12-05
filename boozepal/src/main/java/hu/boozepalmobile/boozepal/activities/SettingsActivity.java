@@ -140,7 +140,8 @@ public class SettingsActivity extends AppCompatActivity implements GetDrinkTaskR
 
         editCity = (EditText) findViewById(R.id.settings_edit_city);
         editCity.setSelectAllOnFocus(true);
-        editCity.setText(user.getAddress().getTown());
+        if(user.getAddress() != null)
+            editCity.setText(user.getAddress().getTown());
         editCity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -34,7 +34,8 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme" />
         <activity android:name=".activities.BaseActivity" />
-        <activity android:name=".activities.MyPalDetailActivity"></activity>
+        <activity android:name=".activities.MyPalDetailActivity" />
+        <activity android:name=".activities.RequestActivity"></activity>
     </application>
 
 </manifest>
