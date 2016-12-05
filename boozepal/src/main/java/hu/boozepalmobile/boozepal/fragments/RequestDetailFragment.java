@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,11 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
     public ListView BoozeListView;
     public ListView PubListView;
 
-    private Button acceptButton;
-    private Button denyButton;
+    //private Button acceptButton;
+    //private Button denyButton;
+
+    private FloatingActionButton acceptButton;
+    private FloatingActionButton denyButton;
 
     public RequestDetailFragment() {
     }
@@ -42,6 +46,9 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
         super.onCreate(savedInstanceState);
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_collapsing_requestdetail);
+
+        acceptButton = (FloatingActionButton) activity.findViewById(R.id.accept_floating_button);
+        denyButton = (FloatingActionButton) activity.findViewById(R.id.deny_floating_button);
 
         if (getArguments().containsKey("SELECTED_REQUEST_DATA")) {
             userData = getArguments().getParcelable("SELECTED_REQUEST_DATA");
@@ -64,8 +71,8 @@ public class RequestDetailFragment extends Fragment implements RespondRequestRes
         BoozeListView = (ListView) rootView.findViewById(R.id.BoozeListView);
         PubListView = (ListView) rootView.findViewById(R.id.PubListView);
 
-        acceptButton = (Button) rootView.findViewById(R.id.accept_button);
-        denyButton = (Button) rootView.findViewById(R.id.deny_button);
+        //acceptButton = (Button) rootView.findViewById(R.id.accept_button);
+        //denyButton = (Button) rootView.findViewById(R.id.deny_button);
 
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override

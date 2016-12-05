@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity implements
             startActivity(intent);
         }
         else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Cannot connect to server!", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Cannot connect to server!", Toast.LENGTH_LONG);
             toast.show();
         }
     }

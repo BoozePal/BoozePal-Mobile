@@ -55,10 +55,7 @@ public class GetDrinkTask extends AsyncTask<String, Void, HashMap<DrinkTypeEnum,
         URL url = null;
         InputStream is = null;
         HashMap<DrinkTypeEnum, List<Drink>> drinkTypes = new HashMap<>();
-        //List<DrinkType> drinkTypes = new ArrayList<>();
         try {
-            //url = new URL(context.getString(R.string.rest_url_getdrinksall));
-
             HttpURLConnection conn;
             BufferedReader br;
 

@@ -14,21 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <Button
-            android:text="Accept Request"
-            android:layout_gravity="left"
-            android:layout_height="60dp"
-            android:id="@+id/accept_button"
-
-            android:layout_width="140dp" />
-
-        <Button
-            android:text="Deny Request"
-            android:layout_width="140dp"
-            android:layout_gravity="right"
-            android:layout_height="60dp"
-            android:id="@+id/deny_button"
-            />
     </LinearLayout>
 
     <TableLayout
