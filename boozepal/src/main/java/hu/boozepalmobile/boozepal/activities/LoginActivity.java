@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.splashTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
